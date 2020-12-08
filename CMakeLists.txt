@@ -18,7 +18,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #   
 
-cmake_minimum_required (VERSION "3.14.4")
+cmake_minimum_required (VERSION "3.8")
 
 # =========================================================================== #
 #                     PROJECT DEFINITIONS & PROPERTIES                        #
@@ -51,49 +51,30 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 include_directories("${RTC_SOURCE_DIR}/src")
 include_directories("${RTC_SOURCE_DIR}/include")
 
-# Find all source files and group them by directory
-# I have no clue how this actually works, this macro was taken from SORT
-macro (source_group_by_dir source_files)
-    set(sgbd_cur_dir ${RTC_SOURCE_DIR}/src)
-    foreach (sgbd_file ${${source_files}})
-	    string(REGEX REPLACE ${sgbd_cur_dir}/\(.*\) \\1 sgbd_fpath ${sgbd_file})
-	    string(REGEX REPLACE "\(.*\)/.*" \\1 sgbd_group_name ${sgbd_fpath})
-	    string(COMPARE EQUAL ${sgbd_fpath} ${sgbd_group_name} sgbd_nogroup)
-	    string(REPLACE "/" "\\" sgbd_group_name ${sgbd_group_name})
-	    if (sgbd_nogroup)
-	        set(sgbd_group_name "\\" )
-	    endif (sgbd_nogroup)
-	    source_group(${sgbd_group_name} FILES ${sgbd_file})
-    endforeach (sgbd_file)
-endmacro (source_group_by_dir)
-
 file(GLOB_RECURSE project_headers src/*.h)
 file(GLOB_RECURSE project_cpps src/*.cpp)
-
 set(all_files ${project_headers} ${project_cpps})
-source_group_by_dir(all_files)
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${all_files})
 
 # =========================================================================== #
 #                   SETUP THIRD PARTY/EXTERN DEPENDENCIES                     #
 # =========================================================================== #
 
-include_directories("${ETH_SOURCE_DIR}/include")
-
 file(GLOB_RECURSE stb include/stb/*)
-set(stb_files ${stb})
-
 file(GLOB_RECURSE gtest include/googletest/*)
-set(gtest_files ${gtest})
+set(extern_files ${stb} ${gtest})
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${extern_files})
 
 # =========================================================================== #
 #                          SET COMPILATION TARGETS                            #
 # =========================================================================== #
 
-add_executable(${PROJECT_NAME} ${all_files} ${stb_files} ${gtest_files})
+add_executable(${PROJECT_NAME} ${all_files} ${extern_files})
 
 # Set output name for different configs
 set_target_properties (${PROJECT_NAME} PROPERTIES RELEASE_OUTPUT_NAME "rtcore_r")
 set_target_properties (${PROJECT_NAME} PROPERTIES DEBUG_OUTPUT_NAME "rtcore_d")
+set_target_properties (${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${RTC_SOURCE_DIR}/bin")
 
 # Define platform
 if(WIN32)
@@ -107,5 +88,3 @@ endif()
 # =========================================================================== #
 #                          LINK EXTERNAL LIBRARIES                            #
 # =========================================================================== #
-
-# Nothing to link
