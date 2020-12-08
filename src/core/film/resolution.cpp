@@ -4,7 +4,7 @@
 
     Copyright (c) 2019 Samuel Van Allen - All rights reserved.
 
-    Elixir is free software: you can redistribute it and/or modify
+    RTCore is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
@@ -18,8 +18,31 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "googletest/gtest.h"
+#include "resolution.h"
+#include <stdexcept>
 
-TEST(First, Second) {
-    EXPECT_TRUE(true);
+#define MAX_WIDTH 3840
+#define MAX_HEIGHT 2160
+
+Resolution::Resolution(const Resolution& copy)
+{
+    m_Width = copy.GetWidth();
+    m_Height = copy.GetHeight();
 }
+
+void Resolution::SetWidth(unsigned int width)
+{
+    if (width > MAX_WIDTH || width <= 0)
+        throw std::invalid_argument("Film width is invalid");
+
+    m_Width = width;
+}
+
+void Resolution::SetHeight(unsigned int height)
+{
+    if (height > MAX_HEIGHT || height <= 0)
+        throw std::invalid_argument("Film height is invalid");
+
+    m_Height = height;
+}
+

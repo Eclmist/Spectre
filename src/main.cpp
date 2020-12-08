@@ -4,7 +4,7 @@
 
     Copyright (c) 2019 Samuel Van Allen - All rights reserved.
 
-    Elixir is free software: you can redistribute it and/or modify
+    RTCore is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
@@ -43,7 +43,7 @@ int main(int argc, char* argv[])
         if (!strcmp(argv[i], "--help") || !strcmp(argv[i], "-h"))
         {
             PrintUsage();
-            return -1;
+            return EXIT_FAILURE;
         }
         else if (!strcmp(argv[i], "--unittest"))
         {
