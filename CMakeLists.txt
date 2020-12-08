@@ -36,12 +36,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Set the project source directories. This is set when running the CMake GUI
 set(RTC_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
-
-# Enable multi-thread compiling.
-include(ProcessorCount)
-ProcessorCount(N)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP${N}")
-
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 # =========================================================================== #
@@ -70,21 +64,29 @@ source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${extern_files})
 # =========================================================================== #
 
 add_executable(${PROJECT_NAME} ${all_files} ${extern_files})
+set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY $<1:${RTC_SOURCE_DIR}/bin>)
 
-# Set output name for different configs
-set_target_properties (${PROJECT_NAME} PROPERTIES RELEASE_OUTPUT_NAME "rtcore_r")
-set_target_properties (${PROJECT_NAME} PROPERTIES DEBUG_OUTPUT_NAME "rtcore_d")
-set_target_properties (${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${RTC_SOURCE_DIR}/bin")
+# =========================================================================== #
+#                        PLATFORM SPECIFIC SETTIGNS                           #
+# =========================================================================== #
 
 # Define platform
 if(WIN32)
     target_compile_definitions(${PROJECT_NAME} PUBLIC RTC_PLATFORM_WIN)
+    # Enable multi-threaded compilation on Windows
+    include(ProcessorCount)
+    ProcessorCount(N)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP${N}")
 elseif(APPLE)
     target_compile_definitions(${PROJECT_NAME} PUBLIC RTC_PLATFORM_MAC)
+    set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -pthread -O3")
 elseif(UNIX)
     target_compile_definitions(${PROJECT_NAME} PUBLIC RTC_PLATFORM_LINUX)
+    set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -pthread -O3")
 endif()
 
 # =========================================================================== #
 #                          LINK EXTERNAL LIBRARIES                            #
 # =========================================================================== #
+
+# Nothing to link for now :)
