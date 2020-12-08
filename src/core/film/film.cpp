@@ -19,9 +19,35 @@
 */
 
 #include "film.h"
-#include <stdexcept>
+
+Film::Film()
+{
+    ResizePixelData();
+}
+
+Pixel Film::GetPixel(unsigned int x, unsigned int y) const
+{
+    if (!m_Resolution.IsWithinBounds(x, y))
+        throw std::invalid_argument("Pixel position out of bounds");
+
+    return m_Pixels[GetIndex(x, y)];
+}
 
 void Film::SetResolution(const Resolution& resolution)
 {
     m_Resolution = resolution;
+    ResizePixelData();
 }
+
+void Film::SetPixel(unsigned int x, unsigned int y, float r, float g, float b)
+{
+    m_Pixels[GetIndex(x, y)].m_RGB[0] = r;
+    m_Pixels[GetIndex(x, y)].m_RGB[1] = g;
+    m_Pixels[GetIndex(x, y)].m_RGB[2] = b;
+}
+
+void Film::ResizePixelData()
+{
+    m_Pixels = std::make_unique<Pixel[]>(m_Resolution.GetWidth() * m_Resolution.GetHeight());
+}
+

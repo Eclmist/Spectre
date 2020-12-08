@@ -22,16 +22,26 @@
 
 #include "resolution.h"
 #include "standardresolution.h"
+#include "pixel.h"
 
 class Film
 {
 public:
-    Film() = default;
+    Film();
     ~Film() = default;
 
     inline const Resolution& GetResolution() const { return m_Resolution; };
+    inline int GetIndex(unsigned int x, unsigned int y) const { return x + y * m_Resolution.GetWidth(); };
+    Pixel GetPixel(unsigned int x, unsigned int y) const;
+
     void SetResolution(const Resolution& resolution);
+    void SetPixel(unsigned int x, unsigned int y, float r, float g, float b);
+
+private:
+    void ResizePixelData();
 
 private:
     Resolution m_Resolution;
+    std::unique_ptr<Pixel[]> m_Pixels;
 };
+

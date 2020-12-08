@@ -19,7 +19,6 @@
 */
 
 #include "resolution.h"
-#include <stdexcept>
 
 #define MAX_WIDTH 3840
 #define MAX_HEIGHT 2160
@@ -28,6 +27,11 @@ Resolution::Resolution(const Resolution& copy)
 {
     m_Width = copy.GetWidth();
     m_Height = copy.GetHeight();
+}
+
+bool Resolution::IsWithinBounds(unsigned int x, unsigned int y) const
+{
+    return x >= 0 && x < m_Width&& y >= 0 && y < m_Height;
 }
 
 void Resolution::SetWidth(unsigned int width)

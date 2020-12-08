@@ -20,27 +20,26 @@
 
 #pragma once
 
-#include "system/system.h"
+#include "system/parallel/atomicfloat.h"
 
-#define DEFAULT_WIDTH 800
-#define DEFAULT_HEIGHT 480
-
-class Resolution
+struct Pixel
 {
-public:
-    Resolution() = default;
-    ~Resolution() = default;
-    Resolution(const Resolution& copy);
+    Pixel(float r = 0, float g = 0, float b = 0)
+    {
+        m_RGB[0] = r;
+        m_RGB[1] = g;
+        m_RGB[2] = b;
+    }
 
-    inline unsigned int GetWidth() const { return m_Width; };
-    inline unsigned int GetHeight() const { return m_Height; };
-    bool IsWithinBounds(unsigned int x, unsigned int y) const;
+    Pixel(const Pixel& copy)
+    {
+        m_RGB[0].Add(copy.m_RGB[0]);
+        m_RGB[1].Add(copy.m_RGB[1]);
+        m_RGB[2].Add(copy.m_RGB[2]);
+    }
 
-    void SetWidth(unsigned int width);
-    void SetHeight(unsigned int height);
+    inline Pixel operator=(Pixel p) { return Pixel(p.m_RGB[0], p.m_RGB[1], p.m_RGB[2]); };
 
-protected:
-    unsigned int m_Width = DEFAULT_WIDTH;
-    unsigned int m_Height = DEFAULT_HEIGHT;
+    AtomicFloat m_RGB[3];
 };
 
