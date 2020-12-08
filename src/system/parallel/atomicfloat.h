@@ -38,9 +38,7 @@ inline float BitsToFloat(uint32_t ui)
 
 /*
  * std::atomic only supports Integral types as of C++17. C++20 adds floating
- * point support but RTCore as of (8/12/2020) only supports up to C++17. This
- * class implements a atomic floating point type and is redundant if/when
- * RTCore supports C++20.
+ * point support but Apple Clang as of (8/12/2020) does not support the feature.
 */
 class AtomicFloat
 {
