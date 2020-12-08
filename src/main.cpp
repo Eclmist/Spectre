@@ -19,11 +19,39 @@
 */
 
 #include <iostream>
+#include "googletest/gtest.h"
+
+void PrintUsage()
+{
+    std::cout << "Usage: rtcore [options] <One or more scene files>\n\n";
+    std::cout << "Rendering Options: \n";
+    std::cout << "   -h, --help              Display this help page\n";
+    std::cout << "Unit Tests: \n";
+    std::cout << "   --unittest              Run unit tests\n";
+    //std::cout << "For documentations, please refer to <http://docs.rtcore.io/>\n";
+
+#ifdef RTC_PLATFORM_WIN
+    system("Pause");
+#endif
+}
 
 int main(int argc, char* argv[])
 {
-    std::cout << "Test" << std::endl;
-    
+    // Process command-line arguments
+    for (int i = 1; i < argc; ++i)
+    {
+        if (!strcmp(argv[i], "--help") || !strcmp(argv[i], "-h"))
+        {
+            PrintUsage();
+            return -1;
+        }
+        else if (!strcmp(argv[i], "--unittest"))
+        {
+            testing::InitGoogleTest(&argc, argv);
+            return RUN_ALL_TESTS();
+        }
+    }
+
 #ifdef RTC_PLATFORM_WIN
     system("Pause");
 #endif

@@ -82,11 +82,14 @@ include_directories("${ETH_SOURCE_DIR}/include")
 file(GLOB_RECURSE stb include/stb/*)
 set(stb_files ${stb})
 
+file(GLOB_RECURSE gtest include/googletest/*)
+set(gtest_files ${gtest})
+
 # =========================================================================== #
 #                          SET COMPILATION TARGETS                            #
 # =========================================================================== #
 
-add_executable(${PROJECT_NAME} ${all_files})
+add_executable(${PROJECT_NAME} ${all_files} ${stb_files} ${gtest_files})
 
 # Set output name for different configs
 set_target_properties (${PROJECT_NAME} PROPERTIES RELEASE_OUTPUT_NAME "rtcore_r")
