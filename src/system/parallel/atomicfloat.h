@@ -21,6 +21,7 @@
 #pragma once
 
 #include <atomic>
+#include <string.h> // for memcpy on gcc
 
 inline uint32_t FloatToBits(float f)
 {
