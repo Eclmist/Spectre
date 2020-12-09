@@ -44,5 +44,6 @@ TEST(ExporterTestSuite, FilmCanBeExported)
     StbExporter exporter;
     Film film;
 
+    ASSERT_NO_THROW(exporter.Export(film));
 }
 

@@ -35,7 +35,6 @@ TEST(ExporterTestSuite, CanBeCreated)
 TEST(ExporterTestSuite, CanExport)
 {
     Film film;
-    film.SetResolution(Resolution());
     ExporterImplStub exporter;
     ASSERT_NO_THROW(exporter.Export(film));
 }
