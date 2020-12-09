@@ -25,6 +25,8 @@
 #include <vector>
 
 #define DEFAULT_OUTPUT_NAME "RTCore_Output"
+#define DEFAULT_OUTPUT_TYPE ".png"
+#define NUM_COLOR_CHANNELS 3L
 
 StbExporter::StbExporter()
     : m_OutputFileName(DEFAULT_OUTPUT_NAME)
@@ -33,21 +35,36 @@ StbExporter::StbExporter()
 
 void StbExporter::Export(const Film& film) const 
 {
-    // TEMP CODE
-    std::vector<char> data(800 * 460 * 3);
+    std::vector<char> data;
+    ExtractPixelData(film, data);
+    stbi_write_png(
+        (m_OutputFileName + DEFAULT_OUTPUT_TYPE).c_str(),
+        film.GetResolution().GetWidth(),
+        film.GetResolution().GetHeight(),
+        NUM_COLOR_CHANNELS,
+        data.data(),
+        NUM_COLOR_CHANNELS * film.GetResolution().GetWidth());
+}
+
+void StbExporter::ExtractPixelData(const Film& film, std::vector<char>& data) const
+{
+    data.resize(GetBufferSize(film));
+    Resolution resolution = film.GetResolution();
     int iterator = 0;
-
-    for (int y = 0; y < 460; ++y)
-        for (int x = 0; x < 800; ++x)
+    for (unsigned int y = 0; y < resolution.GetHeight(); ++y)
+    {
+        for (unsigned int x = 0; x < resolution.GetWidth(); ++x)
         {
-            data[iterator++] = (x + 1) / 800.0f * 255.0f;
-            data[iterator++] = (1.0 - ((y + 1) / 460.0f)) * 255.0f;
-            data[iterator++] = 255.0f;
+            Pixel p = film.GetPixel(x, y);
+            data[iterator++] = (char)(p.m_RGB[0] * 255.0);
+            data[iterator++] = (char)(p.m_RGB[1] * 255.0);
+            data[iterator++] = (char)(p.m_RGB[2] * 255.0);
         }
+    }
+}
 
-    std::string outputWithFileExtension = m_OutputFileName + ".png";
-    stbi_write_png(outputWithFileExtension.c_str(), 800, 460, 3, data.data(), 3 * 800);
-    system(m_OutputFileName.c_str());
-    // TEMP CODE
+int StbExporter::GetBufferSize(const Film& film) const
+{
+    return film.GetNumPixels() * NUM_COLOR_CHANNELS;
 }
 

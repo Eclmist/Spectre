@@ -31,6 +31,7 @@ public:
 
     inline const Resolution& GetResolution() const { return m_Resolution; }
     inline int GetIndex(unsigned int x, unsigned int y) const { return x + y * m_Resolution.GetWidth(); }
+    inline int GetNumPixels() const { return m_Resolution.GetWidth() * m_Resolution.GetHeight(); }
     Pixel GetPixel(unsigned int x, unsigned int y) const;
 
     void SetResolution(const Resolution& resolution);

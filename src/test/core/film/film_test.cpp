@@ -77,3 +77,10 @@ TEST(FilmTestSuite, CanSetPixelValue)
     EXPECT_FLOAT_EQ(p.m_RGB[2], 0.4f);
 }
 
+TEST(FilmTestSuite, CanGetTotalPixelCount)
+{
+    Film film;
+    film.SetResolution(Resolution640X360());
+    ASSERT_EQ(film.GetNumPixels(), 640 * 360);
+}
+

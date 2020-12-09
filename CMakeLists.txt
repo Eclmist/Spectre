@@ -76,7 +76,7 @@ if(WIN32)
     # Enable multi-threaded compilation on Windows
     include(ProcessorCount)
     ProcessorCount(N)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP${N}")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP${N} /wd26451")
 elseif(APPLE)
     target_compile_definitions(${PROJECT_NAME} PUBLIC RTC_PLATFORM_MAC)
     set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -pthread -O3")

@@ -35,5 +35,9 @@ public:
     inline std::string GetOutputName() const { return m_OutputFileName; }
 
 private:
+    void ExtractPixelData(const Film& film, std::vector<char>& data) const;
+    int GetBufferSize(const Film& film) const;
+
+private:
     std::string m_OutputFileName;
 };
