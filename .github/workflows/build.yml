@@ -40,6 +40,9 @@ jobs:
         run: |
              cmake -Bbuild .
              cmake --build ./build --config Release
+        env: #gcc8 is required since we use <filesystem>
+         CC:   gcc-8
+         CXX:  g++-8
       - name: Run Unit Tests
         run: |
              ./bin/RTCore --unittest
