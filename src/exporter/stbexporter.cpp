@@ -45,7 +45,8 @@ void StbExporter::Export(const Film& film) const
             data[iterator++] = 255.0f;
         }
 
-    stbi_write_png(m_OutputFileName.c_str(), 800, 460, 3, data.data(), 3 * 800);
+    std::string outputWithFileExtension = m_OutputFileName + ".png";
+    stbi_write_png(outputWithFileExtension.c_str(), 800, 460, 3, data.data(), 3 * 800);
     system(m_OutputFileName.c_str());
     // TEMP CODE
 }

@@ -20,6 +20,7 @@
 
 #include "googletest/gtest.h"
 #include "exporter/stbexporter.h"
+#include <filesystem>
 
 TEST(StbExporterTestSuite, CanBeCreated)
 {
@@ -43,7 +44,7 @@ TEST(ExporterTestSuite, FilmCanBeExported)
 {
     StbExporter exporter;
     Film film;
-
     ASSERT_NO_THROW(exporter.Export(film));
+    EXPECT_TRUE(std::filesystem::exists(exporter.GetOutputName() + ".png"));
 }
 
