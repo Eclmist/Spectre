@@ -20,8 +20,6 @@
 
 #include "googletest/gtest.h"
 #include "exporter/exporter.h"
-#include "core/film/film.h"
-#include "core/film/resolution.h"
 
 class ExporterImplStub : public Exporter
 {

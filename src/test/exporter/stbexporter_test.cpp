@@ -26,9 +26,23 @@ TEST(StbExporterTestSuite, CanBeCreated)
     ASSERT_NO_THROW(StbExporter exporter);
 }
 
-TEST(ExporterTestSuite, CanGetOutputName)
+TEST(ExporterTestSuite, HasDefaultOutputName)
 {
     StbExporter exporter;
-    ASSERT_NO_THROW(exporter.GetOutputName());
+    EXPECT_EQ(exporter.GetOutputName(), "RTCore_Output");
+}
+
+TEST(ExporterTestSuite, CanSetOutputName)
+{
+    StbExporter exporter;
+    exporter.SetOutputName("Output");
+    EXPECT_EQ(exporter.GetOutputName(), "Output");
+}
+
+TEST(ExporterTestSuite, FilmCanBeExported)
+{
+    StbExporter exporter;
+    Film film;
+
 }
 

@@ -21,7 +21,6 @@
 #pragma once
 
 #include "resolution.h"
-#include "standardresolution.h"
 #include "pixel.h"
 
 class Film
