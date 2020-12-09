@@ -22,25 +22,22 @@
 
 #include "system/system.h"
 
-#define DEFAULT_WIDTH 800
-#define DEFAULT_HEIGHT 480
-
 class Resolution
 {
 public:
-    Resolution() = default;
+    Resolution();
     ~Resolution() = default;
     Resolution(const Resolution& copy);
 
-    inline unsigned int GetWidth() const { return m_Width; };
-    inline unsigned int GetHeight() const { return m_Height; };
+    inline unsigned int GetWidth() const { return m_Width; }
+    inline unsigned int GetHeight() const { return m_Height; }
     bool IsWithinBounds(unsigned int x, unsigned int y) const;
 
     void SetWidth(unsigned int width);
     void SetHeight(unsigned int height);
 
 protected:
-    unsigned int m_Width = DEFAULT_WIDTH;
-    unsigned int m_Height = DEFAULT_HEIGHT;
+    unsigned int m_Width;
+    unsigned int m_Height;
 };
 

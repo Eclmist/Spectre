@@ -18,19 +18,17 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#pragma once
+#include "googletest/gtest.h"
+#include "exporter/stbexporter.h"
 
-#include "exporter.h"
-#include <string>
-
-class ImageExporter : public Exporter
+TEST(StbExporterTestSuite, CanBeCreated)
 {
-public:
-    ImageExporter() = default;
-    ~ImageExporter() = default;
+    ASSERT_NO_THROW(StbExporter exporter);
+}
 
-    void Export() const override;
+TEST(ExporterTestSuite, CanGetOutputName)
+{
+    StbExporter exporter;
+    ASSERT_NO_THROW(exporter.GetOutputName());
+}
 
-private:
-    std::string m_FileName = "RTCore_Output.png";
-};

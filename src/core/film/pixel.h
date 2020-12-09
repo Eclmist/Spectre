@@ -38,7 +38,7 @@ struct Pixel
         m_RGB[2].Add(copy.m_RGB[2]);
     }
 
-    inline Pixel operator=(Pixel p) { return Pixel(p.m_RGB[0], p.m_RGB[1], p.m_RGB[2]); };
+    inline Pixel operator=(Pixel p) { return Pixel(p.m_RGB[0], p.m_RGB[1], p.m_RGB[2]); }
 
     AtomicFloat m_RGB[3];
 };

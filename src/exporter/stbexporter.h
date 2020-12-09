@@ -18,28 +18,22 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "imageexporter.h"
+#pragma once
 
-#define STB_IMAGE_WRITE_IMPLEMENTATION
-#include "stb/stb_image_write.h"
-#include <vector>
+#include "exporter.h"
+#include <string>
 
-void ImageExporter::Export() const
+class StbExporter : public Exporter
 {
-    // TEMP CODE
-    std::vector<char> data(800 * 460 * 3);
-    int iterator = 0;
+public:
+    StbExporter();
+    ~StbExporter() = default;
 
-    for (int y = 0; y < 460; ++y)
-        for (int x = 0; x < 800; ++x)
-        {
-            data[iterator++] = (x + 1) / 800.0f * 255.0f;
-            data[iterator++] = (1.0 - ((y + 1) / 460.0f)) * 255.0f;
-            data[iterator++] = 255.0f;
-        }
+    void Export(const Film& film) const override;
 
-    stbi_write_png(m_FileName.c_str(), 800, 460, 3, data.data(), 3 * 800);
-    system(m_FileName.c_str());
-    // TEMP CODE
-}
+    inline void SetOutputName(const std::string& name) { m_OutputFileName = name; }
+    inline std::string GetOutputName() const { return m_OutputFileName; }
 
+private:
+    std::string m_OutputFileName;
+};

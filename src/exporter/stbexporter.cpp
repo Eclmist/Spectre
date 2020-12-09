@@ -18,15 +18,35 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#pragma once
+#include "stbexporter.h"
 
-#include "core/film/film.h"
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "stb/stb_image_write.h"
+#include <vector>
 
-class Exporter
+#define DEFAULT_OUTPUT_NAME "RTCore_Output"
+
+StbExporter::StbExporter()
+    : m_OutputFileName(DEFAULT_OUTPUT_NAME)
 {
-public:
-    Exporter() = default;
-    ~Exporter() = default;
+}
 
-    virtual void Export(const Film& film) const = 0;
-};
+void StbExporter::Export(const Film& film) const 
+{
+    // TEMP CODE
+    std::vector<char> data(800 * 460 * 3);
+    int iterator = 0;
+
+    for (int y = 0; y < 460; ++y)
+        for (int x = 0; x < 800; ++x)
+        {
+            data[iterator++] = (x + 1) / 800.0f * 255.0f;
+            data[iterator++] = (1.0 - ((y + 1) / 460.0f)) * 255.0f;
+            data[iterator++] = 255.0f;
+        }
+
+    stbi_write_png(m_OutputFileName.c_str(), 800, 460, 3, data.data(), 3 * 800);
+    system(m_OutputFileName.c_str());
+    // TEMP CODE
+}
+

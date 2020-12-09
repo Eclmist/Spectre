@@ -20,8 +20,16 @@
 
 #include "resolution.h"
 
+#define DEFAULT_WIDTH 800
+#define DEFAULT_HEIGHT 480
 #define MAX_WIDTH 3840
 #define MAX_HEIGHT 2160
+
+Resolution::Resolution()
+    : m_Width(DEFAULT_WIDTH)
+    , m_Height(DEFAULT_HEIGHT)
+{
+}
 
 Resolution::Resolution(const Resolution& copy)
 {
@@ -31,7 +39,7 @@ Resolution::Resolution(const Resolution& copy)
 
 bool Resolution::IsWithinBounds(unsigned int x, unsigned int y) const
 {
-    return x >= 0 && x < m_Width&& y >= 0 && y < m_Height;
+    return x >= 0 && x < m_Width && y >= 0 && y < m_Height;
 }
 
 void Resolution::SetWidth(unsigned int width)

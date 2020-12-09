@@ -29,7 +29,7 @@ public:
     {
         m_Width = 640;
         m_Height = 360;
-    };
+    }
 };
 
 class Resolution800X480: public Resolution
@@ -39,7 +39,7 @@ public:
     {
         m_Width = 800;
         m_Height = 480;
-    };
+    }
 };
 
 class Resolution800X600 : public Resolution
@@ -49,7 +49,7 @@ public:
     {
         m_Width = 800;
         m_Height = 600;
-    };
+    }
 };
 
 class Resolution1024X768 : public Resolution
@@ -59,7 +59,7 @@ public:
     {
         m_Width = 1024;
         m_Height = 768;
-    };
+    }
 };
 
 class Resolution1280X720 : public Resolution
@@ -69,7 +69,7 @@ public:
     {
         m_Width = 1280;
         m_Height = 720;
-    };
+    }
 };
 
 class Resolution1366X768 : public Resolution
@@ -79,7 +79,7 @@ public:
     {
         m_Width = 1366;
         m_Height = 768;
-    };
+    }
 };
 
 class Resolution1600X900 : public Resolution
@@ -89,7 +89,7 @@ public:
     {
         m_Width = 1600;
         m_Height = 900;
-    };
+    }
 };
 class Resolution1920X1080 : public Resolution
 {
@@ -98,7 +98,7 @@ public:
     {
         m_Width = 1920;
         m_Height = 1080;
-    };
+    }
 };
 
 class Resolution2560X1440 : public Resolution
@@ -108,7 +108,7 @@ public:
     {
         m_Width = 2560;
         m_Height = 1440;
-    };
+    }
 };
 
 class Resolution3840X2160 : public Resolution
@@ -118,6 +118,6 @@ public:
     {
         m_Width = 3840;
         m_Height = 2160;
-    };
+    }
 };
 
