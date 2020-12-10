@@ -27,12 +27,12 @@ public:
     void Export(const Film& film) const override {};
 };
 
-TEST(ExporterTestSuite, CanBeCreated)
+TEST(ExporterTest, CanBeCreated)
 {
     ASSERT_NO_THROW(ExporterImplStub exporter);
 }
 
-TEST(ExporterTestSuite, CanExport)
+TEST(ExporterTest, CanExport)
 {
     Film film;
     ExporterImplStub exporter;

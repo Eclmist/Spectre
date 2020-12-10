@@ -22,18 +22,18 @@
 #include "core/film/film.h"
 #include "core/film/standardresolution.h"
 
-TEST(FilmTestSuite, CanBeCreated)
+TEST(FilmTest, CanBeCreated)
 {
     ASSERT_NO_THROW(Film film);
 }
 
-TEST(FilmTestSuite, CanGetResolution)
+TEST(FilmTest, CanGetResolution)
 {
     Film film;
     ASSERT_NO_THROW(film.GetResolution());
 }
 
-TEST(FilmTestSuite, CanSetResolution)
+TEST(FilmTest, CanSetResolution)
 {
     Film film;
     ASSERT_NO_THROW(film.SetResolution(Resolution1024X768()));
@@ -42,7 +42,7 @@ TEST(FilmTestSuite, CanSetResolution)
     EXPECT_EQ(res.GetHeight(), 768);
 }
 
-TEST(FilmTestSuite, CanGetPixelValue)
+TEST(FilmTest, CanGetPixelValue)
 {
     Film film;
     Pixel p = film.GetPixel(50, 50);
@@ -51,7 +51,7 @@ TEST(FilmTestSuite, CanGetPixelValue)
     EXPECT_FLOAT_EQ(p.m_RGB[2], 0.0f);
 }
 
-TEST(FilmTestSuite, ThrowOnInvalidPixelPosition)
+TEST(FilmTest, ThrowOnInvalidPixelPosition)
 {
     Film film;
     ASSERT_NO_THROW(film.GetPixel(0, 0));
@@ -60,14 +60,14 @@ TEST(FilmTestSuite, ThrowOnInvalidPixelPosition)
     ASSERT_THROW(film.GetPixel(-1, -1), std::invalid_argument);
 }
 
-TEST(FilmTestSuite, CanGetPixelValueAfterResize)
+TEST(FilmTest, CanGetPixelValueAfterResize)
 {
     Film film;
     film.SetResolution(Resolution800X600());
     ASSERT_NO_THROW(film.GetPixel(799, 599));
 }
 
-TEST(FilmTestSuite, CanSetPixelValue)
+TEST(FilmTest, CanSetPixelValue)
 {
     Film film;
     ASSERT_NO_THROW(film.SetPixel(50, 50, 0.2f, 0.3f, 0.4f));
@@ -77,7 +77,7 @@ TEST(FilmTestSuite, CanSetPixelValue)
     EXPECT_FLOAT_EQ(p.m_RGB[2], 0.4f);
 }
 
-TEST(FilmTestSuite, CanGetTotalPixelCount)
+TEST(FilmTest, CanGetTotalPixelCount)
 {
     Film film;
     film.SetResolution(Resolution640X360());

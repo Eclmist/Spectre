@@ -22,25 +22,25 @@
 #include "exporter/stbexporter.h"
 #include <filesystem>
 
-TEST(StbExporterTestSuite, CanBeCreated)
+TEST(StbExporterTest, CanBeCreated)
 {
     ASSERT_NO_THROW(StbExporter exporter);
 }
 
-TEST(ExporterTestSuite, HasDefaultOutputName)
+TEST(ExporterTest, HasDefaultOutputName)
 {
     StbExporter exporter;
     EXPECT_EQ(exporter.GetOutputName(), "RTCore_Output");
 }
 
-TEST(ExporterTestSuite, CanSetOutputName)
+TEST(ExporterTest, CanSetOutputName)
 {
     StbExporter exporter;
     exporter.SetOutputName("Output");
     EXPECT_EQ(exporter.GetOutputName(), "Output");
 }
 
-TEST(ExporterTestSuite, FilmCanBeExported)
+TEST(ExporterTest, FilmCanBeExported)
 {
     StbExporter exporter;
     Film film;

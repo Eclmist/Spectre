@@ -21,19 +21,19 @@
 #include "googletest/gtest.h"
 #include "core/film/standardresolution.h"
 
-TEST(ResolutionTestSuite, CanBeCreated)
+TEST(ResolutionTest, CanBeCreated)
 {
     ASSERT_NO_THROW(Resolution res);
 }
 
-TEST(ResolutionTestSuite, HasValidDefaults)
+TEST(ResolutionTest, HasValidDefaults)
 {
     Resolution res;
     EXPECT_EQ(res.GetWidth(), 800);
     EXPECT_EQ(res.GetHeight(), 480);
 }
 
-TEST(ResolutionTestSuite, WidthHeightCanBeSet)
+TEST(ResolutionTest, WidthHeightCanBeSet)
 {
     Resolution res;
     res.SetWidth(500);
@@ -42,7 +42,7 @@ TEST(ResolutionTestSuite, WidthHeightCanBeSet)
     EXPECT_EQ(res.GetHeight(), 500);
 }
 
-TEST(ResolutionTestSuite, ThrowOnInvalidWidthHeight)
+TEST(ResolutionTest, ThrowOnInvalidWidthHeight)
 {
     Resolution res;
     EXPECT_NO_THROW(res.SetWidth(1));
@@ -55,7 +55,7 @@ TEST(ResolutionTestSuite, ThrowOnInvalidWidthHeight)
     EXPECT_THROW(res.SetHeight(0), std::invalid_argument);
 }
 
-TEST(ResolutionTestSuite, CanCopyWidthHeight)
+TEST(ResolutionTest, CanCopyWidthHeight)
 {
     Resolution res;
     res.SetWidth(321);
@@ -65,7 +65,7 @@ TEST(ResolutionTestSuite, CanCopyWidthHeight)
     EXPECT_EQ(res2.GetHeight(), res.GetHeight());
 }
 
-TEST(ResolutionTestSuite, HaveCommonWidthHeightPresets)
+TEST(ResolutionTest, HaveCommonWidthHeightPresets)
 {
     Resolution640X360 res640X360;
     EXPECT_EQ(res640X360.GetWidth(), 640);
@@ -108,7 +108,7 @@ TEST(ResolutionTestSuite, HaveCommonWidthHeightPresets)
     EXPECT_EQ(res3840X2160.GetHeight(), 2160);
 }
 
-TEST(ResolutionTestSuite, CanCheckIfInBounds)
+TEST(ResolutionTest, CanCheckIfInBounds)
 {
     Resolution640X360 res;
     EXPECT_TRUE(res.IsWithinBounds(0, 0));

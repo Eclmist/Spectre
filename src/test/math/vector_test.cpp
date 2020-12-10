@@ -21,12 +21,12 @@
 #include "googletest/gtest.h"
 #include "math/vector.h"
 
-TEST(VectorTestSuite, CanBeCreated)
+TEST(VectorTest, CanBeCreated)
 {
     ASSERT_NO_THROW(Vector4 v);
 }
 
-TEST(VectorTestSuite, DefaultsToZeroVector)
+TEST(VectorTest, DefaultsToZeroVector)
 {
     Vector4 v;
     EXPECT_DOUBLE_EQ(v.x, 0.0);
@@ -35,7 +35,7 @@ TEST(VectorTestSuite, DefaultsToZeroVector)
     EXPECT_DOUBLE_EQ(v.w, 0.0);
 }
 
-TEST(VectorTestSuite, CanBeCreatedScalar)
+TEST(VectorTest, CanBeCreatedScalar)
 {
     Vector4 v(22.0);
     EXPECT_DOUBLE_EQ(v.x, 22.0);
@@ -44,7 +44,7 @@ TEST(VectorTestSuite, CanBeCreatedScalar)
     EXPECT_DOUBLE_EQ(v.w, 22.0);
 }
 
-TEST(VectorTestSuite, CanBeCreatedPerComponent)
+TEST(VectorTest, CanBeCreatedPerComponent)
 {
     Vector4 v(1.0, 2.0, 3.0, 4.0);
     EXPECT_DOUBLE_EQ(v.x, 1.0);
