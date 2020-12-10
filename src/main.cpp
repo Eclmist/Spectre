@@ -29,13 +29,9 @@ void PrintUsage()
     std::cout << "Unit Tests: \n";
     std::cout << "   --unittest              Run unit tests\n";
     //std::cout << "For documentations, please refer to <http://docs.rtcore.io/>\n";
-
-#ifdef RTC_PLATFORM_WIN
-    system("Pause");
-#endif
 }
 
-int main(int argc, char* argv[])
+void ProcessArgs(int argc, char* argv[])
 {
     // Process command-line arguments
     for (int i = 1; i < argc; ++i)
@@ -43,18 +39,18 @@ int main(int argc, char* argv[])
         if (!strcmp(argv[i], "--help") || !strcmp(argv[i], "-h"))
         {
             PrintUsage();
-            return EXIT_FAILURE;
+            exit(EXIT_FAILURE);
         }
         else if (!strcmp(argv[i], "--unittest"))
         {
             testing::InitGoogleTest(&argc, argv);
-            return RUN_ALL_TESTS();
+            RUN_ALL_TESTS();
         }
     }
+}
 
-#ifdef RTC_PLATFORM_WIN
-    system("Pause");
-#endif
-
+int main(int argc, char* argv[])
+{
+    ProcessArgs(argc, argv);
     return EXIT_SUCCESS;
 }
