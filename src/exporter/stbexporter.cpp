@@ -35,20 +35,18 @@ StbExporter::StbExporter()
 
 void StbExporter::Export(const Film& film) const 
 {
-    std::vector<char> data;
-    ExtractPixelData(film, data);
     stbi_write_png(
         (m_OutputFileName + DEFAULT_OUTPUT_TYPE).c_str(),
         film.GetResolution().GetWidth(),
         film.GetResolution().GetHeight(),
         NUM_COLOR_CHANNELS,
-        data.data(),
+        ExtractPixelData(film).data(),
         NUM_COLOR_CHANNELS * film.GetResolution().GetWidth());
 }
 
-void StbExporter::ExtractPixelData(const Film& film, std::vector<char>& data) const
+std::vector<char> StbExporter::ExtractPixelData(const Film& film) const
 {
-    data.resize(GetBufferSize(film));
+    std::vector<char> data(GetBufferSize(film));
     Resolution resolution = film.GetResolution();
     int iterator = 0;
     for (unsigned int y = 0; y < resolution.GetHeight(); ++y)
@@ -61,6 +59,8 @@ void StbExporter::ExtractPixelData(const Film& film, std::vector<char>& data) co
             data[iterator++] = (char)(p.m_RGB[2] * 255.0);
         }
     }
+
+    return data;
 }
 
 int StbExporter::GetBufferSize(const Film& film) const
