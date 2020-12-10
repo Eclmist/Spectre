@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include <immintrin.h>
+
 class Vector4
 {
 public:
@@ -28,7 +30,23 @@ public:
     Vector4(double x, double y, double z, double w);
     ~Vector4() = default;
 
-public:
-    double x, y, z, w;
+    Vector4 operator+(const Vector4& b);
+    void operator+=(const Vector4& b);
+
+    double x() const;
+    double y() const;
+    double z() const;
+    double w() const;
+
+    inline void x(double _x) { m_Data = _mm256_set_pd(_x, y(), z(), w()); }
+    inline void y(double _y) { m_Data = _mm256_set_pd(x(), _y, z(), w()); }
+    inline void z(double _z) { m_Data = _mm256_set_pd(x(), y(), _z, w()); }
+    inline void w(double _w) { m_Data = _mm256_set_pd(x(), y(), z(), _w); }
+
+private:
+    Vector4(__m256d data);
+
+private:
+    __m256d m_Data;
 };
 

@@ -38,6 +38,9 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(RTC_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
+# Enable AVX2 SIMD intrinsics
+add_definitions(-DAVX_ENABLED)
+
 # =========================================================================== #
 #                        ADD SOURCE FILES TO PROJECT                          #
 # =========================================================================== #
@@ -76,13 +79,22 @@ if(WIN32)
     # Enable multi-threaded compilation on Windows
     include(ProcessorCount)
     ProcessorCount(N)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP${N} /wd26451")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP${N}")
+    # Ignore C26451 warnings because they are annoying
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd26451")
+    # Enable AVX2 SIMD Intrinsics
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /arch:AVX2" )
 elseif(APPLE)
     target_compile_definitions(${PROJECT_NAME} PUBLIC RTC_PLATFORM_MAC)
-    set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -pthread -O3")
+
+    set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -pthread")
+    # Enable AVX2 SIMD Intrinsics
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mavx2")
 elseif(UNIX)
     target_compile_definitions(${PROJECT_NAME} PUBLIC RTC_PLATFORM_LINUX)
-    set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -pthread -O3")
+    set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -pthread")
+    # Enable AVX2 SIMD Intrinsics
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mavx2")
 endif()
 
 # =========================================================================== #
