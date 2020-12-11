@@ -53,6 +53,20 @@ TEST(VectorTest, CanBeCreatedPerComponent)
     EXPECT_DOUBLE_EQ(v.w(), 4.0);
 }
 
+TEST(VectorTest, CanBeSetPerComponents)
+{
+    Vector4 v;
+    v.x(1.0);
+    v.y(2.0);
+    v.z(3.0);
+    v.w(4.0);
+
+    EXPECT_DOUBLE_EQ(v.x(), 1.0);
+    EXPECT_DOUBLE_EQ(v.y(), 2.0);
+    EXPECT_DOUBLE_EQ(v.z(), 3.0);
+    EXPECT_DOUBLE_EQ(v.w(), 4.0);
+}
+
 TEST(VectorTest, CanBeCopyConstructed)
 {
     Vector4 a(22.0);
@@ -103,6 +117,50 @@ TEST(VectorTest, CanBeAddAssigned)
     EXPECT_DOUBLE_EQ(b.y(), 5.0);
     EXPECT_DOUBLE_EQ(b.z(), 7.0);
     EXPECT_DOUBLE_EQ(b.w(), 9.0);
+}
+
+TEST(VectorTest, CanBeSubtracted)
+{
+    Vector4 a(1.0, 2.0, 3.0, 4.0);
+    Vector4 b(2.0, 3.0, 4.0, 5.0);
+
+    Vector4 c = a - b;
+    EXPECT_DOUBLE_EQ(c.x(), -1.0);
+    EXPECT_DOUBLE_EQ(c.y(), -1.0);
+    EXPECT_DOUBLE_EQ(c.z(), -1.0);
+    EXPECT_DOUBLE_EQ(c.w(), -1.0);
+}
+
+TEST(VectorTest, CanBeSubtractAssigned)
+{
+    Vector4 a(1.0, 2.0, 3.0, 4.0);
+    Vector4 b(2.0, 3.0, 4.0, 5.0);
+    b -= a;
+
+    EXPECT_DOUBLE_EQ(b.x(), 1.0);
+    EXPECT_DOUBLE_EQ(b.y(), 1.0);
+    EXPECT_DOUBLE_EQ(b.z(), 1.0);
+    EXPECT_DOUBLE_EQ(b.w(), 1.0);
+}
+
+TEST(VectorTest, CanBeNegated)
+{
+    Vector4 a(-1.0);
+    Vector4 b = -a;
+    EXPECT_DOUBLE_EQ(b.x(), 1.0);
+    EXPECT_DOUBLE_EQ(b.y(), 1.0);
+    EXPECT_DOUBLE_EQ(b.z(), 1.0);
+    EXPECT_DOUBLE_EQ(b.w(), 1.0);
+}
+
+TEST(VectorTest, DoesNotChangeWithPveSign)
+{
+    Vector4 a(-1.0);
+    Vector4 b = +a;
+    EXPECT_DOUBLE_EQ(b.x(), -1.0);
+    EXPECT_DOUBLE_EQ(b.y(), -1.0);
+    EXPECT_DOUBLE_EQ(b.z(), -1.0);
+    EXPECT_DOUBLE_EQ(b.w(), -1.0);
 }
 
 

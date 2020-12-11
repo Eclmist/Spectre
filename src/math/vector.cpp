@@ -45,44 +45,28 @@ Vector4 Vector4::operator+(const Vector4& b)
     return Vector4(_mm256_add_pd(m_Data, b.m_Data));
 }
 
+Vector4 Vector4::operator-(const Vector4& b)
+{
+    return Vector4(_mm256_sub_pd(m_Data, b.m_Data));
+}
+
 void Vector4::operator+=(const Vector4& b)
 {
     m_Data = _mm256_add_pd(m_Data, b.m_Data);
 }
 
-double Vector4::x() const
+void Vector4::operator-=(const Vector4& b)
 {
-#ifdef RTC_PLATFORM_WIN
-    return m_Data.m256d_f64[3];
-#else
-    return m_Data[3];
-#endif
+    m_Data = _mm256_sub_pd(m_Data, b.m_Data);
 }
 
-double Vector4::y() const
+const Vector4 Vector4::operator+()
 {
-#ifdef RTC_PLATFORM_WIN
-    return m_Data.m256d_f64[2];
-#else
-    return m_Data[2];
-#endif
-
+    return Vector4(m_Data);
 }
 
-double Vector4::z() const
+const Vector4 Vector4::operator-()
 {
-#ifdef RTC_PLATFORM_WIN
-    return m_Data.m256d_f64[1];
-#else
-    return m_Data[1];
-#endif
+    return Vector4(_mm256_mul_pd(m_Data, _mm256_set1_pd(-1.0)));
 }
 
-double Vector4::w() const
-{
-#ifdef RTC_PLATFORM_WIN
-    return m_Data.m256d_f64[0];
-#else
-    return m_Data[0];
-#endif
-}

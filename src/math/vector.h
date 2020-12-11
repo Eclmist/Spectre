@@ -21,6 +21,7 @@
 #pragma once
 
 #include <immintrin.h>
+#include "system/platform/platformutils.h"
 
 class Vector4
 {
@@ -31,17 +32,21 @@ public:
     ~Vector4() = default;
 
     Vector4 operator+(const Vector4& b);
+    Vector4 operator-(const Vector4& b);
     void operator+=(const Vector4& b);
+    void operator-=(const Vector4& b);
+    const Vector4 operator+();
+    const Vector4 operator-();
 
-    double x() const;
-    double y() const;
-    double z() const;
-    double w() const;
+    inline double x() const { return RTC_WIN32_ONLY(m_Data.m256d_f64[3], m_Data[3]); }
+    inline double y() const { return RTC_WIN32_ONLY(m_Data.m256d_f64[2], m_Data[2]); }
+    inline double z() const { return RTC_WIN32_ONLY(m_Data.m256d_f64[1], m_Data[1]); }
+    inline double w() const { return RTC_WIN32_ONLY(m_Data.m256d_f64[0], m_Data[0]); }
 
-    inline void x(double _x) { m_Data = _mm256_set_pd(_x, y(), z(), w()); }
-    inline void y(double _y) { m_Data = _mm256_set_pd(x(), _y, z(), w()); }
-    inline void z(double _z) { m_Data = _mm256_set_pd(x(), y(), _z, w()); }
-    inline void w(double _w) { m_Data = _mm256_set_pd(x(), y(), z(), _w); }
+    inline void x(double x) { RTC_WIN32_ONLY(m_Data.m256d_f64[3], m_Data[3]) = x; }
+    inline void y(double y) { RTC_WIN32_ONLY(m_Data.m256d_f64[2], m_Data[2]) = y; }
+    inline void z(double z) { RTC_WIN32_ONLY(m_Data.m256d_f64[1], m_Data[1]) = z; }
+    inline void w(double w) { RTC_WIN32_ONLY(m_Data.m256d_f64[0], m_Data[0]) = w; }
 
 private:
     Vector4(__m256d data);
