@@ -19,43 +19,43 @@
 */
 
 #include "googletest/gtest.h"
-#include "math/vector.h"
+#include "math/simd/avxvector.h"
 
-TEST(VectorTest, CanBeCreated)
+TEST(AvxVectorTest, CanBeCreated)
 {
-    ASSERT_NO_THROW(Vector4 v);
+    ASSERT_NO_THROW(AvxVector v);
 }
 
-TEST(VectorTest, DefaultsToZeroVector)
+TEST(AvxVectorTest, DefaultsToZeroVector)
 {
-    Vector4 v;
+    AvxVector v;
     EXPECT_DOUBLE_EQ(v.x(), 0.0);
     EXPECT_DOUBLE_EQ(v.y(), 0.0);
     EXPECT_DOUBLE_EQ(v.z(), 0.0);
     EXPECT_DOUBLE_EQ(v.w(), 0.0);
 }
 
-TEST(VectorTest, CanBeCreatedScalar)
+TEST(AvxVectorTest, CanBeCreatedScalar)
 {
-    Vector4 v(22.0);
+    AvxVector v(22.0);
     EXPECT_DOUBLE_EQ(v.x(), 22.0);
     EXPECT_DOUBLE_EQ(v.y(), 22.0);
     EXPECT_DOUBLE_EQ(v.z(), 22.0);
     EXPECT_DOUBLE_EQ(v.w(), 22.0);
 }
 
-TEST(VectorTest, CanBeCreatedPerComponent)
+TEST(AvxVectorTest, CanBeCreatedPerComponent)
 {
-    Vector4 v(1.0, 2.0, 3.0, 4.0);
+    AvxVector v(1.0, 2.0, 3.0, 4.0);
     EXPECT_DOUBLE_EQ(v.x(), 1.0);
     EXPECT_DOUBLE_EQ(v.y(), 2.0);
     EXPECT_DOUBLE_EQ(v.z(), 3.0);
     EXPECT_DOUBLE_EQ(v.w(), 4.0);
 }
 
-TEST(VectorTest, CanBeSetPerComponents)
+TEST(AvxVectorTest, CanBeSetPerComponents)
 {
-    Vector4 v;
+    AvxVector v;
     v.x(1.0);
     v.y(2.0);
     v.z(3.0);
@@ -67,9 +67,9 @@ TEST(VectorTest, CanBeSetPerComponents)
     EXPECT_DOUBLE_EQ(v.w(), 4.0);
 }
 
-TEST(VectorTest, CanBeAccessedPerComponent)
+TEST(AvxVectorTest, CanBeAccessedPerComponent)
 {
-    Vector4 v(1.0, 2.0, 3.0, 4.0);
+    AvxVector v(1.0, 2.0, 3.0, 4.0);
 
     EXPECT_DOUBLE_EQ(v.x(), 1.0);
     EXPECT_DOUBLE_EQ(v.y(), 2.0);
@@ -81,10 +81,10 @@ TEST(VectorTest, CanBeAccessedPerComponent)
     EXPECT_DOUBLE_EQ(v[3], 4.0);
 }
 
-TEST(VectorTest, CanBeCopyConstructed)
+TEST(AvxVectorTest, CanBeCopyConstructed)
 {
-    Vector4 a(22.0);
-    Vector4 b(a);
+    AvxVector a(22.0);
+    AvxVector b(a);
 
     EXPECT_DOUBLE_EQ(b.x(), 22.0);
     EXPECT_DOUBLE_EQ(b.y(), 22.0);
@@ -95,10 +95,10 @@ TEST(VectorTest, CanBeCopyConstructed)
     EXPECT_DOUBLE_EQ(a.x(), 22.0);
 }
 
-TEST(VectorTest, CanBeCopied)
+TEST(AvxVectorTest, CanBeCopied)
 {
-    Vector4 a(22.0);
-    Vector4 b = a;
+    AvxVector a(22.0);
+    AvxVector b = a;
 
     EXPECT_DOUBLE_EQ(b.x(), 22.0);
     EXPECT_DOUBLE_EQ(b.y(), 22.0);
@@ -109,22 +109,22 @@ TEST(VectorTest, CanBeCopied)
     EXPECT_DOUBLE_EQ(a.x(), 22.0);
 }
 
-TEST(VectorTest, CanBeAdded)
+TEST(AvxVectorTest, CanBeAdded)
 {
-    Vector4 a(1.0, 2.0, 3.0, 4.0);
-    Vector4 b(2.0, 3.0, 4.0, 5.0);
+    AvxVector a(1.0, 2.0, 3.0, 4.0);
+    AvxVector b(2.0, 3.0, 4.0, 5.0);
 
-    Vector4 c = a + b;
+    AvxVector c = a + b;
     EXPECT_DOUBLE_EQ(c.x(), 3.0);
     EXPECT_DOUBLE_EQ(c.y(), 5.0);
     EXPECT_DOUBLE_EQ(c.z(), 7.0);
     EXPECT_DOUBLE_EQ(c.w(), 9.0);
 }
 
-TEST(VectorTest, CanBeAddAssigned)
+TEST(AvxVectorTest, CanBeAddAssigned)
 {
-    Vector4 a(1.0, 2.0, 3.0, 4.0);
-    Vector4 b(2.0, 3.0, 4.0, 5.0);
+    AvxVector a(1.0, 2.0, 3.0, 4.0);
+    AvxVector b(2.0, 3.0, 4.0, 5.0);
     b += a;
 
     EXPECT_DOUBLE_EQ(b.x(), 3.0);
@@ -133,22 +133,22 @@ TEST(VectorTest, CanBeAddAssigned)
     EXPECT_DOUBLE_EQ(b.w(), 9.0);
 }
 
-TEST(VectorTest, CanBeSubtracted)
+TEST(AvxVectorTest, CanBeSubtracted)
 {
-    Vector4 a(1.0, 2.0, 3.0, 4.0);
-    Vector4 b(2.0, 3.0, 4.0, 5.0);
+    AvxVector a(1.0, 2.0, 3.0, 4.0);
+    AvxVector b(2.0, 3.0, 4.0, 5.0);
 
-    Vector4 c = a - b;
+    AvxVector c = a - b;
     EXPECT_DOUBLE_EQ(c.x(), -1.0);
     EXPECT_DOUBLE_EQ(c.y(), -1.0);
     EXPECT_DOUBLE_EQ(c.z(), -1.0);
     EXPECT_DOUBLE_EQ(c.w(), -1.0);
 }
 
-TEST(VectorTest, CanBeSubtractAssigned)
+TEST(AvxVectorTest, CanBeSubtractAssigned)
 {
-    Vector4 a(1.0, 2.0, 3.0, 4.0);
-    Vector4 b(2.0, 3.0, 4.0, 5.0);
+    AvxVector a(1.0, 2.0, 3.0, 4.0);
+    AvxVector b(2.0, 3.0, 4.0, 5.0);
     b -= a;
 
     EXPECT_DOUBLE_EQ(b.x(), 1.0);
@@ -157,32 +157,32 @@ TEST(VectorTest, CanBeSubtractAssigned)
     EXPECT_DOUBLE_EQ(b.w(), 1.0);
 }
 
-TEST(VectorTest, CanBeNegated)
+TEST(AvxVectorTest, CanBeNegated)
 {
-    Vector4 a(-1.0);
-    Vector4 b = -a;
+    AvxVector a(-1.0);
+    AvxVector b = -a;
     EXPECT_DOUBLE_EQ(b.x(), 1.0);
     EXPECT_DOUBLE_EQ(b.y(), 1.0);
     EXPECT_DOUBLE_EQ(b.z(), 1.0);
     EXPECT_DOUBLE_EQ(b.w(), 1.0);
 }
 
-TEST(VectorTest, DoesNotChangeWithPveSign)
+TEST(AvxVectorTest, DoesNotChangeWithPveSign)
 {
-    Vector4 a(-1.0);
-    Vector4 b = +a;
+    AvxVector a(-1.0);
+    AvxVector b = +a;
     EXPECT_DOUBLE_EQ(b.x(), -1.0);
     EXPECT_DOUBLE_EQ(b.y(), -1.0);
     EXPECT_DOUBLE_EQ(b.z(), -1.0);
     EXPECT_DOUBLE_EQ(b.w(), -1.0);
 }
 
-TEST(VectorTest, CanComputeMagnitude)
+TEST(AvxVectorTest, CanComputeMagnitude)
 {
-    Vector4 a(1.0, 2.0, 3.0, 0.0);
-    Vector4 b(1.0, 0.0, 0.0, 0.0);
-    Vector4 c(0.0, 2.0, 0.0, 0.0);
-    Vector4 d(0.0, 0.0, 3.0, 0.0);
+    AvxVector a(1.0, 2.0, 3.0, 0.0);
+    AvxVector b(1.0, 0.0, 0.0, 0.0);
+    AvxVector c(0.0, 2.0, 0.0, 0.0);
+    AvxVector d(0.0, 0.0, 3.0, 0.0);
 
     EXPECT_DOUBLE_EQ(a.Magnitude(), sqrt(14.0));
     EXPECT_DOUBLE_EQ(b.Magnitude(), 1.0);
@@ -190,12 +190,12 @@ TEST(VectorTest, CanComputeMagnitude)
     EXPECT_DOUBLE_EQ(d.Magnitude(), 3.0);
 }
 
-TEST(VectorTest, CanComputeSquareMagnitude)
+TEST(AvxVectorTest, CanComputeSquareMagnitude)
 {
-    Vector4 a(1.0, 2.0, 3.0, 0.0);
-    Vector4 b(1.0, 0.0, 0.0, 0.0);
-    Vector4 c(0.0, 2.0, 0.0, 0.0);
-    Vector4 d(0.0, 0.0, 3.0, 0.0);
+    AvxVector a(1.0, 2.0, 3.0, 0.0);
+    AvxVector b(1.0, 0.0, 0.0, 0.0);
+    AvxVector c(0.0, 2.0, 0.0, 0.0);
+    AvxVector d(0.0, 0.0, 3.0, 0.0);
 
     EXPECT_DOUBLE_EQ(a.MagnitudeSquared(), 14.0);
     EXPECT_DOUBLE_EQ(b.MagnitudeSquared(), 1.0);
@@ -203,16 +203,16 @@ TEST(VectorTest, CanComputeSquareMagnitude)
     EXPECT_DOUBLE_EQ(d.MagnitudeSquared(), 9.0);
 }
 
-TEST(VectorTest, DefaultUnitVectorsHaveUnitLength)
+TEST(AvxVectorTest, DefaultUnitVectorsHaveUnitLength)
 {
-    EXPECT_DOUBLE_EQ(Vector4::Up().MagnitudeSquared(), 1.0);
-    EXPECT_DOUBLE_EQ(Vector4::Right().MagnitudeSquared(), 1.0);
-    EXPECT_DOUBLE_EQ(Vector4::Forward().MagnitudeSquared(), 1.0);
+    EXPECT_DOUBLE_EQ(AvxVector::Up().MagnitudeSquared(), 1.0);
+    EXPECT_DOUBLE_EQ(AvxVector::Right().MagnitudeSquared(), 1.0);
+    EXPECT_DOUBLE_EQ(AvxVector::Forward().MagnitudeSquared(), 1.0);
 }
 
-TEST(VectorTest, DefaultZeroVectorHaveZeroLength)
+TEST(AvxVectorTest, DefaultZeroVectorHaveZeroLength)
 {
-    EXPECT_DOUBLE_EQ(Vector4::Zero().MagnitudeSquared(), 0.0);
-    EXPECT_DOUBLE_EQ(Vector4::Zero().MagnitudeSquared(), Vector4().MagnitudeSquared());
+    EXPECT_DOUBLE_EQ(AvxVector::Zero().MagnitudeSquared(), 0.0);
+    EXPECT_DOUBLE_EQ(AvxVector::Zero().MagnitudeSquared(), AvxVector().MagnitudeSquared());
 }
 

@@ -24,20 +24,20 @@
 #include <immintrin.h>
 #include "system/platform/platformutils.h"
 
-class Vector4
+class AvxVector
 {
 public:
-    Vector4() { m_Data = _mm256_setzero_pd(); }
-    Vector4(double v) { m_Data = _mm256_set1_pd(v); }
-    Vector4(double x, double y, double z, double w) { m_Data = _mm256_set_pd(x, y, z, w); }
-    ~Vector4() = default;
+    AvxVector() { m_Data = _mm256_setzero_pd(); }
+    AvxVector(double v) { m_Data = _mm256_set1_pd(v); }
+    AvxVector(double x, double y, double z, double w) { m_Data = _mm256_set_pd(x, y, z, w); }
+    ~AvxVector() = default;
 
-    inline Vector4 operator+(const Vector4& b) const { return Vector4(_mm256_add_pd(m_Data, b.m_Data)); }
-    inline Vector4 operator-(const Vector4& b) const { return Vector4(_mm256_sub_pd(m_Data, b.m_Data)); }
-    inline const Vector4 operator+() const { return Vector4(m_Data); }
-    inline const Vector4 operator-() const { return Vector4(_mm256_mul_pd(m_Data, _mm256_set1_pd(-1.0))); }
-    inline void operator+=(const Vector4& b) { m_Data = _mm256_add_pd(m_Data, b.m_Data); }
-    inline void operator-=(const Vector4& b) { m_Data = _mm256_sub_pd(m_Data, b.m_Data); }
+    inline AvxVector operator+(const AvxVector& b) const { return AvxVector(_mm256_add_pd(m_Data, b.m_Data)); }
+    inline AvxVector operator-(const AvxVector& b) const { return AvxVector(_mm256_sub_pd(m_Data, b.m_Data)); }
+    inline const AvxVector operator+() const { return AvxVector(m_Data); }
+    inline const AvxVector operator-() const { return AvxVector(_mm256_mul_pd(m_Data, _mm256_set1_pd(-1.0))); }
+    inline void operator+=(const AvxVector& b) { m_Data = _mm256_add_pd(m_Data, b.m_Data); }
+    inline void operator-=(const AvxVector& b) { m_Data = _mm256_sub_pd(m_Data, b.m_Data); }
 
     inline double operator[](int i) const { return RTC_WIN32_ONLY(m_Data.m256d_f64[3 - i], m_Data[3 - i]); }
 
@@ -56,13 +56,13 @@ public:
     const double MagnitudeSquared() const;
 
 public:
-    static Vector4 Zero() { return Vector4(); }
-    static Vector4 Up() { return Vector4(0.0, 1.0, 0.0, 0.0); }
-    static Vector4 Right() { return Vector4(1.0, 0.0, 0.0, 0.0); }
-    static Vector4 Forward() { return Vector4(0.0, 0.0, -1.0, 0.0); }
+    static AvxVector Zero() { return AvxVector(); }
+    static AvxVector Up() { return AvxVector(0.0, 1.0, 0.0, 0.0); }
+    static AvxVector Right() { return AvxVector(1.0, 0.0, 0.0, 0.0); }
+    static AvxVector Forward() { return AvxVector(0.0, 0.0, -1.0, 0.0); }
 
 private:
-    Vector4(__m256d data) { m_Data = data; }
+    AvxVector(__m256d data) { m_Data = data; }
 
 private:
     __m256d m_Data;

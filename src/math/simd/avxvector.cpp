@@ -18,14 +18,14 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "vector.h"
+#include "avxvector.h"
 
-const double Vector4::Magnitude() const
+const double AvxVector::Magnitude() const
 {
     return sqrt(MagnitudeSquared());
 }
 
-const double Vector4::MagnitudeSquared() const
+const double AvxVector::MagnitudeSquared() const
 {
     __m256d dot = _mm256_mul_pd(m_Data, m_Data);
     __m256d hsum = _mm256_hadd_pd(dot, dot);
