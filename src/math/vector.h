@@ -26,17 +26,19 @@
 class Vector4
 {
 public:
-    Vector4();
-    Vector4(double v);
-    Vector4(double x, double y, double z, double w);
+    Vector4() { m_Data = _mm256_setzero_pd(); }
+    Vector4(double v) { m_Data = _mm256_set1_pd(v); }
+    Vector4(double x, double y, double z, double w) { m_Data = _mm256_set_pd(x, y, z, w); }
     ~Vector4() = default;
 
-    Vector4 operator+(const Vector4& b);
-    Vector4 operator-(const Vector4& b);
-    void operator+=(const Vector4& b);
-    void operator-=(const Vector4& b);
-    const Vector4 operator+();
-    const Vector4 operator-();
+    inline Vector4 operator+(const Vector4& b) const { return Vector4(_mm256_add_pd(m_Data, b.m_Data)); }
+    inline Vector4 operator-(const Vector4& b) const { return Vector4(_mm256_sub_pd(m_Data, b.m_Data)); }
+    inline const Vector4 operator+() const { return Vector4(m_Data); }
+    inline const Vector4 operator-() const { return Vector4(_mm256_mul_pd(m_Data, _mm256_set1_pd(-1.0))); }
+    inline void operator+=(const Vector4& b) { m_Data = _mm256_add_pd(m_Data, b.m_Data); }
+    inline void operator-=(const Vector4& b) { m_Data = _mm256_sub_pd(m_Data, b.m_Data); }
+
+    inline double operator[](int i) const { return RTC_WIN32_ONLY(m_Data.m256d_f64[3 - i], m_Data[3 - i]); }
 
     inline double x() const { return RTC_WIN32_ONLY(m_Data.m256d_f64[3], m_Data[3]); }
     inline double y() const { return RTC_WIN32_ONLY(m_Data.m256d_f64[2], m_Data[2]); }
@@ -49,7 +51,7 @@ public:
     inline void w(double w) { RTC_WIN32_ONLY(m_Data.m256d_f64[0], m_Data[0]) = w; }
 
 private:
-    Vector4(__m256d data);
+    Vector4(__m256d data) { m_Data = data; }
 
 private:
     __m256d m_Data;

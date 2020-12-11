@@ -67,6 +67,20 @@ TEST(VectorTest, CanBeSetPerComponents)
     EXPECT_DOUBLE_EQ(v.w(), 4.0);
 }
 
+TEST(VectorTest, CanBeAccessedPerComponent)
+{
+    Vector4 v(1.0, 2.0, 3.0, 4.0);
+
+    EXPECT_DOUBLE_EQ(v.x(), 1.0);
+    EXPECT_DOUBLE_EQ(v.y(), 2.0);
+    EXPECT_DOUBLE_EQ(v.z(), 3.0);
+    EXPECT_DOUBLE_EQ(v.w(), 4.0);
+    EXPECT_DOUBLE_EQ(v[0], 1.0);
+    EXPECT_DOUBLE_EQ(v[1], 2.0);
+    EXPECT_DOUBLE_EQ(v[2], 3.0);
+    EXPECT_DOUBLE_EQ(v[3], 4.0);
+}
+
 TEST(VectorTest, CanBeCopyConstructed)
 {
     Vector4 a(22.0);
