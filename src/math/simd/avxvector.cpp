@@ -20,6 +20,23 @@
 
 #include "avxvector.h"
 
+const bool AvxVector::Equal(const AvxVector& b) const
+{
+    __m256d diff = _mm256_sub_pd(m_Data, b.m_Data);
+    __m256d cmpRes = _mm256_cmp_pd(diff, _mm256_setzero_pd(), _CMP_NEQ_UQ);
+    return _mm256_movemask_pd(cmpRes) == 0;
+}
+
+const AvxVector AvxVector::Normalized() const
+{
+    return *this * (1.0 / Magnitude());
+}
+
+const void AvxVector::Normalize()
+{
+    m_Data = _mm256_mul_pd(m_Data, _mm256_set1_pd(1.0 / Magnitude()));
+}
+
 const double AvxVector::Magnitude() const
 {
     return sqrt(MagnitudeSquared());
@@ -31,3 +48,4 @@ const double AvxVector::MagnitudeSquared() const
     __m256d hsum = _mm256_hadd_pd(dot, dot);
     return RTC_WIN32_ONLY(hsum.m256d_f64[0] + hsum.m256d_f64[2], hsum[0] + hsum[2]);
 }
+

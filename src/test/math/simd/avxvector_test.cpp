@@ -20,6 +20,7 @@
 
 #include "googletest/gtest.h"
 #include "math/simd/avxvector.h"
+#include <stdexcept>
 
 TEST(AvxVectorTest, CanBeCreated)
 {
@@ -213,6 +214,61 @@ TEST(AvxVectorTest, DefaultUnitVectorsHaveUnitLength)
 TEST(AvxVectorTest, DefaultZeroVectorHaveZeroLength)
 {
     EXPECT_DOUBLE_EQ(AvxVector::Zero().MagnitudeSquared(), 0.0);
-    EXPECT_DOUBLE_EQ(AvxVector::Zero().MagnitudeSquared(), AvxVector().MagnitudeSquared());
+}
+
+TEST(AvxVectorTest, CanCheckIfEqual)
+{
+    EXPECT_EQ(AvxVector(1.0), AvxVector(1.0));
+    EXPECT_EQ(AvxVector(0.2), AvxVector(0.2));
+    EXPECT_EQ(AvxVector(1.0, 2.0, 3.0, 4.0), AvxVector(1.0, 2.0, 3.0, 4.0));
+    EXPECT_NE(AvxVector(0.0), AvxVector(1.0));
+    EXPECT_NE(AvxVector(0.0), AvxVector(0.00001));
+    EXPECT_NE(AvxVector(0.0, 1.0, 2.0, 3.0), AvxVector(0.0, 1.0, 2.1, 3.0));
+}
+
+TEST(AvxVectorTest, CanBeScaled)
+{
+    EXPECT_EQ(AvxVector(1.0) * 2.0, AvxVector(2.0));
+    EXPECT_EQ(AvxVector(1.0, 2.0, 3.0, 4.0) * 2.0, AvxVector(2.0, 4.0, 6.0, 8.0));
+}
+
+TEST(AvxVectorTest, CanBeScaleAssigned)
+{
+    AvxVector a(1.0, 2.0, 3.0, 4.0);
+    a *= {1.0, 0.5, 0.5, 2.0};
+    EXPECT_EQ(a, AvxVector(1.0, 1.0, 1.5, 8.0));
+    a *= 2.0;
+    EXPECT_EQ(a, AvxVector(2.0, 2.0, 3.0, 16.0));
+    a *= -1.0;
+    EXPECT_EQ(a, -AvxVector(2.0, 2.0, 3.0, 16.0));
+    a *= 0.0;
+    EXPECT_EQ(a, AvxVector(0.0));
+}
+
+TEST(AvxVectorTest, CanBeNormalized)
+{
+    AvxVector b(1.1, 0.0, 0.0, 0.0);
+    AvxVector c(0.0, 2.0, 0.0, 0.0);
+    AvxVector d(0.0, 0.0, 3.0, 0.0);
+    EXPECT_EQ(b.Normalized(), AvxVector(1.0, 0.0, 0.0, 0.0));
+    EXPECT_EQ(c.Normalized(), AvxVector(0.0, 1.0, 0.0, 0.0));
+    EXPECT_EQ(d.Normalized(), AvxVector(0.0, 0.0, 1.0, 0.0));
+    EXPECT_NE(b, AvxVector(1.0, 0.0, 0.0, 0.0));
+    EXPECT_NE(c, AvxVector(0.0, 1.0, 0.0, 0.0));
+    EXPECT_NE(d, AvxVector(0.0, 0.0, 1.0, 0.0));
+
+    b.Normalize();
+    c.Normalize();
+    d.Normalize();
+    EXPECT_EQ(b, AvxVector(1.0, 0.0, 0.0, 0.0));
+    EXPECT_EQ(c, AvxVector(0.0, 1.0, 0.0, 0.0));
+    EXPECT_EQ(d, AvxVector(0.0, 0.0, 1.0, 0.0));
+
+    AvxVector a(2.0, 2.0, 3.0, 0.0);
+    a.Normalize();
+    EXPECT_DOUBLE_EQ(a.x(), 0.48507125007266594);
+    EXPECT_DOUBLE_EQ(a.y(), 0.48507125007266594);
+    EXPECT_DOUBLE_EQ(a.z(), 0.7276068751089989);
+    EXPECT_DOUBLE_EQ(a.w(), 0.0);
 }
 
