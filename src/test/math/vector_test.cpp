@@ -177,4 +177,42 @@ TEST(VectorTest, DoesNotChangeWithPveSign)
     EXPECT_DOUBLE_EQ(b.w(), -1.0);
 }
 
+TEST(VectorTest, CanComputeMagnitude)
+{
+    Vector4 a(1.0, 2.0, 3.0, 0.0);
+    Vector4 b(1.0, 0.0, 0.0, 0.0);
+    Vector4 c(0.0, 2.0, 0.0, 0.0);
+    Vector4 d(0.0, 0.0, 3.0, 0.0);
+
+    EXPECT_DOUBLE_EQ(a.Magnitude(), sqrt(14.0));
+    EXPECT_DOUBLE_EQ(b.Magnitude(), 1.0);
+    EXPECT_DOUBLE_EQ(c.Magnitude(), 2.0);
+    EXPECT_DOUBLE_EQ(d.Magnitude(), 3.0);
+}
+
+TEST(VectorTest, CanComputeSquareMagnitude)
+{
+    Vector4 a(1.0, 2.0, 3.0, 0.0);
+    Vector4 b(1.0, 0.0, 0.0, 0.0);
+    Vector4 c(0.0, 2.0, 0.0, 0.0);
+    Vector4 d(0.0, 0.0, 3.0, 0.0);
+
+    EXPECT_DOUBLE_EQ(a.MagnitudeSquared(), 14.0);
+    EXPECT_DOUBLE_EQ(b.MagnitudeSquared(), 1.0);
+    EXPECT_DOUBLE_EQ(c.MagnitudeSquared(), 4.0);
+    EXPECT_DOUBLE_EQ(d.MagnitudeSquared(), 9.0);
+}
+
+TEST(VectorTest, DefaultUnitVectorsHaveUnitLength)
+{
+    EXPECT_DOUBLE_EQ(Vector4::Up().MagnitudeSquared(), 1.0);
+    EXPECT_DOUBLE_EQ(Vector4::Right().MagnitudeSquared(), 1.0);
+    EXPECT_DOUBLE_EQ(Vector4::Forward().MagnitudeSquared(), 1.0);
+}
+
+TEST(VectorTest, DefaultZeroVectorHaveZeroLength)
+{
+    EXPECT_DOUBLE_EQ(Vector4::Zero().MagnitudeSquared(), 0.0);
+    EXPECT_DOUBLE_EQ(Vector4::Zero().MagnitudeSquared(), Vector4().MagnitudeSquared());
+}
 

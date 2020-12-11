@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include "math.h"
 #include <immintrin.h>
 #include "system/platform/platformutils.h"
 
@@ -49,6 +50,16 @@ public:
     inline void y(double y) { RTC_WIN32_ONLY(m_Data.m256d_f64[2], m_Data[2]) = y; }
     inline void z(double z) { RTC_WIN32_ONLY(m_Data.m256d_f64[1], m_Data[1]) = z; }
     inline void w(double w) { RTC_WIN32_ONLY(m_Data.m256d_f64[0], m_Data[0]) = w; }
+
+public:
+    const double Magnitude() const;
+    const double MagnitudeSquared() const;
+
+public:
+    static Vector4 Zero() { return Vector4(); }
+    static Vector4 Up() { return Vector4(0.0, 1.0, 0.0, 0.0); }
+    static Vector4 Right() { return Vector4(1.0, 0.0, 0.0, 0.0); }
+    static Vector4 Forward() { return Vector4(0.0, 0.0, -1.0, 0.0); }
 
 private:
     Vector4(__m256d data) { m_Data = data; }
