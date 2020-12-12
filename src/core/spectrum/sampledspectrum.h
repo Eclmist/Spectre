@@ -21,6 +21,7 @@
 #pragma once
 
 #include "spectrum.h"
+#include "sample.h"
 
 #define START_WAVELENGTH 400
 #define END_WAVELENGTH 700
@@ -29,19 +30,19 @@ class SampledSpectrum : public Spectrum
 {
 public:
     SampledSpectrum(double v = 0.0) : Spectrum(v) {}
-    SampledSpectrum(const double* lambda, const double* v, int count);
+    SampledSpectrum(const SampleArray& samples);
     ~SampledSpectrum() = default;
 
 private:
-    bool IsSamplesSorted(const double* lambda, int count) const;
-    bool IsInputOutsideLowerBounds(const double* lambda, int n, double rangeStart) const;
-    bool IsInputOutsideUpperRange(const double* lambda, double rangeEnd) const;
+    bool IsSamplesSorted(const SampleArray& samples) const;
+    bool IsInputOutsideLeftBoundary(const SampleArray& samples, double leftBound) const;
+    bool IsInputOutsideRightBoundary(const SampleArray& samples, double rightBound) const;
 
-    void ComputeWavelengthRange(int i, double& start, double& end) const;
-    double ComputeBoundaryArea(const double* lambda, const double* v, int n, double rangeStart, double rangeEnd) const;
-    double ComputeSegmentArea(const double* lambda, const double* v, int i, double rangeStart, double rangeEnd) const;
-    double ComputeAreaSum(const double* lambda, const double* v, int n, double rangeStart, double rangeEnd) const;
-    double ComputeAverageSamples(const double* lambda, const double* v, int n, double rangeStart, double rangeEnd) const;
+    void ComputeRangeAtIndex(int index, double& start, double& end) const;
+    double ComputeBoundaryArea(const SampleArray& samples, double leftBound, double rightBound) const;
+    double ComputeSegmentArea(const Sample& s1, const Sample& s2, double leftBound, double rightBound) const;
+    double ComputeAreaSum(const SampleArray& samples, double leftBound, double rightBound) const;
+    double ComputeAverageInRange(const SampleArray& samples, double leftBound, double rightBound) const;
 
 private:
     friend class SampledSpectrumTest_CanComputeWavelengthRange_Test;

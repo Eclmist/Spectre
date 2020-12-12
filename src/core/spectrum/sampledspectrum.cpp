@@ -24,91 +24,107 @@
 #include <cmath>
 #include <vector>
 
-SampledSpectrum::SampledSpectrum(const double* lambda, const double* v, int count)
+SampledSpectrum::SampledSpectrum(const std::vector<Sample>& samples)
 {
-    if (!IsSamplesSorted(lambda, count))
-        return;
-
-    for (int i = 0; i < NUM_SPECTRUM_SAMPLES; ++i)
+    if (IsSamplesSorted(samples))
     {
-        double sampleiLambdaStart, sampleiLambdaEnd;
-        ComputeWavelengthRange(i, sampleiLambdaStart, sampleiLambdaEnd);
-        m_Coefficients[i] = ComputeAverageSamples(lambda, v, count, sampleiLambdaStart, sampleiLambdaEnd);
+        for (int i = 0; i < NUM_SPECTRUM_SAMPLES; ++i)
+        {
+            double startLambda, endLambda;
+            ComputeRangeAtIndex(i, startLambda, endLambda);
+            m_Coefficients[i] = ComputeAverageInRange(samples, startLambda, endLambda);
+        }
     }
 }
 
-bool SampledSpectrum::IsSamplesSorted(const double* lambda, int count) const
+bool SampledSpectrum::IsSamplesSorted(const std::vector<Sample>& samples) const
 {
-    if (count <= 1)
+    if (samples.size() <= 1)
         return true;
 
-    for (int i = 0; i < count - 1; ++i)
-        if (lambda[i] > lambda[i + 1])
+    for (int i = 0; i + 1 < samples.size(); ++i)
+        if (samples[i].m_Wavelength > samples[i + 1].m_Wavelength)
             return false;
             
     return true;
 }
 
-bool SampledSpectrum::IsInputOutsideLowerBounds(const double* lambda, int n, double rangeStart) const
+bool SampledSpectrum::IsInputOutsideLeftBoundary(const SampleArray& samples, double leftBound) const
 {
-    return lambda[n - 1] <= rangeStart;
+    return samples.back().m_Wavelength <= leftBound;
 }
 
-bool SampledSpectrum::IsInputOutsideUpperRange(const double* lambda, double rangeEnd) const
+bool SampledSpectrum::IsInputOutsideRightBoundary(const SampleArray& samples, double rightBound) const
 {
-    return lambda[0] >= rangeEnd;
+    return samples.front().m_Wavelength >= rightBound;
 }
 
-void SampledSpectrum::ComputeWavelengthRange(int i, double& start, double& end) const
+void SampledSpectrum::ComputeRangeAtIndex(int index, double& start, double& end) const
 {
     double binWidth = (END_WAVELENGTH - START_WAVELENGTH) / double(NUM_SPECTRUM_SAMPLES - 1);
-    start = START_WAVELENGTH + i * binWidth - (binWidth / 2.0);
-    end = START_WAVELENGTH + i * binWidth + (binWidth / 2.0);
+    double halfBinWidth = binWidth / 2.0;
+    start = START_WAVELENGTH + (index * binWidth) - halfBinWidth;
+    end = START_WAVELENGTH + (index * binWidth) + halfBinWidth;
 }
 
-double SampledSpectrum::ComputeBoundaryArea(const double* lambda, const double* v, int n, double rangeStart, double rangeEnd) const
+double SampledSpectrum::ComputeBoundaryArea(const SampleArray& samples, double leftBound, double rightBound) const
 {
-    double lowerBoundaryArea = (lambda[0] > rangeStart) ? v[0] * (lambda[0] - rangeStart) : 0;
-    double upperBoundaryArea = (lambda[n - 1] < rangeEnd) ? v[n - 1] * (rangeEnd - lambda[n - 1]) : 0;
-    return lowerBoundaryArea + upperBoundaryArea;
+    double leftBoundaryRange = std::max<double>(0.0, samples.front().m_Wavelength - leftBound);
+    double rightBoundRange = std::max<double>(0.0, rightBound - samples.back().m_Wavelength);
+    double leftBoundArea = samples.front().m_Power * leftBoundaryRange;
+    double rightBoundArea = samples.back().m_Power * rightBoundRange;
+
+    return leftBoundArea + rightBoundArea;
 }
 
-double SampledSpectrum::ComputeSegmentArea(const double* lambda, const double* v, int i, double rangeStart, double rangeEnd) const
+double SampledSpectrum::ComputeSegmentArea(const Sample& s1, const Sample& s2, double leftBound, double rightBound) const
 {
-    double startPoint = lambda[i] < rangeStart ? rangeStart : lambda[i];
-    double endPoint = lambda[i + 1] > rangeEnd ? rangeEnd : lambda[i + 1];
-    double startVal = std::lerp(v[i], v[i + 1], (startPoint - lambda[i]) / (lambda[i + 1] - lambda[i]));
-    double endVal = std::lerp(v[i], v[i + 1], (endPoint - lambda[i]) / (lambda[i + 1] - lambda[i]));
-    return  0.5 * (startVal + endVal) * (endPoint - startPoint);
+    double sampleRangeL = s1.m_Wavelength;
+    double sampleRangeR = s2.m_Wavelength;
+
+    if (sampleRangeL < leftBound)
+        sampleRangeL = leftBound;
+
+    if (sampleRangeR > rightBound)
+        sampleRangeR = rightBound;
+
+    double unclampedRange = s2.m_Wavelength - s1.m_Wavelength;
+    double clampedRange = sampleRangeR - sampleRangeL;
+
+    double lerpFactorL = (sampleRangeL - s1.m_Wavelength) / unclampedRange;
+    double lerpFactorR = (sampleRangeR - s1.m_Wavelength) / unclampedRange;
+
+    double powerL = std::lerp(s1.m_Power, s2.m_Power, lerpFactorL);
+    double powerR = std::lerp(s1.m_Power, s2.m_Power, lerpFactorR);
+    return ((powerL + powerR) / 2) * clampedRange;
 }
 
-double SampledSpectrum::ComputeAreaSum(const double* lambda, const double* v, int n, double rangeStart, double rangeEnd) const
+double SampledSpectrum::ComputeAreaSum(const SampleArray& samples, double leftBound, double rightBound) const
 {
     double sum = 0;
+    int i = 0;
+    while (samples[i + 1].m_Wavelength < leftBound) ++i;
 
-    int startIndex = 0;
-    while (lambda[startIndex + 1] < rangeStart) ++startIndex;
+    for (; i + 1 < samples.size() && samples[i].m_Wavelength <= rightBound; ++i)
+        sum +=  ComputeSegmentArea(samples[i], samples[i + 1], leftBound, rightBound);
 
-    for (int i = startIndex; i + 1 < n && rangeEnd >= lambda[i]; ++i)
-        sum +=  ComputeSegmentArea(lambda, v, i, rangeStart, rangeEnd);
-
-    sum += ComputeBoundaryArea(lambda, v, n, rangeStart, rangeEnd);
+    sum += ComputeBoundaryArea(samples, leftBound, rightBound);
     return sum;
 }
 
-double SampledSpectrum::ComputeAverageSamples(const double* lambda, const double* v, int n, double rangeStart, double rangeEnd) const
+double SampledSpectrum::ComputeAverageInRange(const SampleArray& samples, double leftBound, double rightBound) const
 {
-    if (IsInputOutsideUpperRange(lambda, rangeEnd))
-        return v[0];
+    if (samples.size() == 1)
+        return samples.front().m_Power;
 
-    if (IsInputOutsideLowerBounds(lambda, n, rangeStart))
-        return v[n - 1];
+    if (IsInputOutsideRightBoundary(samples, rightBound))
+        return samples.front().m_Power;
 
-    if (n == 1)
-        return v[0];
+    if (IsInputOutsideLeftBoundary(samples, leftBound))
+        return samples.back().m_Power;
 
-    double sum = ComputeAreaSum(lambda, v, n, rangeStart, rangeEnd);
-    double average = sum / (rangeEnd - rangeStart);
-    return average;
+    double sum = ComputeAreaSum(samples, leftBound, rightBound);
+    double range = rightBound - leftBound;
+    return sum / range;
 }
 
