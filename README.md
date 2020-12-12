@@ -3,7 +3,7 @@
     RTCore
   <br>
 </h1>
-<h4 align="center">A (WIP) physically based spectral raytracing renderer" target="_blank">SORT</a>.</h4>
+<h4 align="center">A (WIP) physically based spectral raytracing renderer.</h4>
 
 <p align="center">
   <a href="https://travis-ci.com/Eclmist/Elixir">
@@ -26,6 +26,8 @@ Written from the ground up in modern C++ (C++20), RTCore improves upon Elixir in
   - Test driven development - close to full unit-test coverage
   - SIMD acceleration with AVX2
   - Physically-based spectral rendering as a foundation
+  
+RTCore continues to take inspiration from [SORT](http://sort-renderer.com/) and [PBRT](http://www.pbr-book.org/). 
 
 # Requirements
 - Only CMake versions 3.8 and up is supported
