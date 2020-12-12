@@ -18,37 +18,19 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "resolution.h"
+#pragma once
 
-#define DEFAULT_WIDTH 800
-#define DEFAULT_HEIGHT 480
-#define MAX_WIDTH 3840
-#define MAX_HEIGHT 2160
+#include "math/vector4.h"
 
-Resolution::Resolution()
-    : m_Width(DEFAULT_WIDTH)
-    , m_Height(DEFAULT_HEIGHT)
+class Ray
 {
-}
+public:
+    Ray(const Vector4& origin, const Vector4& direction);
+    ~Ray() = default;
 
-bool Resolution::IsWithinBounds(unsigned int x, unsigned int y) const
-{
-    return x >= 0 && x < m_Width && y >= 0 && y < m_Height;
-}
+    inline Vector4 operator()(double t) const { return m_Origin + m_Direction * t; }
 
-void Resolution::SetWidth(unsigned int width)
-{
-    if (width > MAX_WIDTH || width <= 0)
-        throw std::invalid_argument("Film width is invalid");
-
-    m_Width = width;
-}
-
-void Resolution::SetHeight(unsigned int height)
-{
-    if (height > MAX_HEIGHT || height <= 0)
-        throw std::invalid_argument("Film height is invalid");
-
-    m_Height = height;
-}
-
+public:
+    Vector4 m_Origin;
+    Vector4 m_Direction;
+};

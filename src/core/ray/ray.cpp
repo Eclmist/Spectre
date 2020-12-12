@@ -18,37 +18,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "resolution.h"
+#include "ray.h"
 
-#define DEFAULT_WIDTH 800
-#define DEFAULT_HEIGHT 480
-#define MAX_WIDTH 3840
-#define MAX_HEIGHT 2160
-
-Resolution::Resolution()
-    : m_Width(DEFAULT_WIDTH)
-    , m_Height(DEFAULT_HEIGHT)
+Ray::Ray(const Vector4& origin, const Vector4& direction)
+    : m_Origin(origin)
+    , m_Direction(direction)
 {
-}
-
-bool Resolution::IsWithinBounds(unsigned int x, unsigned int y) const
-{
-    return x >= 0 && x < m_Width && y >= 0 && y < m_Height;
-}
-
-void Resolution::SetWidth(unsigned int width)
-{
-    if (width > MAX_WIDTH || width <= 0)
-        throw std::invalid_argument("Film width is invalid");
-
-    m_Width = width;
-}
-
-void Resolution::SetHeight(unsigned int height)
-{
-    if (height > MAX_HEIGHT || height <= 0)
-        throw std::invalid_argument("Film height is invalid");
-
-    m_Height = height;
+    m_Direction.Normalize();
 }
 

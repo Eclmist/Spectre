@@ -27,7 +27,6 @@ class Resolution
 public:
     Resolution();
     ~Resolution() = default;
-    Resolution(const Resolution& copy);
 
     inline unsigned int GetWidth() const { return m_Width; }
     inline unsigned int GetHeight() const { return m_Height; }

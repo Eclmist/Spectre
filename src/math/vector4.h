@@ -18,37 +18,13 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "resolution.h"
+#pragma once
 
-#define DEFAULT_WIDTH 800
-#define DEFAULT_HEIGHT 480
-#define MAX_WIDTH 3840
-#define MAX_HEIGHT 2160
+#define RTC_AVX2_ENABLED
 
-Resolution::Resolution()
-    : m_Width(DEFAULT_WIDTH)
-    , m_Height(DEFAULT_HEIGHT)
-{
-}
-
-bool Resolution::IsWithinBounds(unsigned int x, unsigned int y) const
-{
-    return x >= 0 && x < m_Width && y >= 0 && y < m_Height;
-}
-
-void Resolution::SetWidth(unsigned int width)
-{
-    if (width > MAX_WIDTH || width <= 0)
-        throw std::invalid_argument("Film width is invalid");
-
-    m_Width = width;
-}
-
-void Resolution::SetHeight(unsigned int height)
-{
-    if (height > MAX_HEIGHT || height <= 0)
-        throw std::invalid_argument("Film height is invalid");
-
-    m_Height = height;
-}
-
+#ifdef RTC_AVX2_ENABLED
+#include "math/simd/avxvector.h"
+typedef AvxVector Vector4;
+#else
+// TODO: Add a non-avx version of vector to be typedefed here
+#endif

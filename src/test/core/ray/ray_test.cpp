@@ -18,37 +18,25 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "resolution.h"
+#include "googletest/gtest.h"
+#include "core/ray/ray.h"
 
-#define DEFAULT_WIDTH 800
-#define DEFAULT_HEIGHT 480
-#define MAX_WIDTH 3840
-#define MAX_HEIGHT 2160
-
-Resolution::Resolution()
-    : m_Width(DEFAULT_WIDTH)
-    , m_Height(DEFAULT_HEIGHT)
+TEST(RayTest, CanBeCreated)
 {
+    ASSERT_NO_THROW(Ray({ 0 }, { 1, 2, 3 }));
 }
 
-bool Resolution::IsWithinBounds(unsigned int x, unsigned int y) const
+TEST(RayTest, DirectionIsNormalized)
 {
-    return x >= 0 && x < m_Width && y >= 0 && y < m_Height;
+    EXPECT_EQ(Ray({ 0 }, { 6, 0, 0 }).m_Direction, Vector4(1, 0, 0));
+    EXPECT_EQ(Ray({ 0 }, { 1, 2, 3 }).m_Direction, Vector4(1, 2, 3).Normalized());
 }
 
-void Resolution::SetWidth(unsigned int width)
+TEST(RayTest, CanBeCopied)
 {
-    if (width > MAX_WIDTH || width <= 0)
-        throw std::invalid_argument("Film width is invalid");
-
-    m_Width = width;
-}
-
-void Resolution::SetHeight(unsigned int height)
-{
-    if (height > MAX_HEIGHT || height <= 0)
-        throw std::invalid_argument("Film height is invalid");
-
-    m_Height = height;
+    Ray r({ 0 }, { 1, 2, 3 });
+    Ray copy(r);
+    EXPECT_EQ(r.m_Direction, copy.m_Direction);
+    EXPECT_EQ(r.m_Origin, copy.m_Origin);
 }
 
