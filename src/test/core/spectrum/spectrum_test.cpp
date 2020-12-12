@@ -21,6 +21,7 @@
 #include "googletest/gtest.h"
 #include "core/spectrum/spectrum.h"
 
+
 TEST(SpectrumTest, CanBeCreated)
 {
     ASSERT_NO_THROW(Spectrum spectrum);
@@ -35,7 +36,7 @@ TEST(SpectrumTest, CanCheckIfBlack)
 
 TEST(SpectrumTest, CanCheckHasNans)
 {
-    EXPECT_TRUE(Spectrum(std::nan("")).HasNans());
+    EXPECT_TRUE(Spectrum(std::numeric_limits<double>::quiet_NaN()).HasNans());
     EXPECT_FALSE(Spectrum().HasNans());
     EXPECT_FALSE(Spectrum(0).HasNans());
     EXPECT_FALSE(Spectrum(0.001).HasNans());
@@ -61,7 +62,6 @@ TEST(SpectrumTest, CanBeAdded)
 {
     EXPECT_EQ(Spectrum(0) + Spectrum(1), Spectrum(1));
     EXPECT_EQ(Spectrum(1) + Spectrum(1), Spectrum(2));
-    EXPECT_TRUE((Spectrum(std::nan("")) + Spectrum(1)).HasNans());
 }
 
 TEST(SpectrumTest, CanBeAddAssigned)
@@ -78,7 +78,6 @@ TEST(SpectrumTest, CanBeSubtracted)
 {
     EXPECT_EQ(Spectrum(0) - Spectrum(1), Spectrum(-1));
     EXPECT_EQ(Spectrum(1) - Spectrum(1), Spectrum(0));
-    EXPECT_TRUE((Spectrum(std::nan("")) - Spectrum(1)).HasNans());
 }
 
 TEST(SpectrumTest, CanBeSubtractAssigned)
@@ -95,7 +94,6 @@ TEST(SpectrumTest, CanBeMultiplied)
 {
     EXPECT_EQ(Spectrum(0) * Spectrum(1), Spectrum(0));
     EXPECT_EQ(Spectrum(1) * Spectrum(1), Spectrum(1));
-    EXPECT_TRUE((Spectrum(std::nan("")) * Spectrum(1)).HasNans());
 }
 
 TEST(SpectrumTest, CanBeMultiplyAssigned)
@@ -113,7 +111,6 @@ TEST(SpectrumTest, CanBeDivided)
     EXPECT_EQ(Spectrum(0) / Spectrum(1), Spectrum(0));
     EXPECT_EQ(Spectrum(1) / Spectrum(1), Spectrum(1));
     EXPECT_EQ(Spectrum(32) / Spectrum(2), Spectrum(16));
-    EXPECT_TRUE((Spectrum(std::nan("")) / Spectrum(1)).HasNans());
 }
 
 TEST(SpectrumTest, CanBeDivideAssigned)

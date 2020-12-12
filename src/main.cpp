@@ -31,7 +31,7 @@ void PrintUsage()
     //std::cout << "For documentations, please refer to <http://docs.rtcore.io/>\n";
 }
 
-void ProcessArgs(int argc, char* argv[])
+int ProcessArgs(int argc, char* argv[])
 {
     // Process command-line arguments
     for (int i = 1; i < argc; ++i)
@@ -44,13 +44,14 @@ void ProcessArgs(int argc, char* argv[])
         else if (!strcmp(argv[i], "--unittest"))
         {
             testing::InitGoogleTest(&argc, argv);
-            RUN_ALL_TESTS();
+            return RUN_ALL_TESTS();
         }
     }
+
+    return EXIT_SUCCESS;
 }
 
 int main(int argc, char* argv[])
 {
-    ProcessArgs(argc, argv);
-    return EXIT_SUCCESS;
+    return ProcessArgs(argc, argv);
 }
