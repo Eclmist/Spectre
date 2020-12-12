@@ -261,20 +261,20 @@ TEST(AvxVectorTest, CanBeNormalized)
 {
     AvxVector b(1.1, 0, 0);
     AvxVector c(0, 2, 0);
-    AvxVector d(0, 0, 3);
+    AvxVector d(0, 0, -3);
     EXPECT_EQ(b.Normalized(), AvxVector(1, 0, 0));
     EXPECT_EQ(c.Normalized(), AvxVector(0, 1, 0));
-    EXPECT_EQ(d.Normalized(), AvxVector(0, 0, 1));
+    EXPECT_EQ(d.Normalized(), AvxVector(0, 0, -1));
     EXPECT_NE(b, AvxVector(1, 0, 0));
     EXPECT_NE(c, AvxVector(0, 1, 0));
-    EXPECT_NE(d, AvxVector(0, 0, 1));
+    EXPECT_NE(d, AvxVector(0, 0, -1));
 
     b.Normalize();
     c.Normalize();
     d.Normalize();
     EXPECT_EQ(b, AvxVector(1, 0, 0));
     EXPECT_EQ(c, AvxVector(0, 1, 0));
-    EXPECT_EQ(d, AvxVector(0, 0, 1));
+    EXPECT_EQ(d, AvxVector(0, 0, -1));
 
     AvxVector a(2, 2, 3);
     a.Normalize();
