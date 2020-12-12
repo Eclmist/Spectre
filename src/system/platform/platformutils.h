@@ -22,9 +22,8 @@
 
 #ifdef RTC_PLATFORM_WIN
     #define RTC_WIN32_ONLY(stmt, alt) stmt
-#elif RTC_PLATFORM_MAC
+#else
     #define RTC_WIN32_ONLY(stmt, alt) alt
-#else RTC_PLATFORM_LINUX
     #define RTC_WIN32_ONLY(stmt, alt) alt
 #endif
 

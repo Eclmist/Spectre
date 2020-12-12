@@ -27,21 +27,21 @@
 class AvxVector
 {
 public:
-    AvxVector() { m_Data = _mm256_setzero_pd(); }
-    AvxVector(double v) { m_Data = _mm256_set1_pd(v); }
+    AvxVector(double v = 0) { m_Data = _mm256_set1_pd(v); }
     AvxVector(double x, double y, double z = 0, double w = 0) { m_Data = _mm256_set_pd(x, y, z, w); }
     ~AvxVector() = default;
 
-    inline AvxVector operator+(const AvxVector& b) const { return _mm256_add_pd(m_Data, b.m_Data); }
+    inline const AvxVector operator-() const { return _mm256_mul_pd(m_Data, _mm256_set1_pd(-1.0)); }
     inline const AvxVector operator+() const { return m_Data; }
-    inline void operator+=(const AvxVector& b) { m_Data = _mm256_add_pd(m_Data, b.m_Data); }
+
+    inline AvxVector operator+(const AvxVector& b) const { return _mm256_add_pd(m_Data, b.m_Data); }
+    inline AvxVector& operator+=(const AvxVector& b) { m_Data = _mm256_add_pd(m_Data, b.m_Data); return *this; }
 
     inline AvxVector operator-(const AvxVector& b) const { return _mm256_sub_pd(m_Data, b.m_Data); }
-    inline const AvxVector operator-() const { return _mm256_mul_pd(m_Data, _mm256_set1_pd(-1.0)); }
-    inline void operator-=(const AvxVector& b) { m_Data = _mm256_sub_pd(m_Data, b.m_Data); }
+    inline AvxVector& operator-=(const AvxVector& b) { m_Data = _mm256_sub_pd(m_Data, b.m_Data); return *this; }
 
-    inline AvxVector operator*(const AvxVector& scale) const { return _mm256_mul_pd(m_Data, scale.m_Data); }
-    inline void operator*=(const AvxVector& scale) { m_Data = _mm256_mul_pd(m_Data, scale.m_Data); }
+    inline AvxVector operator*(const AvxVector& s) const { return _mm256_mul_pd(m_Data, s.m_Data); }
+    inline AvxVector& operator*=(const AvxVector& s) { m_Data = _mm256_mul_pd(m_Data, s.m_Data); return *this; }
 
     /* Don't implement division until there is a good way to check for NaNs */
 

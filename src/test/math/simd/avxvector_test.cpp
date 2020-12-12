@@ -228,7 +228,7 @@ TEST(AvxVectorTest, DefaultZeroVectorHaveZeroLength)
     EXPECT_DOUBLE_EQ(AvxVector::Zero().MagnitudeSquared(), 0);
 }
 
-TEST(AvxVectorTest, CanCheckIfEqual)
+TEST(AvxVectorTest, CanCheckEquality)
 {
     EXPECT_EQ(AvxVector(1), AvxVector(1));
     EXPECT_EQ(AvxVector(0.2), AvxVector(0.2));
