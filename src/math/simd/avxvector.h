@@ -29,7 +29,7 @@ class AvxVector
 public:
     AvxVector() { m_Data = _mm256_setzero_pd(); }
     AvxVector(double v) { m_Data = _mm256_set1_pd(v); }
-    AvxVector(double x, double y, double z, double w) { m_Data = _mm256_set_pd(x, y, z, w); }
+    AvxVector(double x, double y, double z = 0, double w = 0) { m_Data = _mm256_set_pd(x, y, z, w); }
     ~AvxVector() = default;
 
     inline AvxVector operator+(const AvxVector& b) const { return _mm256_add_pd(m_Data, b.m_Data); }
@@ -49,16 +49,6 @@ public:
     inline bool operator==(const AvxVector& b) const { return Equal(b); }
     inline bool operator!=(const AvxVector& b) const { return !Equal(b); }
 
-    inline double x() const { return RTC_WIN32_ONLY(m_Data.m256d_f64[3], m_Data[3]); }
-    inline double y() const { return RTC_WIN32_ONLY(m_Data.m256d_f64[2], m_Data[2]); }
-    inline double z() const { return RTC_WIN32_ONLY(m_Data.m256d_f64[1], m_Data[1]); }
-    inline double w() const { return RTC_WIN32_ONLY(m_Data.m256d_f64[0], m_Data[0]); }
-
-    inline void x(double x) { RTC_WIN32_ONLY(m_Data.m256d_f64[3], m_Data[3]) = x; }
-    inline void y(double y) { RTC_WIN32_ONLY(m_Data.m256d_f64[2], m_Data[2]) = y; }
-    inline void z(double z) { RTC_WIN32_ONLY(m_Data.m256d_f64[1], m_Data[1]) = z; }
-    inline void w(double w) { RTC_WIN32_ONLY(m_Data.m256d_f64[0], m_Data[0]) = w; }
-
 public:
     const bool Equal(const AvxVector& b) const;
     const void Normalize();
@@ -72,10 +62,19 @@ public:
     static AvxVector Right()   { return {1.0, 0.0, 0.0, 0.0}; }
     static AvxVector Forward() { return {0.0, 0.0, -1.0, 0.0}; }
 
-private:
-    AvxVector(__m256d data) { m_Data = data; }
+    static double Dot(const AvxVector& a, const AvxVector& b);
+    static double AbsDot(const AvxVector& a, const AvxVector& b);
+    static double Angle(const AvxVector& a, const AvxVector& b);
+    static double CosAngle(const AvxVector& a, const AvxVector& b);
+    static AvxVector Cross(const AvxVector& a, const AvxVector& b);
+
+    union
+    {
+        struct { double w, z, y, x; };
+        struct { __m256d m_Data; };
+    };
 
 private:
-    __m256d m_Data;
+    AvxVector(__m256d data) { m_Data = data; }
 };
 

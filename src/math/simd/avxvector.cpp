@@ -19,6 +19,7 @@
 */
 
 #include "avxvector.h"
+#include <stdexcept>
 
 const bool AvxVector::Equal(const AvxVector& b) const
 {
@@ -44,8 +45,40 @@ const double AvxVector::Magnitude() const
 
 const double AvxVector::MagnitudeSquared() const
 {
-    __m256d dot = _mm256_mul_pd(m_Data, m_Data);
+    return Dot(*this, *this);
+}
+
+double AvxVector::Dot(const AvxVector& a, const AvxVector& b)
+{
+    __m256d dot = _mm256_mul_pd(a.m_Data, b.m_Data);
     __m256d hsum = _mm256_hadd_pd(dot, dot);
     return RTC_WIN32_ONLY(hsum.m256d_f64[0] + hsum.m256d_f64[2], hsum[0] + hsum[2]);
 }
 
+double AvxVector::AbsDot(const AvxVector& a, const AvxVector& b)
+{
+    return fabs(Dot(a, b));
+}
+
+double AvxVector::Angle(const AvxVector& a, const AvxVector& b)
+{
+    return acos(CosAngle(a, b));
+}
+
+double AvxVector::CosAngle(const AvxVector& a, const AvxVector& b)
+{
+    return Dot(a, b) / (a.Magnitude() * b.Magnitude());
+}
+
+AvxVector AvxVector::Cross(const AvxVector& a, const AvxVector& b)
+{
+    if (a.w != 0.0 || b.w != 0.0)
+        throw std::invalid_argument("Cross product does not exist for 4D vectors");
+
+    __m256d tmp0 = _mm256_set_pd(a.y, a.z, a.x, 0.0);
+    __m256d tmp1 = _mm256_set_pd(b.y, b.z, b.x, 0.0);
+    tmp0 = _mm256_mul_pd(tmp0, b.m_Data);
+    tmp1 = _mm256_mul_pd(tmp1, a.m_Data);
+    AvxVector result = _mm256_sub_pd(tmp1, tmp0);
+    return AvxVector(result.y, result.z, result.x);
+}
