@@ -24,20 +24,20 @@
 TEST(SampledSpectrumTest, CanBeCreated)
 {
     SampleArray samples = { {400, 0.1}, {410, 0.1}, {420, 0.1}, {430, 0.1}, {440, 0.1} };
-    ASSERT_NO_THROW(SampledSpectrum(samples));
+    ASSERT_NO_THROW(SampledSpectrum s1(samples));
 
     samples = { {400, 0.2}, {410, 0.3}, {420, 0.4}, {430, 0.5}, {440, 0.6} };
-    ASSERT_NO_THROW(SampledSpectrum(samples));
+    ASSERT_NO_THROW(SampledSpectrum s2(samples));
 
     samples = { {400, 0.2}, {410, 0.3}, {420, 0.4}, {430, 0.5}, {440, 0.6}, {500, 0.3}, {600, 0.2}, {650, 0.5}, {700, 0.9} };
-    ASSERT_NO_THROW(SampledSpectrum(samples));
+    ASSERT_NO_THROW(SampledSpectrum s3(samples));
 }
 
 TEST(SampledSpectrumTest, InvalidInputsDefaultToBlack)
 {
     SampleArray unsortedSamples = { {400, 0.1}, {420, 0.1}, {410, 0.1}, {430, 0.1}, {440, 0.1} };
-    ASSERT_NO_THROW(SampledSpectrum(unsortedSamples));
-    EXPECT_TRUE(SampledSpectrum(unsortedSamples).IsBlack());
+    SampledSpectrum s1(unsortedSamples);
+    EXPECT_TRUE(s1.IsBlack());
 }
 
 TEST(SampledSpectrumTest, CanComputeWavelengthRange)
