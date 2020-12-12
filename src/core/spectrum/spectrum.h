@@ -22,7 +22,7 @@
 
 // To allow for overrides prior to includes
 #ifndef NUM_SPECTRUM_SAMPLES
-#define NUM_SPECTRUM_SAMPLES 32
+#define NUM_SPECTRUM_SAMPLES 64
 #endif
 
 class Spectrum
