@@ -82,3 +82,4 @@ AvxVector AvxVector::Cross(const AvxVector& a, const AvxVector& b)
     AvxVector result = _mm256_sub_pd(tmp1, tmp0);
     return AvxVector(result.y, result.z, result.x);
 }
+

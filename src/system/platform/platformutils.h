@@ -27,3 +27,4 @@
 #else RTC_PLATFORM_LINUX
     #define RTC_WIN32_ONLY(stmt, alt) alt
 #endif
+
