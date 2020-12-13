@@ -24,6 +24,12 @@
 #include <cmath>
 #include <vector>
 
+#include "cieconstants.h"
+
+SampledSpectrum SampledSpectrum::CIE_X;
+SampledSpectrum SampledSpectrum::CIE_Y;
+SampledSpectrum SampledSpectrum::CIE_Z;
+
 SampledSpectrum::SampledSpectrum(const std::vector<Sample>& samples)
 {
     if (IsSamplesSorted(samples))
@@ -37,7 +43,29 @@ SampledSpectrum::SampledSpectrum(const std::vector<Sample>& samples)
     }
 }
 
-bool SampledSpectrum::IsSamplesSorted(const std::vector<Sample>& samples) const
+void SampledSpectrum::Init()
+{
+    InitCieReferenceCurves();
+}
+
+void SampledSpectrum::InitCieReferenceCurves()
+{
+    CIE_X = FromRawSamples(CIE_X_Samples, CIE_Lambda, numCIESamples);
+    CIE_Y = FromRawSamples(CIE_Y_Samples, CIE_Lambda, numCIESamples);
+    CIE_Z = FromRawSamples(CIE_Z_Samples, CIE_Lambda, numCIESamples);
+}
+
+SampledSpectrum SampledSpectrum::FromRawSamples(const double* lambda, const double* power, int numSamples)
+{
+    SampleArray sampleArray(numSamples);
+
+    for (int i = 0; i < numSamples; ++i)
+        sampleArray[i] = { power[i], lambda[i] };
+
+    return sampleArray;
+}
+
+bool SampledSpectrum::IsSamplesSorted(const SampleArray& samples) const
 {
     if (samples.size() <= 1)
         return true;

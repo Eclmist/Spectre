@@ -33,6 +33,10 @@ public:
     SampledSpectrum(const SampleArray& samples);
     ~SampledSpectrum() = default;
 
+    static void Init();
+    static void InitCieReferenceCurves();
+    static SampledSpectrum FromRawSamples(const double* lambda, const double* power, int numSamples);
+
 private:
     bool IsSamplesSorted(const SampleArray& samples) const;
     bool IsInputOutsideLeftBoundary(const SampleArray& samples, double leftBound) const;
@@ -48,4 +52,10 @@ private:
     friend class SampledSpectrumTest_CanComputeWavelengthRange_Test;
     friend class SampledSpectrumTest_CanComputeAreaSum_Test;
     friend class SampledSpectrumTest_CanComputeAverageSamples_Test;
+    friend class SampledSpectrumTest_CanInitCIECurves_Test;
+
+private:
+    static SampledSpectrum CIE_X;
+    static SampledSpectrum CIE_Y;
+    static SampledSpectrum CIE_Z;
 };

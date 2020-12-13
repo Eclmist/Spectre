@@ -20,18 +20,9 @@
 
 #pragma once
 
-#include <vector>
+inline constexpr int numCIESamples = 471;
 
-struct Sample
-{
-    Sample(double wavelength = 0, double power = 0)
-    {
-        m_Wavelength = wavelength;
-        m_Power = power;
-    }
-
-    double m_Wavelength;
-    double m_Power;
-};
-
-using SampleArray = std::vector<Sample>;
+extern const double CIE_X_Samples[numCIESamples];
+extern const double CIE_Y_Samples[numCIESamples];
+extern const double CIE_Z_Samples[numCIESamples];
+extern const double CIE_Lambda[numCIESamples];

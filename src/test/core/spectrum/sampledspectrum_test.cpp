@@ -87,3 +87,22 @@ TEST(SampledSpectrumTest, CanComputeAverageSamples)
     EXPECT_DOUBLE_EQ(a.ComputeAverageInRange(samples, 700, 800), 0.9);
 }
 
+TEST(SampledSpectrumTest, CanBeCreatedFromRawSamples)
+{
+    const double lambda[5] = { 10, 20, 30, 40, 50 };
+    const double power[5] = { 10, 20, 30, 40, 50 };
+    ASSERT_NO_THROW(SampledSpectrum::FromRawSamples(lambda, power, 5));
+    SampledSpectrum s = SampledSpectrum::FromRawSamples(lambda, power, 5);
+    EXPECT_EQ(s, SampledSpectrum({ {10, 10}, {20, 20}, {30, 30}, {40, 40}, {50, 50} }));
+}
+
+TEST(SampledSpectrumTest, CanInitCIECurves)
+{
+    ASSERT_NO_THROW(SampledSpectrum::InitCieReferenceCurves());
+    ASSERT_FALSE(SampledSpectrum::CIE_X.IsBlack());
+    ASSERT_FALSE(SampledSpectrum::CIE_Y.IsBlack());
+    ASSERT_FALSE(SampledSpectrum::CIE_Z.IsBlack());
+    ASSERT_FALSE(SampledSpectrum::CIE_X.HasNans());
+    ASSERT_FALSE(SampledSpectrum::CIE_Y.HasNans());
+    ASSERT_FALSE(SampledSpectrum::CIE_Z.HasNans());
+}
