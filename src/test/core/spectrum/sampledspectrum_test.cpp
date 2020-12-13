@@ -20,6 +20,7 @@
 
 #include "googletest/gtest.h"
 #include "core/spectrum/sampledspectrum.h"
+#include "core/spectrum/cieconstants.h"
 
 TEST(SampledSpectrumTest, CanBeCreated)
 {
@@ -89,11 +90,11 @@ TEST(SampledSpectrumTest, CanComputeAverageSamples)
 
 TEST(SampledSpectrumTest, CanBeCreatedFromRawSamples)
 {
-    const double lambda[5] = { 10, 20, 30, 40, 50 };
+    const double lambda[5] = { 100, 200, 300, 400, 500 };
     const double power[5] = { 10, 20, 30, 40, 50 };
     ASSERT_NO_THROW(SampledSpectrum::FromRawSamples(lambda, power, 5));
     SampledSpectrum s = SampledSpectrum::FromRawSamples(lambda, power, 5);
-    EXPECT_EQ(s, SampledSpectrum({ {10, 10}, {20, 20}, {30, 30}, {40, 40}, {50, 50} }));
+    EXPECT_EQ(s, SampledSpectrum({ {100, 10}, {200, 20}, {300, 30}, {400, 40}, {500, 50} }));
 }
 
 TEST(SampledSpectrumTest, CanInitCIECurves)
@@ -106,3 +107,38 @@ TEST(SampledSpectrumTest, CanInitCIECurves)
     ASSERT_FALSE(SampledSpectrum::CIE_Y.HasNans());
     ASSERT_FALSE(SampledSpectrum::CIE_Z.HasNans());
 }
+
+TEST(SampledSpectrumTest, CanConvertBetweenRGBandXYZ)
+{
+    RGBCoefficients rgb(1.2, 3.4, 5.6);
+    XYZCoefficients xyz = SampledSpectrum::RGBToXYZ(rgb);
+    RGBCoefficients rgb2 = SampledSpectrum::XYZToRGB(xyz);
+
+    static const double tolerance = 0.00001;
+    EXPECT_LT(abs(rgb[0] - rgb2[0]), tolerance);
+    EXPECT_LT(abs(rgb[1] - rgb2[1]), tolerance);
+    EXPECT_LT(abs(rgb[2] - rgb2[2]), tolerance);
+}
+
+TEST(SampledSpectrumTest, CanConvertToXYZ)
+{
+    SampledSpectrum::InitCieReferenceCurves();
+    SampledSpectrum s(1.0);
+
+    // High tolerance for lower spectrum samples since we lose a lot
+    // of precision during conversion into the spectrum representation
+    static const double tolerance = 2.5;
+
+    double trueX = 0, trueY = 0, trueZ = 0;
+    for (int i = 0; i < numCIESamples; ++i)
+    {
+        trueX += CIE_X_Samples[i];
+        trueY += CIE_Y_Samples[i];
+        trueZ += CIE_Z_Samples[i];
+    }
+
+    EXPECT_LT(abs(s.ToXYZ()[0] - trueX), tolerance);
+    EXPECT_LT(abs(s.ToXYZ()[1] - trueY), tolerance);
+    EXPECT_LT(abs(s.ToXYZ()[2] - trueZ), tolerance);
+}
+

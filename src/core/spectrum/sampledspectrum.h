@@ -22,6 +22,7 @@
 
 #include "spectrum.h"
 #include "sample.h"
+#include "spectralcoefficients.h"
 #include "math/vector4.h"
 
 #define START_WAVELENGTH 400
@@ -38,7 +39,11 @@ public:
     static void InitCieReferenceCurves();
     static SampledSpectrum FromRawSamples(const double* lambda, const double* power, int numSamples);
 
-    Vector4 ToXYZ() const;
+    static RGBCoefficients XYZToRGB(XYZCoefficients xyz);
+    static XYZCoefficients RGBToXYZ(RGBCoefficients rgb);
+
+    XYZCoefficients ToXYZ() const;
+    RGBCoefficients ToRGB() const;
 
 private:
     bool IsSamplesSorted(const SampleArray& samples) const;

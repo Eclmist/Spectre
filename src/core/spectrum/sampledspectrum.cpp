@@ -50,9 +50,9 @@ void SampledSpectrum::Init()
 
 void SampledSpectrum::InitCieReferenceCurves()
 {
-    CIE_X = FromRawSamples(CIE_X_Samples, CIE_Lambda, numCIESamples);
-    CIE_Y = FromRawSamples(CIE_Y_Samples, CIE_Lambda, numCIESamples);
-    CIE_Z = FromRawSamples(CIE_Z_Samples, CIE_Lambda, numCIESamples);
+    CIE_X = FromRawSamples(CIE_Lambda, CIE_X_Samples, numCIESamples);
+    CIE_Y = FromRawSamples(CIE_Lambda, CIE_Y_Samples, numCIESamples);
+    CIE_Z = FromRawSamples(CIE_Lambda, CIE_Z_Samples, numCIESamples);
 }
 
 SampledSpectrum SampledSpectrum::FromRawSamples(const double* lambda, const double* power, int numSamples)
@@ -60,22 +60,49 @@ SampledSpectrum SampledSpectrum::FromRawSamples(const double* lambda, const doub
     SampleArray sampleArray(numSamples);
 
     for (int i = 0; i < numSamples; ++i)
-        sampleArray[i] = { power[i], lambda[i] };
+        sampleArray[i] = { lambda[i], power[i] };
 
     return sampleArray;
 }
 
-Vector4 SampledSpectrum::ToXYZ() const
+RGBCoefficients SampledSpectrum::XYZToRGB(XYZCoefficients xyz)
 {
-    Vector4 result;
-    for (int i = 0; i < NUM_SPECTRUM_SAMPLES; ++i)
+    // This is really converting XYZ to SRGB, not any RGB
+    RGBCoefficients rgb;
+    rgb[0] = 3.240479f * xyz[0] - 1.537150f * xyz[1] - 0.498535f * xyz[2];
+    rgb[1] =-0.969256f * xyz[0] + 1.875991f * xyz[1] + 0.041556f * xyz[2];
+    rgb[2] = 0.055648f * xyz[0] - 0.204043f * xyz[1] + 1.057311f * xyz[2];
+    return rgb;
+}
+
+XYZCoefficients SampledSpectrum::RGBToXYZ(RGBCoefficients rgb)
+{
+    // This is really converting SRGB to XYZ, not any RGB
+    XYZCoefficients xyz;
+    xyz[0] = 0.412453f * rgb[0] + 0.357580f * rgb[1] + 0.180423f * rgb[2];
+    xyz[1] = 0.212671f * rgb[0] + 0.715160f * rgb[1] + 0.072169f * rgb[2];
+    xyz[2] = 0.019334f * rgb[0] + 0.119193f * rgb[1] + 0.950227f * rgb[2];
+    return xyz;
+}
+
+XYZCoefficients SampledSpectrum::ToXYZ() const
+{
+    XYZCoefficients result;
+    for (int i = 0; i < NUM_SPECTRUM_SAMPLES && i < numCIESamples; ++i)
     {
-        result.x += CIE_X.m_Coefficients[i] * m_Coefficients[i];
-        result.y += CIE_Y.m_Coefficients[i] * m_Coefficients[i];
-        result.z += CIE_Z.m_Coefficients[i] * m_Coefficients[i];
+        result[0] += CIE_X.m_Coefficients[i] * m_Coefficients[i];
+        result[1] += CIE_Y.m_Coefficients[i] * m_Coefficients[i];
+        result[2] += CIE_Z.m_Coefficients[i] * m_Coefficients[i];
     }
 
-    return result * ((END_WAVELENGTH - START_WAVELENGTH) / float(numCIESamples));
+    double scale = (END_WAVELENGTH - START_WAVELENGTH) / float(NUM_SPECTRUM_SAMPLES);
+    return result * scale;
+}
+
+RGBCoefficients SampledSpectrum::ToRGB() const
+{
+    XYZCoefficients xyz = ToXYZ();
+    return XYZToRGB(xyz);
 }
 
 bool SampledSpectrum::IsSamplesSorted(const SampleArray& samples) const
