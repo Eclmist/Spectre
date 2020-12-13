@@ -50,11 +50,11 @@ public:
     inline bool operator!=(const AvxVector& b) const { return !Equal(b); }
 
 public:
-    const bool Equal(const AvxVector& b) const;
-    const void Normalize();
-    const AvxVector Normalized() const;
-    const double Magnitude() const;
-    const double MagnitudeSquared() const;
+    bool Equal(const AvxVector& b) const;
+    void Normalize();
+    AvxVector Normalized() const;
+    double Magnitude() const;
+    double MagnitudeSquared() const;
 
 public:
     static AvxVector Zero()    { return {0.0, 0.0, 0.0, 0.0}; }
