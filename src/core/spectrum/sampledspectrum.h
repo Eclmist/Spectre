@@ -25,8 +25,8 @@
 #include "spectralcoefficients.h"
 #include "math/vector4.h"
 
-#define START_WAVELENGTH 400
-#define END_WAVELENGTH 700
+static constexpr int MinWavelength = 380;
+static constexpr int MaxWavelength = 700;
 
 class SampledSpectrum : public Spectrum
 {

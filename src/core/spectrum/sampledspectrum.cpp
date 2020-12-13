@@ -95,7 +95,7 @@ XYZCoefficients SampledSpectrum::ToXYZ() const
         result[2] += CIE_Z.m_Coefficients[i] * m_Coefficients[i];
     }
 
-    double scale = (END_WAVELENGTH - START_WAVELENGTH) / float(NUM_SPECTRUM_SAMPLES);
+    double scale = (MaxWavelength - MinWavelength) / float(NUM_SPECTRUM_SAMPLES);
     return result * scale;
 }
 
@@ -129,10 +129,10 @@ bool SampledSpectrum::IsInputOutsideRightBoundary(const SampleArray& samples, do
 
 void SampledSpectrum::ComputeRangeAtIndex(int index, double& start, double& end) const
 {
-    double binWidth = (END_WAVELENGTH - START_WAVELENGTH) / double(NUM_SPECTRUM_SAMPLES - 1);
+    double binWidth = (MaxWavelength - MinWavelength) / double(NUM_SPECTRUM_SAMPLES - 1);
     double halfBinWidth = binWidth / 2.0;
-    start = START_WAVELENGTH + (index * binWidth) - halfBinWidth;
-    end = START_WAVELENGTH + (index * binWidth) + halfBinWidth;
+    start = MinWavelength + (index * binWidth) - halfBinWidth;
+    end = MinWavelength + (index * binWidth) + halfBinWidth;
 }
 
 double SampledSpectrum::ComputeBoundaryArea(const SampleArray& samples, double leftBound, double rightBound) const

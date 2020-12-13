@@ -47,19 +47,19 @@ TEST(SampledSpectrumTest, CanComputeWavelengthRange)
 
     double rangeStart;
     double rangeEnd;
-    double binSize = (END_WAVELENGTH - START_WAVELENGTH) / double(NUM_SPECTRUM_SAMPLES - 1);
+    double binSize = (MaxWavelength - MinWavelength) / double(NUM_SPECTRUM_SAMPLES - 1);
 
     s.ComputeRangeAtIndex(0, rangeStart, rangeEnd);
-    EXPECT_DOUBLE_EQ(rangeStart, START_WAVELENGTH - (binSize / 2));
-    EXPECT_DOUBLE_EQ(rangeEnd, START_WAVELENGTH + (binSize / 2));
+    EXPECT_DOUBLE_EQ(rangeStart, MinWavelength - (binSize / 2));
+    EXPECT_DOUBLE_EQ(rangeEnd, MinWavelength + (binSize / 2));
 
     s.ComputeRangeAtIndex(1, rangeStart, rangeEnd);
-    EXPECT_DOUBLE_EQ(rangeStart, START_WAVELENGTH + (binSize / 2));
-    EXPECT_DOUBLE_EQ(rangeEnd, START_WAVELENGTH + (binSize / 2) + binSize);
+    EXPECT_DOUBLE_EQ(rangeStart, MinWavelength + (binSize / 2));
+    EXPECT_DOUBLE_EQ(rangeEnd, MinWavelength + (binSize / 2) + binSize);
 
     s.ComputeRangeAtIndex(NUM_SPECTRUM_SAMPLES - 1, rangeStart, rangeEnd);
-    EXPECT_DOUBLE_EQ(rangeStart, END_WAVELENGTH - (binSize / 2));
-    EXPECT_DOUBLE_EQ(rangeEnd, END_WAVELENGTH + (binSize / 2));
+    EXPECT_DOUBLE_EQ(rangeStart, MaxWavelength - (binSize / 2));
+    EXPECT_DOUBLE_EQ(rangeEnd, MaxWavelength + (binSize / 2));
 }
 
 TEST(SampledSpectrumTest, CanComputeAreaSum)
