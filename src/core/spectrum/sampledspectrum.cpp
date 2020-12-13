@@ -65,6 +65,19 @@ SampledSpectrum SampledSpectrum::FromRawSamples(const double* lambda, const doub
     return sampleArray;
 }
 
+Vector4 SampledSpectrum::ToXYZ() const
+{
+    Vector4 result;
+    for (int i = 0; i < NUM_SPECTRUM_SAMPLES; ++i)
+    {
+        result.x += CIE_X.m_Coefficients[i] * m_Coefficients[i];
+        result.y += CIE_Y.m_Coefficients[i] * m_Coefficients[i];
+        result.z += CIE_Z.m_Coefficients[i] * m_Coefficients[i];
+    }
+
+    return result * ((END_WAVELENGTH - START_WAVELENGTH) / float(numCIESamples));
+}
+
 bool SampledSpectrum::IsSamplesSorted(const SampleArray& samples) const
 {
     if (samples.size() <= 1)
@@ -133,8 +146,13 @@ double SampledSpectrum::ComputeAreaSum(const SampleArray& samples, double leftBo
     int i = 0;
     while (samples[i + 1].m_Wavelength < leftBound) ++i;
 
-    for (; i + 1 < samples.size() && samples[i].m_Wavelength <= rightBound; ++i)
+    for (; i + 1 < samples.size(); ++i)
+    {
+        if (samples[i].m_Wavelength > rightBound)
+            break;
+
         sum +=  ComputeSegmentArea(samples[i], samples[i + 1], leftBound, rightBound);
+    }
 
     sum += ComputeBoundaryArea(samples, leftBound, rightBound);
     return sum;

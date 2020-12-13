@@ -22,6 +22,7 @@
 
 #include "spectrum.h"
 #include "sample.h"
+#include "math/vector4.h"
 
 #define START_WAVELENGTH 400
 #define END_WAVELENGTH 700
@@ -36,6 +37,8 @@ public:
     static void Init();
     static void InitCieReferenceCurves();
     static SampledSpectrum FromRawSamples(const double* lambda, const double* power, int numSamples);
+
+    Vector4 ToXYZ() const;
 
 private:
     bool IsSamplesSorted(const SampleArray& samples) const;
@@ -54,7 +57,6 @@ private:
     friend class SampledSpectrumTest_CanComputeAverageSamples_Test;
     friend class SampledSpectrumTest_CanInitCIECurves_Test;
 
-private:
     static SampledSpectrum CIE_X;
     static SampledSpectrum CIE_Y;
     static SampledSpectrum CIE_Z;

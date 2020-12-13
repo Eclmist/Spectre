@@ -312,11 +312,3 @@ TEST(AvxVectorTest, CanComputeCrossProduct)
     EXPECT_EQ(AvxVector::Cross({ -1, 2, 3 }, { 5, 1, 4 }), AvxVector(5, 19, -11));
 }
 
-TEST(AvxVectorTest, CanComputeAbs)
-{
-    ASSERT_NO_THROW(AvxVector::Up().Abs());
-    AvxVector abs = AvxVector::Up().Abs();
-    EXPECT_EQ(AvxVector(-1, 1, 0).Abs(), AvxVector(1, 1, 0));
-    EXPECT_EQ(AvxVector(-1, 1, -1).Abs(), AvxVector(1, 1, 1));
-}
-
