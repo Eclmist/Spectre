@@ -20,7 +20,7 @@
 
 #include "googletest/gtest.h"
 #include "core/spectrum/sampledspectrum.h"
-#include "core/spectrum/cieconstants.h"
+#include "core/spectrum/spectralconstants.h"
 
 TEST(SampledSpectrumTest, CanBeCreated)
 {
@@ -47,7 +47,7 @@ TEST(SampledSpectrumTest, CanComputeWavelengthRange)
 
     double rangeStart;
     double rangeEnd;
-    double binSize = (MaxWavelength - MinWavelength) / double(NUM_SPECTRUM_SAMPLES - 1);
+    double binSize = (MaxWavelength - MinWavelength) / double(numSpectralSamples - 1);
 
     s.ComputeRangeAtIndex(0, rangeStart, rangeEnd);
     EXPECT_DOUBLE_EQ(rangeStart, MinWavelength - (binSize / 2));
@@ -57,7 +57,7 @@ TEST(SampledSpectrumTest, CanComputeWavelengthRange)
     EXPECT_DOUBLE_EQ(rangeStart, MinWavelength + (binSize / 2));
     EXPECT_DOUBLE_EQ(rangeEnd, MinWavelength + (binSize / 2) + binSize);
 
-    s.ComputeRangeAtIndex(NUM_SPECTRUM_SAMPLES - 1, rangeStart, rangeEnd);
+    s.ComputeRangeAtIndex(numSpectralSamples - 1, rangeStart, rangeEnd);
     EXPECT_DOUBLE_EQ(rangeStart, MaxWavelength - (binSize / 2));
     EXPECT_DOUBLE_EQ(rangeEnd, MaxWavelength + (binSize / 2));
 }
@@ -92,20 +92,44 @@ TEST(SampledSpectrumTest, CanBeCreatedFromRawSamples)
 {
     const double lambda[5] = { 100, 200, 300, 400, 500 };
     const double power[5] = { 10, 20, 30, 40, 50 };
-    ASSERT_NO_THROW(SampledSpectrum::FromRawSamples(lambda, power, 5));
-    SampledSpectrum s = SampledSpectrum::FromRawSamples(lambda, power, 5);
+    ASSERT_NO_THROW(SampledSpectrum::FromSortedRawSamples(lambda, power, 5));
+    SampledSpectrum s = SampledSpectrum::FromSortedRawSamples(lambda, power, 5);
     EXPECT_EQ(s, SampledSpectrum({ {100, 10}, {200, 20}, {300, 30}, {400, 40}, {500, 50} }));
 }
 
-TEST(SampledSpectrumTest, CanInitCIECurves)
+TEST(SampledSpectrumTest, CanPopulateStandardCurves)
 {
-    ASSERT_NO_THROW(SampledSpectrum::InitCieReferenceCurves());
-    ASSERT_FALSE(SampledSpectrum::CIE_X.IsBlack());
-    ASSERT_FALSE(SampledSpectrum::CIE_Y.IsBlack());
-    ASSERT_FALSE(SampledSpectrum::CIE_Z.IsBlack());
-    ASSERT_FALSE(SampledSpectrum::CIE_X.HasNans());
-    ASSERT_FALSE(SampledSpectrum::CIE_Y.HasNans());
-    ASSERT_FALSE(SampledSpectrum::CIE_Z.HasNans());
+    ASSERT_FALSE(SampledSpectrum::cieX.IsBlack());
+    ASSERT_FALSE(SampledSpectrum::cieY.IsBlack());
+    ASSERT_FALSE(SampledSpectrum::cieZ.IsBlack());
+    ASSERT_FALSE(SampledSpectrum::stdReflW.IsBlack());
+    ASSERT_FALSE(SampledSpectrum::stdReflC.IsBlack());
+    ASSERT_FALSE(SampledSpectrum::stdReflM.IsBlack());
+    ASSERT_FALSE(SampledSpectrum::stdReflY.IsBlack());
+    ASSERT_FALSE(SampledSpectrum::stdReflR.IsBlack());
+    ASSERT_FALSE(SampledSpectrum::stdReflG.IsBlack());
+    ASSERT_FALSE(SampledSpectrum::stdReflB.IsBlack());
+    ASSERT_FALSE(SampledSpectrum::stdIllumW.IsBlack());
+    ASSERT_FALSE(SampledSpectrum::stdIllumC.IsBlack());
+    ASSERT_FALSE(SampledSpectrum::stdIllumM.IsBlack());
+    ASSERT_FALSE(SampledSpectrum::stdIllumY.IsBlack());
+    ASSERT_FALSE(SampledSpectrum::stdIllumR.IsBlack());
+    ASSERT_FALSE(SampledSpectrum::stdIllumG.IsBlack());
+    ASSERT_FALSE(SampledSpectrum::stdIllumB.IsBlack());
+
+    double xSum = 0, ySum = 0, zSum = 0;
+    for (int i = 0; i < numCieSamples; ++i)
+    {
+        xSum += cieSamplesX[i];
+        ySum += cieSamplesY[i];
+        zSum += cieSamplesZ[i];
+    }
+
+    static const double tolerance = 0.01;
+
+    EXPECT_LT(abs(1.0 - xSum / cieIntegralY), tolerance);
+    EXPECT_LT(abs(1.0 - ySum / cieIntegralY), tolerance);
+    EXPECT_LT(abs(1.0 - zSum / cieIntegralY), tolerance);
 }
 
 TEST(SampledSpectrumTest, CanConvertBetweenRGBandXYZ)
@@ -114,31 +138,44 @@ TEST(SampledSpectrumTest, CanConvertBetweenRGBandXYZ)
     XYZCoefficients xyz = SampledSpectrum::RGBToXYZ(rgb);
     RGBCoefficients rgb2 = SampledSpectrum::XYZToRGB(xyz);
 
-    static const double tolerance = 0.00001;
+    static const double tolerance = 0.0005;
     EXPECT_LT(abs(rgb[0] - rgb2[0]), tolerance);
     EXPECT_LT(abs(rgb[1] - rgb2[1]), tolerance);
     EXPECT_LT(abs(rgb[2] - rgb2[2]), tolerance);
+
+    xyz = SampledSpectrum::RGBToXYZ({1, 1, 1});
+    EXPECT_LT(abs(xyz[0] - 0.950), tolerance);
+    EXPECT_LT(abs(xyz[1] - 1.000), tolerance);
+    EXPECT_LT(abs(xyz[2] - 1.089), tolerance);
 }
 
 TEST(SampledSpectrumTest, CanConvertToXYZ)
 {
-    SampledSpectrum::InitCieReferenceCurves();
     SampledSpectrum s(1.0);
 
-    // High tolerance for lower spectrum samples since we lose a lot
-    // of precision during conversion into the spectrum representation
-    static const double tolerance = 2.5;
 
-    double trueX = 0, trueY = 0, trueZ = 0;
-    for (int i = 0; i < numCIESamples; ++i)
+    XYZCoefficients trueXYZ;
+    for (int i = 0; i < numCieSamples; ++i)
     {
-        trueX += CIE_X_Samples[i];
-        trueY += CIE_Y_Samples[i];
-        trueZ += CIE_Z_Samples[i];
+        trueXYZ[0] += cieSamplesX[i];
+        trueXYZ[1] += cieSamplesY[i];
+        trueXYZ[2] += cieSamplesZ[i];
     }
+    trueXYZ = trueXYZ / cieIntegralY;
+    static const double tolerance = 0.1;
+    EXPECT_LT(abs(s.ToXYZ()[0] - trueXYZ[0]), tolerance);
+    EXPECT_LT(abs(s.ToXYZ()[1] - trueXYZ[1]), tolerance);
+    EXPECT_LT(abs(s.ToXYZ()[2] - trueXYZ[2]), tolerance);
+}
 
-    EXPECT_LT(abs(s.ToXYZ()[0] - trueX), tolerance);
-    EXPECT_LT(abs(s.ToXYZ()[1] - trueY), tolerance);
-    EXPECT_LT(abs(s.ToXYZ()[2] - trueZ), tolerance);
+TEST(SampledSpectrumTest, CanConvertToRGB)
+{
+    SampledSpectrum s(1.0);
+
+    RGBCoefficients rgb = s.ToRGB();
+    static const double tolerance = 0.1;
+    EXPECT_LT(abs(rgb[0] - 1.205), tolerance);
+    EXPECT_LT(abs(rgb[1] - 0.94), tolerance);
+    EXPECT_LT(abs(rgb[2] - 0.909), tolerance);
 }
 

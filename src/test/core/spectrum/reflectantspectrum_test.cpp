@@ -18,11 +18,20 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#pragma once
+#include "googletest/gtest.h"
+#include "core/spectrum/reflectantspectrum.h"
 
-inline constexpr int numCIESamples = 471;
+TEST(ReflectantSpectrumTest, CanBeCreated)
+{
+    ASSERT_NO_THROW(ReflectantSpectrum({ 0.2, 0.3, 0.4 }));
+}
 
-extern const double CIE_X_Samples[numCIESamples];
-extern const double CIE_Y_Samples[numCIESamples];
-extern const double CIE_Z_Samples[numCIESamples];
-extern const double CIE_Lambda[numCIESamples];
+TEST(ReflectantSpectrumTest, HasCorrectValues)
+{
+    ReflectantSpectrum white({ 1, 1, 1 });
+    RGBCoefficients rgb = white.ToRGB();
+    static const double tolerance = 0.1;
+    EXPECT_LT(abs(rgb[0] - 1.205), tolerance);
+    EXPECT_LT(abs(rgb[1] - 0.94), tolerance);
+    EXPECT_LT(abs(rgb[2] - 0.909), tolerance);
+}

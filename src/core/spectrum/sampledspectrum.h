@@ -25,8 +25,8 @@
 #include "spectralcoefficients.h"
 #include "math/vector4.h"
 
-static constexpr int MinWavelength = 380;
-static constexpr int MaxWavelength = 700;
+static constexpr int MinWavelength = 360;
+static constexpr int MaxWavelength = 830;
 
 class SampledSpectrum : public Spectrum
 {
@@ -35,17 +35,14 @@ public:
     SampledSpectrum(const SampleArray& samples);
     ~SampledSpectrum() = default;
 
-    static void Init();
-    static void InitCieReferenceCurves();
-    static SampledSpectrum FromRawSamples(const double* lambda, const double* power, int numSamples);
-
-    static RGBCoefficients XYZToRGB(XYZCoefficients xyz);
-    static XYZCoefficients RGBToXYZ(RGBCoefficients rgb);
+    static SampledSpectrum FromSortedRawSamples(const double* lambda, const double* power, int numSamples);
+    static RGBCoefficients XYZToRGB(const XYZCoefficients& xyz);
+    static XYZCoefficients RGBToXYZ(const RGBCoefficients& rgb);
 
     XYZCoefficients ToXYZ() const;
     RGBCoefficients ToRGB() const;
 
-private:
+protected:
     bool IsSamplesSorted(const SampleArray& samples) const;
     bool IsInputOutsideLeftBoundary(const SampleArray& samples, double leftBound) const;
     bool IsInputOutsideRightBoundary(const SampleArray& samples, double rightBound) const;
@@ -56,13 +53,23 @@ private:
     double ComputeAreaSum(const SampleArray& samples, double leftBound, double rightBound) const;
     double ComputeAverageInRange(const SampleArray& samples, double leftBound, double rightBound) const;
 
-private:
+    virtual double GetXYZNormalizationConstant() const;
+
+protected:
     friend class SampledSpectrumTest_CanComputeWavelengthRange_Test;
     friend class SampledSpectrumTest_CanComputeAreaSum_Test;
     friend class SampledSpectrumTest_CanComputeAverageSamples_Test;
-    friend class SampledSpectrumTest_CanInitCIECurves_Test;
+    friend class SampledSpectrumTest_CanPopulateStandardCurves_Test;
 
-    static SampledSpectrum CIE_X;
-    static SampledSpectrum CIE_Y;
-    static SampledSpectrum CIE_Z;
+    static const SampledSpectrum cieX;
+    static const SampledSpectrum cieY;
+    static const SampledSpectrum cieZ;
+
+    static const SampledSpectrum stdReflW, stdIllumW;
+    static const SampledSpectrum stdReflC, stdIllumC;
+    static const SampledSpectrum stdReflM, stdIllumM;
+    static const SampledSpectrum stdReflY, stdIllumY;
+    static const SampledSpectrum stdReflR, stdIllumR;
+    static const SampledSpectrum stdReflG, stdIllumG;
+    static const SampledSpectrum stdReflB, stdIllumB;
 };

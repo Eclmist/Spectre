@@ -23,14 +23,14 @@
 
 Spectrum::Spectrum(double v)
 {
-    for (int i = 0; i < NUM_SPECTRUM_SAMPLES; ++i)
+    for (int i = 0; i < numSpectralSamples; ++i)
         m_Coefficients[i] = v;
 }
 
 Spectrum Spectrum::operator+(const Spectrum& c) const
 {
     Spectrum result;
-    for (int i = 0; i < NUM_SPECTRUM_SAMPLES; ++i)
+    for (int i = 0; i < numSpectralSamples; ++i)
         result.m_Coefficients[i] = m_Coefficients[i] + c.m_Coefficients[i];
 
     return result;
@@ -38,7 +38,7 @@ Spectrum Spectrum::operator+(const Spectrum& c) const
 
 Spectrum& Spectrum::operator+=(const Spectrum& c)
 {
-    for (int i = 0; i < NUM_SPECTRUM_SAMPLES; ++i)
+    for (int i = 0; i < numSpectralSamples; ++i)
         m_Coefficients[i] += c.m_Coefficients[i];
 
     return *this;
@@ -47,7 +47,7 @@ Spectrum& Spectrum::operator+=(const Spectrum& c)
 Spectrum Spectrum::operator-(const Spectrum& c) const
 {
     Spectrum result;
-    for (int i = 0; i < NUM_SPECTRUM_SAMPLES; ++i)
+    for (int i = 0; i < numSpectralSamples; ++i)
         result.m_Coefficients[i] = m_Coefficients[i] - c.m_Coefficients[i];
 
     return result;
@@ -55,7 +55,7 @@ Spectrum Spectrum::operator-(const Spectrum& c) const
 
 Spectrum& Spectrum::operator-=(const Spectrum& c)
 {
-    for (int i = 0; i < NUM_SPECTRUM_SAMPLES; ++i)
+    for (int i = 0; i < numSpectralSamples; ++i)
         m_Coefficients[i] -= c.m_Coefficients[i];
 
     return *this;
@@ -64,7 +64,7 @@ Spectrum& Spectrum::operator-=(const Spectrum& c)
 Spectrum Spectrum::operator*(const Spectrum& c) const
 {
     Spectrum result;
-    for (int i = 0; i < NUM_SPECTRUM_SAMPLES; ++i)
+    for (int i = 0; i < numSpectralSamples; ++i)
         result.m_Coefficients[i] = m_Coefficients[i] * c.m_Coefficients[i];
 
     return result;
@@ -72,7 +72,7 @@ Spectrum Spectrum::operator*(const Spectrum& c) const
 
 Spectrum& Spectrum::operator*=(const Spectrum& c)
 {
-    for (int i = 0; i < NUM_SPECTRUM_SAMPLES; ++i)
+    for (int i = 0; i < numSpectralSamples; ++i)
         m_Coefficients[i] *= c.m_Coefficients[i];
 
     return *this;
@@ -81,7 +81,7 @@ Spectrum& Spectrum::operator*=(const Spectrum& c)
 Spectrum Spectrum::operator/(const Spectrum& c) const
 {
     Spectrum result;
-    for (int i = 0; i < NUM_SPECTRUM_SAMPLES; ++i)
+    for (int i = 0; i < numSpectralSamples; ++i)
         result.m_Coefficients[i] = m_Coefficients[i] / c.m_Coefficients[i];
 
     return result;
@@ -89,7 +89,7 @@ Spectrum Spectrum::operator/(const Spectrum& c) const
 
 Spectrum& Spectrum::operator/=(const Spectrum& c)
 {
-    for (int i = 0; i < NUM_SPECTRUM_SAMPLES; ++i)
+    for (int i = 0; i < numSpectralSamples; ++i)
         m_Coefficients[i] /= c.m_Coefficients[i];
 
     return *this;
@@ -97,7 +97,7 @@ Spectrum& Spectrum::operator/=(const Spectrum& c)
 
 bool Spectrum::IsBlack() const
 {
-    for (int i = 0; i < NUM_SPECTRUM_SAMPLES; ++i)
+    for (int i = 0; i < numSpectralSamples; ++i)
         if (m_Coefficients[i] != 0.0)
             return false;
 
@@ -110,7 +110,7 @@ bool Spectrum::HasNans() const
     // Probably because isnan() is declared in <math.h> and std::isnan in <cmath>.
     using namespace std; 
 
-    for (int i = 0; i < NUM_SPECTRUM_SAMPLES; ++i)
+    for (int i = 0; i < numSpectralSamples; ++i)
         if (isnan(m_Coefficients[i]))
             return true;
 
@@ -119,17 +119,22 @@ bool Spectrum::HasNans() const
 
 bool Spectrum::IsEqual(const Spectrum& other) const
 {
-    for (int i = 0; i < NUM_SPECTRUM_SAMPLES; ++i)
+    for (int i = 0; i < numSpectralSamples; ++i)
         if (m_Coefficients[i] != other.m_Coefficients[i])
             return false;
 
     return true;
 }
 
+void Spectrum::Clamp(const Spectrum& l, const Spectrum& h)
+{
+    *this = Clamp(*this, l, h);
+}
+
 Spectrum Spectrum::Sqrt(const Spectrum& s)
 {
     Spectrum result;
-    for (int i = 0; i < NUM_SPECTRUM_SAMPLES; ++i)
+    for (int i = 0; i < numSpectralSamples; ++i)
         result.m_Coefficients[i] = sqrt(s.m_Coefficients[i]);
 
     return result;
@@ -138,7 +143,7 @@ Spectrum Spectrum::Sqrt(const Spectrum& s)
 Spectrum Spectrum::Pow(const Spectrum& s, double p)
 {
     Spectrum result;
-    for (int i = 0; i < NUM_SPECTRUM_SAMPLES; ++i)
+    for (int i = 0; i < numSpectralSamples; ++i)
         result.m_Coefficients[i] = pow(s.m_Coefficients[i], p);
 
     return result;
@@ -152,7 +157,7 @@ Spectrum Spectrum::Lerp(const Spectrum& s1, const Spectrum& s2, double t)
 Spectrum Spectrum::Clamp(const Spectrum& s1, const Spectrum& l, const Spectrum& h)
 {
     Spectrum result;
-    for (int i = 0; i < NUM_SPECTRUM_SAMPLES; ++i)
+    for (int i = 0; i < numSpectralSamples; ++i)
     {
         double val = s1.m_Coefficients[i];
         double lv = l.m_Coefficients[i];
@@ -166,7 +171,7 @@ Spectrum Spectrum::Clamp(const Spectrum& s1, const Spectrum& l, const Spectrum& 
 Spectrum Spectrum::Min(const Spectrum& s1, const Spectrum& s2)
 {
     Spectrum result;
-    for (int i = 0; i < NUM_SPECTRUM_SAMPLES; ++i)
+    for (int i = 0; i < numSpectralSamples; ++i)
     {
         double v1 = s1.m_Coefficients[i];
         double v2 = s2.m_Coefficients[i];
@@ -179,7 +184,7 @@ Spectrum Spectrum::Min(const Spectrum& s1, const Spectrum& s2)
 Spectrum Spectrum::Max(const Spectrum& s1, const Spectrum& s2)
 {
     Spectrum result;
-    for (int i = 0; i < NUM_SPECTRUM_SAMPLES; ++i)
+    for (int i = 0; i < numSpectralSamples; ++i)
     {
         double v1 = s1.m_Coefficients[i];
         double v2 = s2.m_Coefficients[i];

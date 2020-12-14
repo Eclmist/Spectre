@@ -18,33 +18,20 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#pragma once
+#include "googletest/gtest.h"
+#include "core/spectrum/illuminantspectrum.h"
 
-struct Coefficients
+TEST(IlluminantSpectrumTest, CanBeCreated)
 {
-    Coefficients(double v)
-    {
-        m_Data[0] = v;
-        m_Data[1] = v;
-        m_Data[2] = v;
-    }
+    ASSERT_NO_THROW(IlluminantSpectrum({ 0.2, 0.3, 0.4 }));
+}
 
-    Coefficients(double r = 0, double g = 0, double b = 0)
-    {
-        m_Data[0] = r;
-        m_Data[1] = g;
-        m_Data[2] = b;
-    }
-
-    double operator[](int i) const { return m_Data[i]; }
-    double& operator[](int i) { return m_Data[i]; }
-
-    Coefficients operator*(double scale) { return { m_Data[0] * scale, m_Data[1] * scale, m_Data[2] * scale }; }
-    Coefficients operator/(double div) { return { m_Data[0] / div, m_Data[1] / div, m_Data[2] / div }; }
-
-    double m_Data[3];
-};
-
-typedef Coefficients RGBCoefficients;
-typedef Coefficients XYZCoefficients;
-
+TEST(IlluminantSpectrumTest, HasCorrectValues)
+{
+    IlluminantSpectrum white({ 1, 1, 1 });
+    RGBCoefficients rgb = white.ToRGB();
+    static const double tolerance = 0.1;
+    EXPECT_LT(abs(rgb[0] - 1.205), tolerance);
+    EXPECT_LT(abs(rgb[1] - 0.94), tolerance);
+    EXPECT_LT(abs(rgb[2] - 0.909), tolerance);
+}

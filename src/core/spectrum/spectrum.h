@@ -20,10 +20,7 @@
 
 #pragma once
 
-// To allow for overrides prior to includes
-#ifndef NUM_SPECTRUM_SAMPLES
-#define NUM_SPECTRUM_SAMPLES 64
-#endif
+static constexpr int numSpectralSamples = 64;
 
 class Spectrum
 {
@@ -46,6 +43,7 @@ public:
     bool IsBlack() const;
     bool HasNans() const;
     bool IsEqual(const Spectrum& other) const;
+    void Clamp(const Spectrum& l, const Spectrum& h);
 
 public:
     static Spectrum Sqrt(const Spectrum& s);
@@ -56,6 +54,6 @@ public:
     static Spectrum Max(const Spectrum& s1, const Spectrum& s2);
 
 protected:
-    double m_Coefficients[NUM_SPECTRUM_SAMPLES];
+    double m_Coefficients[numSpectralSamples];
 };
 

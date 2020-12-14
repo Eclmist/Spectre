@@ -20,31 +20,18 @@
 
 #pragma once
 
-struct Coefficients
+#include "sampledspectrum.h"
+
+class ReflectantSpectrum : public SampledSpectrum
 {
-    Coefficients(double v)
-    {
-        m_Data[0] = v;
-        m_Data[1] = v;
-        m_Data[2] = v;
-    }
+public:
+    ReflectantSpectrum(const RGBCoefficients& rgb);
 
-    Coefficients(double r = 0, double g = 0, double b = 0)
-    {
-        m_Data[0] = r;
-        m_Data[1] = g;
-        m_Data[2] = b;
-    }
-
-    double operator[](int i) const { return m_Data[i]; }
-    double& operator[](int i) { return m_Data[i]; }
-
-    Coefficients operator*(double scale) { return { m_Data[0] * scale, m_Data[1] * scale, m_Data[2] * scale }; }
-    Coefficients operator/(double div) { return { m_Data[0] / div, m_Data[1] / div, m_Data[2] / div }; }
-
-    double m_Data[3];
+private:
+    void InitAscendingRGB(const RGBCoefficients& rgb);
+    void InitAscendingRBG(const RGBCoefficients& rgb);
+    void InitAscendingGRB(const RGBCoefficients& rgb);
+    void InitAscendingGBR(const RGBCoefficients& rgb);
+    void InitAscendingBRG(const RGBCoefficients& rgb);
+    void InitAscendingBGR(const RGBCoefficients& rgb);
 };
-
-typedef Coefficients RGBCoefficients;
-typedef Coefficients XYZCoefficients;
-

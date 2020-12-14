@@ -24,17 +24,33 @@
 #include <cmath>
 #include <vector>
 
-#include "cieconstants.h"
+#include "spectralconstants.h"
 
-SampledSpectrum SampledSpectrum::CIE_X;
-SampledSpectrum SampledSpectrum::CIE_Y;
-SampledSpectrum SampledSpectrum::CIE_Z;
+const SampledSpectrum SampledSpectrum::cieX = SampledSpectrum::FromSortedRawSamples(cieLambda, cieSamplesX, numCieSamples);
+const SampledSpectrum SampledSpectrum::cieY = SampledSpectrum::FromSortedRawSamples(cieLambda, cieSamplesY, numCieSamples);
+const SampledSpectrum SampledSpectrum::cieZ = SampledSpectrum::FromSortedRawSamples(cieLambda, cieSamplesZ, numCieSamples);
+
+const SampledSpectrum SampledSpectrum::stdReflW = SampledSpectrum::FromSortedRawSamples(stdLambda, stdReflSamplesW, numStdSamples);
+const SampledSpectrum SampledSpectrum::stdReflC = SampledSpectrum::FromSortedRawSamples(stdLambda, stdReflSamplesC, numStdSamples);
+const SampledSpectrum SampledSpectrum::stdReflM = SampledSpectrum::FromSortedRawSamples(stdLambda, stdReflSamplesM, numStdSamples);
+const SampledSpectrum SampledSpectrum::stdReflY = SampledSpectrum::FromSortedRawSamples(stdLambda, stdReflSamplesY, numStdSamples);
+const SampledSpectrum SampledSpectrum::stdReflR = SampledSpectrum::FromSortedRawSamples(stdLambda, stdReflSamplesR, numStdSamples);
+const SampledSpectrum SampledSpectrum::stdReflG = SampledSpectrum::FromSortedRawSamples(stdLambda, stdReflSamplesG, numStdSamples);
+const SampledSpectrum SampledSpectrum::stdReflB = SampledSpectrum::FromSortedRawSamples(stdLambda, stdReflSamplesB, numStdSamples);
+
+const SampledSpectrum SampledSpectrum::stdIllumW = SampledSpectrum::FromSortedRawSamples(stdLambda, stdIllumSamplesW, numStdSamples);
+const SampledSpectrum SampledSpectrum::stdIllumC = SampledSpectrum::FromSortedRawSamples(stdLambda, stdIllumSamplesC, numStdSamples);
+const SampledSpectrum SampledSpectrum::stdIllumM = SampledSpectrum::FromSortedRawSamples(stdLambda, stdIllumSamplesM, numStdSamples);
+const SampledSpectrum SampledSpectrum::stdIllumY = SampledSpectrum::FromSortedRawSamples(stdLambda, stdIllumSamplesY, numStdSamples);
+const SampledSpectrum SampledSpectrum::stdIllumR = SampledSpectrum::FromSortedRawSamples(stdLambda, stdIllumSamplesR, numStdSamples);
+const SampledSpectrum SampledSpectrum::stdIllumG = SampledSpectrum::FromSortedRawSamples(stdLambda, stdIllumSamplesG, numStdSamples);
+const SampledSpectrum SampledSpectrum::stdIllumB = SampledSpectrum::FromSortedRawSamples(stdLambda, stdIllumSamplesB, numStdSamples);
 
 SampledSpectrum::SampledSpectrum(const std::vector<Sample>& samples)
 {
     if (IsSamplesSorted(samples))
     {
-        for (int i = 0; i < NUM_SPECTRUM_SAMPLES; ++i)
+        for (int i = 0; i < numSpectralSamples; ++i)
         {
             double startLambda, endLambda;
             ComputeRangeAtIndex(i, startLambda, endLambda);
@@ -43,19 +59,7 @@ SampledSpectrum::SampledSpectrum(const std::vector<Sample>& samples)
     }
 }
 
-void SampledSpectrum::Init()
-{
-    InitCieReferenceCurves();
-}
-
-void SampledSpectrum::InitCieReferenceCurves()
-{
-    CIE_X = FromRawSamples(CIE_Lambda, CIE_X_Samples, numCIESamples);
-    CIE_Y = FromRawSamples(CIE_Lambda, CIE_Y_Samples, numCIESamples);
-    CIE_Z = FromRawSamples(CIE_Lambda, CIE_Z_Samples, numCIESamples);
-}
-
-SampledSpectrum SampledSpectrum::FromRawSamples(const double* lambda, const double* power, int numSamples)
+SampledSpectrum SampledSpectrum::FromSortedRawSamples(const double* lambda, const double* power, int numSamples)
 {
     SampleArray sampleArray(numSamples);
 
@@ -65,38 +69,35 @@ SampledSpectrum SampledSpectrum::FromRawSamples(const double* lambda, const doub
     return sampleArray;
 }
 
-RGBCoefficients SampledSpectrum::XYZToRGB(XYZCoefficients xyz)
+RGBCoefficients SampledSpectrum::XYZToRGB(const XYZCoefficients& xyz)
 {
-    // This is really converting XYZ to SRGB, not any RGB
     RGBCoefficients rgb;
-    rgb[0] = 3.240479f * xyz[0] - 1.537150f * xyz[1] - 0.498535f * xyz[2];
-    rgb[1] =-0.969256f * xyz[0] + 1.875991f * xyz[1] + 0.041556f * xyz[2];
-    rgb[2] = 0.055648f * xyz[0] - 0.204043f * xyz[1] + 1.057311f * xyz[2];
+    rgb[0] = 3.240479 * xyz[0] - 1.537150 * xyz[1] - 0.498535 * xyz[2];
+    rgb[1] =-0.969256 * xyz[0] + 1.875991 * xyz[1] + 0.041556 * xyz[2];
+    rgb[2] = 0.055648 * xyz[0] - 0.204043 * xyz[1] + 1.057311 * xyz[2];
     return rgb;
 }
 
-XYZCoefficients SampledSpectrum::RGBToXYZ(RGBCoefficients rgb)
+XYZCoefficients SampledSpectrum::RGBToXYZ(const RGBCoefficients& rgb)
 {
-    // This is really converting SRGB to XYZ, not any RGB
     XYZCoefficients xyz;
-    xyz[0] = 0.412453f * rgb[0] + 0.357580f * rgb[1] + 0.180423f * rgb[2];
-    xyz[1] = 0.212671f * rgb[0] + 0.715160f * rgb[1] + 0.072169f * rgb[2];
-    xyz[2] = 0.019334f * rgb[0] + 0.119193f * rgb[1] + 0.950227f * rgb[2];
+    xyz[0] = 0.412453 * rgb[0] + 0.357580 * rgb[1] + 0.180423 * rgb[2];
+    xyz[1] = 0.212671 * rgb[0] + 0.715160 * rgb[1] + 0.072169 * rgb[2];
+    xyz[2] = 0.019334 * rgb[0] + 0.119193 * rgb[1] + 0.950227 * rgb[2];
     return xyz;
 }
 
 XYZCoefficients SampledSpectrum::ToXYZ() const
 {
     XYZCoefficients result;
-    for (int i = 0; i < NUM_SPECTRUM_SAMPLES && i < numCIESamples; ++i)
+    for (int i = 0; i < numSpectralSamples; ++i)
     {
-        result[0] += CIE_X.m_Coefficients[i] * m_Coefficients[i];
-        result[1] += CIE_Y.m_Coefficients[i] * m_Coefficients[i];
-        result[2] += CIE_Z.m_Coefficients[i] * m_Coefficients[i];
+        result[0] += cieX.m_Coefficients[i] * m_Coefficients[i];
+        result[1] += cieY.m_Coefficients[i] * m_Coefficients[i];
+        result[2] += cieZ.m_Coefficients[i] * m_Coefficients[i];
     }
 
-    double scale = (MaxWavelength - MinWavelength) / float(NUM_SPECTRUM_SAMPLES);
-    return result * scale;
+    return result * GetXYZNormalizationConstant();
 }
 
 RGBCoefficients SampledSpectrum::ToRGB() const
@@ -129,7 +130,7 @@ bool SampledSpectrum::IsInputOutsideRightBoundary(const SampleArray& samples, do
 
 void SampledSpectrum::ComputeRangeAtIndex(int index, double& start, double& end) const
 {
-    double binWidth = (MaxWavelength - MinWavelength) / double(NUM_SPECTRUM_SAMPLES - 1);
+    double binWidth = (MaxWavelength - MinWavelength) / double(numSpectralSamples - 1);
     double halfBinWidth = binWidth / 2.0;
     start = MinWavelength + (index * binWidth) - halfBinWidth;
     end = MinWavelength + (index * binWidth) + halfBinWidth;
@@ -199,5 +200,11 @@ double SampledSpectrum::ComputeAverageInRange(const SampleArray& samples, double
     double sum = ComputeAreaSum(samples, leftBound, rightBound);
     double range = rightBound - leftBound;
     return sum / range;
+}
+
+double SampledSpectrum::GetXYZNormalizationConstant() const
+{
+    double scale = (MaxWavelength - MinWavelength + 1) / float(numSpectralSamples);
+    return scale / cieIntegralY;
 }
 
