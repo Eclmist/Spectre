@@ -7,7 +7,7 @@
 
 <p align="center">
   <a href="https://travis-ci.com/Eclmist/Elixir">
-    <img src="https://github.com/eclmist/RTCore/workflows/Build%20RTCore/badge.svg" alt="Build Status">
+    <img src="https://github.com/eclmist/RTCore/workflows/build/badge.svg" alt="Build Status">
   </a>
   <a href="#------">
     <img src="https://img.shields.io/badge/stability-experimental-orange.svg">
