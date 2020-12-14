@@ -153,7 +153,6 @@ TEST(SampledSpectrumTest, CanConvertToXYZ)
 {
     SampledSpectrum s(1.0);
 
-
     XYZCoefficients trueXYZ;
     for (int i = 0; i < numCieSamples; ++i)
     {

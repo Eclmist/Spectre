@@ -35,3 +35,4 @@ TEST(ReflectantSpectrumTest, HasCorrectValues)
     EXPECT_LT(abs(rgb[1] - 0.94), tolerance);
     EXPECT_LT(abs(rgb[2] - 0.909), tolerance);
 }
+
