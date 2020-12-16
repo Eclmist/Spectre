@@ -39,7 +39,7 @@ set(RTC_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 # Enable AVX2 SIMD intrinsics
-add_definitions(-DAVX_ENABLED)
+add_definitions(-DRTC_AVX2_ENABLED)
 
 # =========================================================================== #
 #                        ADD SOURCE FILES TO PROJECT                          #
