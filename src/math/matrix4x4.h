@@ -20,5 +20,41 @@
 
 #pragma once
 
-#include "math/simd/avxmatrix.h"
-typedef AvxMatrix Matrix4x4;
+#include "math.h"
+
+class Matrix4x4
+{
+public:
+    Matrix4x4();
+    Matrix4x4(const double data[16]);
+    Matrix4x4(const double data[4][4]);
+    Matrix4x4(double _11, double _12, double _13, double _14,
+              double _21, double _22, double _23, double _24,
+              double _31, double _32, double _33, double _34,
+              double _41, double _42, double _43, double _44);
+
+    double operator[](int i) const { return m_Data[i]; }
+    double& operator[](int i) { return m_Data[i]; }
+    bool operator==(const Matrix4x4& m2) const;
+    Matrix4x4 operator*(const Matrix4x4& m2) const;
+
+    bool IsIdentity() const;
+    double GetDeterminant() const;
+
+    Matrix4x4 Transposed() const;
+    Matrix4x4 Inversed() const;
+
+public:
+    union
+    {
+        struct { double m_Data[16]; };
+        struct { double m_Data2D[4][4]; };
+        struct 
+        {
+            double m_11, m_12, m_13, m_14;
+            double m_21, m_22, m_23, m_24;
+            double m_31, m_32, m_33, m_34;
+            double m_41, m_42, m_43, m_44;
+        };
+    };
+};

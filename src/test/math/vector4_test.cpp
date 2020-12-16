@@ -20,12 +20,12 @@
 #include "math/vector4.h"
 #include <stdexcept>
 
-TEST(VectorTest, CanBeCreated)
+TEST(Vector4Test, CanBeCreated)
 {
     ASSERT_NO_THROW(Vector4 v);
 }
 
-TEST(VectorTest, DefaultsToZeroVector)
+TEST(Vector4Test, DefaultsToZeroVector)
 {
     Vector4 v;
     EXPECT_DOUBLE_EQ(v[0], 0.0);
@@ -34,7 +34,7 @@ TEST(VectorTest, DefaultsToZeroVector)
     EXPECT_DOUBLE_EQ(v[3], 0.0);
 }
 
-TEST(VectorTest, CanBeCreatedScalar)
+TEST(Vector4Test, CanBeCreatedScalar)
 {
     Vector4 v(22.0);
     EXPECT_DOUBLE_EQ(v[0], 22.0);
@@ -43,7 +43,7 @@ TEST(VectorTest, CanBeCreatedScalar)
     EXPECT_DOUBLE_EQ(v[3], 22.0);
 }
 
-TEST(VectorTest, CanBeCreatedPerComponent)
+TEST(Vector4Test, CanBeCreatedPerComponent)
 {
     Vector4 v(1.0, 2.0, 3.0, 4.0);
     EXPECT_DOUBLE_EQ(v[0], 1.0);
@@ -64,7 +64,7 @@ TEST(VectorTest, CanBeCreatedPerComponent)
     EXPECT_DOUBLE_EQ(w[3], 0.0);
 }
 
-TEST(VectorTest, CanBeSetPerComponents)
+TEST(Vector4Test, CanBeSetPerComponents)
 {
     Vector4 v;
     v[0] = 1.0;
@@ -78,7 +78,7 @@ TEST(VectorTest, CanBeSetPerComponents)
     EXPECT_DOUBLE_EQ(v[3], 4.0);
 }
 
-TEST(VectorTest, CanBeAccessedPerComponent)
+TEST(Vector4Test, CanBeAccessedPerComponent)
 {
     Vector4 v(1.0, 2.0, 3.0, 4.0);
 
@@ -92,7 +92,7 @@ TEST(VectorTest, CanBeAccessedPerComponent)
     EXPECT_DOUBLE_EQ(v[3], 4.0);
 }
 
-TEST(VectorTest, CanBeCopyConstructed)
+TEST(Vector4Test, CanBeCopyConstructed)
 {
     Vector4 a(22.0);
     Vector4 b(a);
@@ -106,7 +106,7 @@ TEST(VectorTest, CanBeCopyConstructed)
     EXPECT_DOUBLE_EQ(a[0], 22.0);
 }
 
-TEST(VectorTest, CanBeCopied)
+TEST(Vector4Test, CanBeCopied)
 {
     Vector4 a(22.0);
     Vector4 b = a;
@@ -120,7 +120,7 @@ TEST(VectorTest, CanBeCopied)
     EXPECT_DOUBLE_EQ(a[0], 22.0);
 }
 
-TEST(VectorTest, CanBeAdded)
+TEST(Vector4Test, CanBeAdded)
 {
     Vector4 a(1.0, 2.0, 3.0, 4.0);
     Vector4 b(2.0, 3.0, 4.0, 5.0);
@@ -132,7 +132,7 @@ TEST(VectorTest, CanBeAdded)
     EXPECT_DOUBLE_EQ(c[3], 9.0);
 }
 
-TEST(VectorTest, CanBeAddAssigned)
+TEST(Vector4Test, CanBeAddAssigned)
 {
     Vector4 a(1.0, 2.0, 3.0, 4.0);
     Vector4 b(2.0, 3.0, 4.0, 5.0);
@@ -144,7 +144,7 @@ TEST(VectorTest, CanBeAddAssigned)
     EXPECT_DOUBLE_EQ(b[3], 9.0);
 }
 
-TEST(VectorTest, CanBeSubtracted)
+TEST(Vector4Test, CanBeSubtracted)
 {
     Vector4 a(1.0, 2.0, 3.0, 4.0);
     Vector4 b(2.0, 3.0, 4.0, 5.0);
@@ -156,7 +156,7 @@ TEST(VectorTest, CanBeSubtracted)
     EXPECT_DOUBLE_EQ(c[3], -1.0);
 }
 
-TEST(VectorTest, CanBeSubtractAssigned)
+TEST(Vector4Test, CanBeSubtractAssigned)
 {
     Vector4 a(1.0, 2.0, 3.0, 4.0);
     Vector4 b(2.0, 3.0, 4.0, 5.0);
@@ -168,7 +168,7 @@ TEST(VectorTest, CanBeSubtractAssigned)
     EXPECT_DOUBLE_EQ(b[3], 1.0);
 }
 
-TEST(VectorTest, CanBeNegated)
+TEST(Vector4Test, CanBeNegated)
 {
     Vector4 a(-1.0);
     Vector4 b = -a;
@@ -178,7 +178,7 @@ TEST(VectorTest, CanBeNegated)
     EXPECT_DOUBLE_EQ(b[3], 1.0);
 }
 
-TEST(VectorTest, DoesNotChangeWithPveSign)
+TEST(Vector4Test, DoesNotChangeWithPveSign)
 {
     Vector4 a(-1.0);
     Vector4 b = +a;
@@ -188,7 +188,7 @@ TEST(VectorTest, DoesNotChangeWithPveSign)
     EXPECT_DOUBLE_EQ(b[3], -1.0);
 }
 
-TEST(VectorTest, CanComputeMagnitude)
+TEST(Vector4Test, CanComputeMagnitude)
 {
     Vector4 a(1.0, 2.0, 3.0);
     Vector4 b(1.0, 0.0, 0.0);
@@ -201,7 +201,7 @@ TEST(VectorTest, CanComputeMagnitude)
     EXPECT_DOUBLE_EQ(d.Magnitude(), 3.0);
 }
 
-TEST(VectorTest, CanComputeSquareMagnitude)
+TEST(Vector4Test, CanComputeSquareMagnitude)
 {
     Vector4 a(1.0, 2.0, 3.0);
     Vector4 b(1.0, 0.0, 0.0);
@@ -214,19 +214,19 @@ TEST(VectorTest, CanComputeSquareMagnitude)
     EXPECT_DOUBLE_EQ(d.MagnitudeSquared(), 9.0);
 }
 
-TEST(VectorTest, DefaultUnitVectorsHaveUnitLength)
+TEST(Vector4Test, DefaultUnitVectorsHaveUnitLength)
 {
     EXPECT_DOUBLE_EQ(Vector4::Up().MagnitudeSquared(), 1.0);
     EXPECT_DOUBLE_EQ(Vector4::Right().MagnitudeSquared(), 1.0);
     EXPECT_DOUBLE_EQ(Vector4::Forward().MagnitudeSquared(), 1.0);
 }
 
-TEST(VectorTest, DefaultZeroVectorHaveZeroLength)
+TEST(Vector4Test, DefaultZeroVectorHaveZeroLength)
 {
     EXPECT_DOUBLE_EQ(Vector4::Zero().MagnitudeSquared(), 0.0);
 }
 
-TEST(VectorTest, CanCheckEquality)
+TEST(Vector4Test, CanCheckEquality)
 {
     EXPECT_EQ(Vector4(1.0), Vector4(1.0));
     EXPECT_EQ(Vector4(0.2), Vector4(0.2));
@@ -236,13 +236,13 @@ TEST(VectorTest, CanCheckEquality)
     EXPECT_NE(Vector4(0.0, 1.0, 2.0, 3.0), Vector4(0.0, 1.0, 2.1, 3.0));
 }
 
-TEST(VectorTest, CanBeScaled)
+TEST(Vector4Test, CanBeScaled)
 {
     EXPECT_EQ(Vector4(1.0) * 2.0, Vector4(2.0));
     EXPECT_EQ(Vector4(1.0, 2.0, 3.0, 4.0) * 2.0, Vector4(2, 4, 6.0, 8.0));
 }
 
-TEST(VectorTest, CanBeScaleAssigned)
+TEST(Vector4Test, CanBeScaleAssigned)
 {
     Vector4 a(1.0, 2.0, 3.0, 4.0);
     a *= {1.0, 0.5, 0.5, 2.0};
@@ -255,7 +255,7 @@ TEST(VectorTest, CanBeScaleAssigned)
     EXPECT_EQ(a, Vector4(0.0));
 }
 
-TEST(VectorTest, CanBeNormalized)
+TEST(Vector4Test, CanBeNormalized)
 {
     Vector4 b(1.1, 0.0, 0.0);
     Vector4 c(0.0, 2.0, 0.0);
@@ -282,7 +282,7 @@ TEST(VectorTest, CanBeNormalized)
     EXPECT_DOUBLE_EQ(a[3], 0.0);
 }
 
-TEST(VectorTest, CanComputeDotProduct)
+TEST(Vector4Test, CanComputeDotProduct)
 {
     EXPECT_DOUBLE_EQ(Vector4::Dot({ 1.0 }, { 2.0 }), 8.0);
     EXPECT_DOUBLE_EQ(Vector4::Dot({ 1.0, 2.0, 3.0, 4.0 }, { 2.0, 2.0, 1.0, 4.0 }), 25);
@@ -292,14 +292,14 @@ TEST(VectorTest, CanComputeDotProduct)
     EXPECT_DOUBLE_EQ(Vector4::AbsDot({ 1.0 }, { 2.0 }), 8.0);
 }
 
-TEST(VectorTest, CanComputeAngle)
+TEST(Vector4Test, CanComputeAngle)
 {
     EXPECT_DOUBLE_EQ(Vector4::Angle({ 1.0 }, { 1.0 }), 0.0);
     EXPECT_DOUBLE_EQ(Vector4::Angle({ 1.0, 0.0, 0.0 }, { 0.0, 1.0, 0.0 }), 1.5707963267948966);
     EXPECT_DOUBLE_EQ(Vector4::Angle({ 2.0, 3.0, 4.0 }, { 5.0, 6.0, 7.0 }), 0.1304771607247695);
 }
 
-TEST(VectorTest, CanComputeCrossProduct)
+TEST(Vector4Test, CanComputeCrossProduct)
 {
     EXPECT_THROW(Vector4::Cross({ 1.0 }, { 1.0, 2.0, 3.0, 0.0 }), std::invalid_argument);
     EXPECT_THROW(Vector4::Cross({ 1.0, 2.0, 3.0, 0.0 }, { 1.0 }), std::invalid_argument);
