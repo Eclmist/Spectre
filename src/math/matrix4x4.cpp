@@ -69,7 +69,7 @@ bool Matrix4x4::operator==(const Matrix4x4& m2) const
 
 Matrix4x4 Matrix4x4::operator*(const Matrix4x4& m2) const
 {
-    double data[4][4];
+    double data[4][4] = {0};
 
     for (int i = 0; i < 4; ++i) {
         for (int j = 0; j < 4; ++j) {
