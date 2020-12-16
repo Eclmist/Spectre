@@ -20,9 +20,53 @@
 
 #pragma once
 
-#ifdef RTC_AVX2_ENABLED
-#include "math/simd/avxvector.h"
-typedef AvxVector Vector4;
-#else
-// TODO: Add a non-avx version of vector to be typedefed here
-#endif
+#include "math.h"
+#include "tsimd/tsimd.h"
+
+class Vector4
+{
+public:
+    Vector4(double v = 0);
+    Vector4(double x, double y, double z = 0, double w = 0);
+    Vector4(const double data[4]);
+    ~Vector4() = default;
+
+    Vector4 operator+() const;
+    Vector4 operator-() const;
+
+    // Component-wise arithmetics
+    Vector4 operator+(const Vector4& b) const;
+    Vector4& operator+=(const Vector4& b);
+    Vector4 operator-(const Vector4& b) const;
+    Vector4& operator-=(const Vector4& b);
+    Vector4 operator*(const Vector4& b) const;
+    Vector4& operator*=(const Vector4& b);
+    Vector4 operator/(const Vector4& b) const;
+    Vector4& operator/=(const Vector4& b);
+    bool operator==(const Vector4& b) const;
+    bool operator!=(const Vector4& b) const;
+
+    inline double operator[](int i) const { return m_Data[i]; }
+    inline double& operator[](int i) { return m_Data[i]; }
+
+public:
+    void Normalize();
+    Vector4 Normalized() const;
+    double Magnitude() const;
+    double MagnitudeSquared() const;
+
+public:
+    static Vector4 Zero()    { return {0.0, 0.0, 0.0, 0.0}; }
+    static Vector4 Up()      { return {0.0, 1.0, 0.0, 0.0}; }
+    static Vector4 Right()   { return {1.0, 0.0, 0.0, 0.0}; }
+    static Vector4 Forward() { return {0.0, 0.0, -1.0, 0.0}; }
+
+    static double Dot(const Vector4& a, const Vector4& b);
+    static double AbsDot(const Vector4& a, const Vector4& b);
+    static double Angle(const Vector4& a, const Vector4& b);
+    static double CosAngle(const Vector4& a, const Vector4& b);
+    static Vector4 Cross(const Vector4& a, const Vector4& b);
+
+    double m_Data[4];
+};
+
