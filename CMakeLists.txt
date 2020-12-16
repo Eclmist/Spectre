@@ -38,9 +38,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(RTC_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-# Enable AVX2 SIMD intrinsics
-add_definitions(-DRTC_AVX2_ENABLED)
-
 # =========================================================================== #
 #                        ADD SOURCE FILES TO PROJECT                          #
 # =========================================================================== #
@@ -59,7 +56,8 @@ source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${all_files})
 
 file(GLOB_RECURSE stb include/stb/*)
 file(GLOB_RECURSE gtest include/googletest/*)
-set(extern_files ${stb} ${gtest})
+file(GLOB_RECURSE tsimd include/tsimd/*)
+set(extern_files ${stb} ${gtest} ${tsimd})
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${extern_files})
 
 # =========================================================================== #
