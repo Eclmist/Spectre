@@ -18,19 +18,19 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "avxvector.h"
+#include "vector4.h"
 #include <stdexcept>
 #include "tsimd/tsimd.h"
 
 using namespace tsimd;
 
-AvxVector::AvxVector(double v)
+Vector4::Vector4(double v)
 {
     for (int i = 0; i < 4; ++i)
         m_Data[i] = v;
 }
 
-AvxVector::AvxVector(double x, double y, double z, double w)
+Vector4::Vector4(double x, double y, double z, double w)
 {
     m_Data[0] = x;
     m_Data[1] = y;
@@ -38,107 +38,107 @@ AvxVector::AvxVector(double x, double y, double z, double w)
     m_Data[3] = w;
 }
 
-AvxVector::AvxVector(const double data[4])
+Vector4::Vector4(const double data[4])
 {
     for (int i = 0; i < 4; ++i)
         m_Data[i] = data[i];
 }
 
-AvxVector AvxVector::operator+() const
+Vector4 Vector4::operator+() const
 {
     return *this;
 }
 
-AvxVector AvxVector::operator-() const
+Vector4 Vector4::operator-() const
 {
     double data[4];
     store(load<vdouble4>(m_Data) * -1, data);
-    return AvxVector(data);
+    return Vector4(data);
 }
 
-AvxVector AvxVector::operator+(const AvxVector& b) const
+Vector4 Vector4::operator+(const Vector4& b) const
 {
     double data[4];
     store(load<vdouble4>(m_Data) + load<vdouble4>(b.m_Data), data);
     return data;
 }
 
-AvxVector& AvxVector::operator+=(const AvxVector& b)
+Vector4& Vector4::operator+=(const Vector4& b)
 {
     store(load<vdouble4>(m_Data) + load<vdouble4>(b.m_Data), m_Data);
     return *this;
 }
 
-AvxVector AvxVector::operator-(const AvxVector& b) const
+Vector4 Vector4::operator-(const Vector4& b) const
 {
     double data[4];
     store(load<vdouble4>(m_Data) - load<vdouble4>(b.m_Data), data);
     return data;
 }
 
-AvxVector& AvxVector::operator-=(const AvxVector& b)
+Vector4& Vector4::operator-=(const Vector4& b)
 {
     store(load<vdouble4>(m_Data) - load<vdouble4>(b.m_Data), m_Data);
     return *this;
 }
 
-AvxVector AvxVector::operator*(const AvxVector& b) const
+Vector4 Vector4::operator*(const Vector4& b) const
 {
     double data[4];
     store(load<vdouble4>(m_Data) * load<vdouble4>(b.m_Data), data);
     return data;
 }
 
-AvxVector& AvxVector::operator*=(const AvxVector& b)
+Vector4& Vector4::operator*=(const Vector4& b)
 {
     store(load<vdouble4>(m_Data) * load<vdouble4>(b.m_Data), m_Data);
     return *this;
 }
 
-AvxVector AvxVector::operator/(const AvxVector& b) const
+Vector4 Vector4::operator/(const Vector4& b) const
 {
     double data[4];
     store(load<vdouble4>(m_Data) / load<vdouble4>(b.m_Data), data);
     return data;
 }
 
-AvxVector& AvxVector::operator/=(const AvxVector& b)
+Vector4& Vector4::operator/=(const Vector4& b)
 {
     store(load<vdouble4>(m_Data) / load<vdouble4>(b.m_Data), m_Data);
     return *this;
 }
 
-bool AvxVector::operator==(const AvxVector& b) const
+bool Vector4::operator==(const Vector4& b) const
 {
     return all(load<vdouble4>(m_Data) == load<vdouble4>(b.m_Data));
 }
 
-bool AvxVector::operator!=(const AvxVector& b) const
+bool Vector4::operator!=(const Vector4& b) const
 {
     return !(*this == b);
 }
 
-AvxVector AvxVector::Normalized() const
+Vector4 Vector4::Normalized() const
 {
     return *this * (1.0 / Magnitude());
 }
 
-void AvxVector::Normalize()
+void Vector4::Normalize()
 {
     store(load<vdouble4>(m_Data) / Magnitude(), m_Data);
 }
 
-double AvxVector::Magnitude() const
+double Vector4::Magnitude() const
 {
     return sqrt(MagnitudeSquared());
 }
 
-double AvxVector::MagnitudeSquared() const
+double Vector4::MagnitudeSquared() const
 {
     return Dot(*this, *this);
 }
 
-double AvxVector::Dot(const AvxVector& a, const AvxVector& b)
+double Vector4::Dot(const Vector4& a, const Vector4& b)
 {
     double dot = 0;
     vdouble4 axb = load<vdouble4>(a.m_Data) * load<vdouble4>(b.m_Data);
@@ -146,22 +146,22 @@ double AvxVector::Dot(const AvxVector& a, const AvxVector& b)
     return dot;
 }
 
-double AvxVector::AbsDot(const AvxVector& a, const AvxVector& b)
+double Vector4::AbsDot(const Vector4& a, const Vector4& b)
 {
     return fabs(Dot(a, b));
 }
 
-double AvxVector::Angle(const AvxVector& a, const AvxVector& b)
+double Vector4::Angle(const Vector4& a, const Vector4& b)
 {
     return acos(CosAngle(a, b));
 }
 
-double AvxVector::CosAngle(const AvxVector& a, const AvxVector& b)
+double Vector4::CosAngle(const Vector4& a, const Vector4& b)
 {
     return Dot(a, b) / (a.Magnitude() * b.Magnitude());
 }
 
-AvxVector AvxVector::Cross(const AvxVector& a, const AvxVector& b)
+Vector4 Vector4::Cross(const Vector4& a, const Vector4& b)
 {
     if (a[3] != 0.0 || b[3] != 0.0)
         throw std::invalid_argument("Cross product does not exist for 4D vectors");
