@@ -20,12 +20,102 @@
 
 #include "avxvector.h"
 #include <stdexcept>
+#include "tsimd/tsimd.h"
 
-bool AvxVector::Equal(const AvxVector& b) const
+using namespace tsimd;
+
+AvxVector::AvxVector(double v)
 {
-    __m256d diff = _mm256_sub_pd(m_Data, b.m_Data);
-    __m256d cmpRes = _mm256_cmp_pd(diff, _mm256_setzero_pd(), _CMP_NEQ_UQ);
-    return _mm256_movemask_pd(cmpRes) == 0;
+    for (int i = 0; i < 4; ++i)
+        m_Data[i] = v;
+}
+
+AvxVector::AvxVector(double x, double y, double z, double w)
+{
+    m_Data[0] = x;
+    m_Data[1] = y;
+    m_Data[2] = z;
+    m_Data[3] = w;
+}
+
+AvxVector::AvxVector(const double data[4])
+{
+    for (int i = 0; i < 4; ++i)
+        m_Data[i] = data[i];
+}
+
+AvxVector AvxVector::operator+() const
+{
+    return *this;
+}
+
+AvxVector AvxVector::operator-() const
+{
+    double data[4];
+    store(load<vdouble4>(m_Data) * -1, data);
+    return AvxVector(data);
+}
+
+AvxVector AvxVector::operator+(const AvxVector& b) const
+{
+    double data[4];
+    store(load<vdouble4>(m_Data) + load<vdouble4>(b.m_Data), data);
+    return data;
+}
+
+AvxVector& AvxVector::operator+=(const AvxVector& b)
+{
+    store(load<vdouble4>(m_Data) + load<vdouble4>(b.m_Data), m_Data);
+    return *this;
+}
+
+AvxVector AvxVector::operator-(const AvxVector& b) const
+{
+    double data[4];
+    store(load<vdouble4>(m_Data) - load<vdouble4>(b.m_Data), data);
+    return data;
+}
+
+AvxVector& AvxVector::operator-=(const AvxVector& b)
+{
+    store(load<vdouble4>(m_Data) - load<vdouble4>(b.m_Data), m_Data);
+    return *this;
+}
+
+AvxVector AvxVector::operator*(const AvxVector& b) const
+{
+    double data[4];
+    store(load<vdouble4>(m_Data) * load<vdouble4>(b.m_Data), data);
+    return data;
+}
+
+AvxVector& AvxVector::operator*=(const AvxVector& b)
+{
+    store(load<vdouble4>(m_Data) * load<vdouble4>(b.m_Data), m_Data);
+    return *this;
+}
+
+AvxVector AvxVector::operator/(const AvxVector& b) const
+{
+    double data[4];
+    store(load<vdouble4>(m_Data) / load<vdouble4>(b.m_Data), data);
+    return data;
+}
+
+AvxVector& AvxVector::operator/=(const AvxVector& b)
+{
+    store(load<vdouble4>(m_Data) / load<vdouble4>(b.m_Data), m_Data);
+    return *this;
+}
+
+bool AvxVector::operator==(const AvxVector& b) const
+{
+    return all(load<vdouble4>(m_Data) == load<vdouble4>(b.m_Data));
+}
+
+bool AvxVector::operator!=(const AvxVector& b) const
+{
+    return !(*this == b);
 }
 
 AvxVector AvxVector::Normalized() const
@@ -35,7 +125,7 @@ AvxVector AvxVector::Normalized() const
 
 void AvxVector::Normalize()
 {
-    m_Data = _mm256_mul_pd(m_Data, _mm256_set1_pd(1.0 / Magnitude()));
+    store(load<vdouble4>(m_Data) / Magnitude(), m_Data);
 }
 
 double AvxVector::Magnitude() const
@@ -50,9 +140,10 @@ double AvxVector::MagnitudeSquared() const
 
 double AvxVector::Dot(const AvxVector& a, const AvxVector& b)
 {
-    __m256d dot = _mm256_mul_pd(a.m_Data, b.m_Data);
-    __m256d hsum = _mm256_hadd_pd(dot, dot);
-    return RTC_WIN32_ONLY(hsum.m256d_f64[0] + hsum.m256d_f64[2], hsum[0] + hsum[2]);
+    double dot = 0;
+    vdouble4 axb = load<vdouble4>(a.m_Data) * load<vdouble4>(b.m_Data);
+    foreach(axb, [&](double& v, int) { dot += v; });
+    return dot;
 }
 
 double AvxVector::AbsDot(const AvxVector& a, const AvxVector& b)
@@ -72,14 +163,13 @@ double AvxVector::CosAngle(const AvxVector& a, const AvxVector& b)
 
 AvxVector AvxVector::Cross(const AvxVector& a, const AvxVector& b)
 {
-    if (a.w != 0.0 || b.w != 0.0)
+    if (a[3] != 0.0 || b[3] != 0.0)
         throw std::invalid_argument("Cross product does not exist for 4D vectors");
 
-    __m256d tmp0 = _mm256_set_pd(a.y, a.z, a.x, 0.0);
-    __m256d tmp1 = _mm256_set_pd(b.y, b.z, b.x, 0.0);
-    tmp0 = _mm256_mul_pd(tmp0, b.m_Data);
-    tmp1 = _mm256_mul_pd(tmp1, a.m_Data);
-    AvxVector result = _mm256_sub_pd(tmp1, tmp0);
-    return AvxVector(result.y, result.z, result.x);
+    double data[4];
+    vdouble4 tmp0 = vdouble4(a[1], a[2], a[0], 0) * load<vdouble4>(b.m_Data);
+    vdouble4 tmp1 = vdouble4(b[1], b[2], b[0], 0) * load<vdouble4>(a.m_Data);
+    store(tmp1 - tmp0, data);
+    return { data[1], data[2], data[0] };
 }
 

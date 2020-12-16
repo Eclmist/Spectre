@@ -20,9 +20,5 @@
 
 #pragma once
 
-#ifdef RTC_AVX2_ENABLED
 #include "math/simd/avxmatrix.h"
 typedef AvxMatrix Matrix4x4;
-#else
-// TODO: Add a non-avx version of matrix to be typedefed here
-#endif

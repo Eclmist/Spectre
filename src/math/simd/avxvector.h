@@ -21,36 +21,35 @@
 #pragma once
 
 #include "math.h"
-#include <immintrin.h>
-#include "system/platform/platformutils.h"
+#include "tsimd/tsimd.h"
 
 class AvxVector
 {
 public:
-    AvxVector(double v = 0) { m_Data = _mm256_set1_pd(v); }
-    AvxVector(double x, double y, double z = 0, double w = 0) { m_Data = _mm256_set_pd(x, y, z, w); }
+    AvxVector(double v = 0);
+    AvxVector(double x, double y, double z = 0, double w = 0);
+    AvxVector(const double data[4]);
     ~AvxVector() = default;
 
-    inline const AvxVector operator-() const { return _mm256_mul_pd(m_Data, _mm256_set1_pd(-1.0)); }
-    inline const AvxVector operator+() const { return m_Data; }
+    AvxVector operator+() const;
+    AvxVector operator-() const;
 
-    inline AvxVector operator+(const AvxVector& b) const { return _mm256_add_pd(m_Data, b.m_Data); }
-    inline AvxVector& operator+=(const AvxVector& b) { m_Data = _mm256_add_pd(m_Data, b.m_Data); return *this; }
+    // Component-wise arithmetics
+    AvxVector operator+(const AvxVector& b) const;
+    AvxVector& operator+=(const AvxVector& b);
+    AvxVector operator-(const AvxVector& b) const;
+    AvxVector& operator-=(const AvxVector& b);
+    AvxVector operator*(const AvxVector& b) const;
+    AvxVector& operator*=(const AvxVector& b);
+    AvxVector operator/(const AvxVector& b) const;
+    AvxVector& operator/=(const AvxVector& b);
+    bool operator==(const AvxVector& b) const;
+    bool operator!=(const AvxVector& b) const;
 
-    inline AvxVector operator-(const AvxVector& b) const { return _mm256_sub_pd(m_Data, b.m_Data); }
-    inline AvxVector& operator-=(const AvxVector& b) { m_Data = _mm256_sub_pd(m_Data, b.m_Data); return *this; }
-
-    inline AvxVector operator*(const AvxVector& s) const { return _mm256_mul_pd(m_Data, s.m_Data); }
-    inline AvxVector& operator*=(const AvxVector& s) { m_Data = _mm256_mul_pd(m_Data, s.m_Data); return *this; }
-
-    /* Don't implement division until there is a good way to check for NaNs */
-
-    inline double operator[](int i) const { return RTC_WIN32_ONLY(m_Data.m256d_f64[3 - i], m_Data[3 - i]); }
-    inline bool operator==(const AvxVector& b) const { return Equal(b); }
-    inline bool operator!=(const AvxVector& b) const { return !Equal(b); }
+    inline double operator[](int i) const { return m_Data[i]; }
+    inline double& operator[](int i) { return m_Data[i]; }
 
 public:
-    bool Equal(const AvxVector& b) const;
     void Normalize();
     AvxVector Normalized() const;
     double Magnitude() const;
@@ -68,13 +67,6 @@ public:
     static double CosAngle(const AvxVector& a, const AvxVector& b);
     static AvxVector Cross(const AvxVector& a, const AvxVector& b);
 
-    union
-    {
-        struct { double w, z, y, x; };
-        struct { __m256d m_Data; };
-    };
-
-private:
-    AvxVector(__m256d data) { m_Data = data; }
+    double m_Data[4];
 };
 

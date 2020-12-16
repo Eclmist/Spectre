@@ -20,9 +20,5 @@
 
 #pragma once
 
-#ifdef RTC_AVX2_ENABLED
 #include "math/simd/avxvector.h"
 typedef AvxVector Vector4;
-#else
-// TODO: Add a non-avx version of vector to be typedefed here
-#endif

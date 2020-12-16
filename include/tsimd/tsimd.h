@@ -24,6 +24,8 @@
 
 #pragma once
 
+#pragma warning(push, 0) // Third party libraries that don't clean up their warnings :(
+
 #include "detail/pack.h"
 
 #include "detail/functions/algorithm.h"
@@ -34,3 +36,5 @@
 #include "detail/operators/arithmetic.h"
 #include "detail/operators/bitwise.h"
 #include "detail/operators/logic.h"
+
+#pragma warning(pop, 0)

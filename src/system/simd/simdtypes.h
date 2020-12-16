@@ -18,25 +18,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "googletest/gtest.h"
-#include "core/ray/ray.h"
+#pragma once
 
-TEST(RayTest, CanBeCreated)
-{
-    ASSERT_NO_THROW(Ray({ 0.0 }, { 1.0, 2.0, 3.0 }));
-}
+#include "tsimd/tsimd.h"
 
-TEST(RayTest, DirectionIsNormalized)
-{
-    EXPECT_EQ(Ray({ 0.0 }, { 6.0, 0.0, 0.0 }).m_Direction, Vector4(1.0, 0.0, 0.0));
-    EXPECT_EQ(Ray({ 0.0 }, { 1.0, 2.0, 3.0 }).m_Direction, Vector4(1.0, 2.0, 3.0).Normalized());
-}
-
-TEST(RayTest, CanBeCopied)
-{
-    Ray r({ 0.0 }, { 1.0, 2.0, 3.0 });
-    Ray copy(r);
-    EXPECT_EQ(r.m_Direction, copy.m_Direction);
-    EXPECT_EQ(r.m_Origin, copy.m_Origin);
-}
-
+template <int N>
+using vDouble = tsimd::pack<float, N>;
