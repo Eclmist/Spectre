@@ -72,8 +72,10 @@ Matrix4x4 Matrix4x4::operator*(const Matrix4x4& m2) const
 {
     double data[4][4] = {0};
 
-    for (int i = 0; i < 4; ++i) {
-        for (int j = 0; j < 4; ++j) {
+    for (int i = 0; i < 4; ++i)
+    {
+        for (int j = 0; j < 4; ++j)
+        {
             vdouble4 row = load<vdouble4>(m_Data2D[i]);
             vdouble4 col(m2.m_Data2D[0][j], m2.m_Data2D[1][j], m2.m_Data2D[2][j], m2.m_Data2D[3][j]);
             vdouble4 mult = row * col;
