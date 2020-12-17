@@ -43,12 +43,17 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 # =========================================================================== #
 
 include_directories("${RTC_SOURCE_DIR}/src")
+include_directories("${RTC_SOURCE_DIR}/test")
 include_directories("${RTC_SOURCE_DIR}/include")
 
 file(GLOB_RECURSE project_headers src/*.h)
 file(GLOB_RECURSE project_cpps src/*.cpp)
 set(all_files ${project_headers} ${project_cpps})
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${all_files})
+
+file(GLOB_RECURSE tests_cpps src/*.cpp)
+set(tests_files ${tests_cpps})
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${tests_files})
 
 # =========================================================================== #
 #                   SETUP THIRD PARTY/EXTERN DEPENDENCIES                     #
