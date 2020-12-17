@@ -39,10 +39,7 @@ public:
     Matrix4x4 operator*(const Matrix4x4& m2) const;
 
     bool IsIdentity() const;
-    double GetDeterminant() const;
-
     Matrix4x4 Transposed() const;
-    Matrix4x4 Inversed() const;
 
 public:
     union

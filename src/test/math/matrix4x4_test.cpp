@@ -97,19 +97,6 @@ TEST(Matrix4x4Test, CanComputeTranspose)
             EXPECT_DOUBLE_EQ(transposed.m_Data2D[s][t], t * 4 + s);
 }
 
-TEST(Matrix4x4Test, CanComputeDeterminant)
-{
-    EXPECT_DOUBLE_EQ(Matrix4x4(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15).GetDeterminant(), 0);
-    EXPECT_DOUBLE_EQ(Matrix4x4().GetDeterminant(), 1);
-    EXPECT_DOUBLE_EQ(Matrix4x4(2,0,0,0,0,2,0,0,0,0,2,0,0,0,0,2).GetDeterminant(), 16);
-    EXPECT_DOUBLE_EQ(Matrix4x4(2,0,2,0,0,2,0,0,0,0,2,0,0,2,0,2).GetDeterminant(), 16);
-}
-
-TEST(Matrix4x4Test, CanComputeInverse)
-{
-    EXPECT_EQ(Matrix4x4().Inversed(), Matrix4x4());
-}
-
 TEST(Matrix4x4Test, CanMultiply)
 {
     Matrix4x4 m(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);

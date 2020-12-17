@@ -19,6 +19,7 @@
 */
 
 #include "matrix4x4.h"
+#include "vector4.h"
 #include "tsimd/tsimd.h"
 
 using namespace tsimd;
@@ -88,50 +89,11 @@ bool Matrix4x4::IsIdentity() const
     return *this == Matrix4x4(1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1);
 }
 
-double Matrix4x4::GetDeterminant() const
-{
-    return (m_Data[0] * m_Data[5] - m_Data[1] * m_Data[4]) * (m_Data[10] * m_Data[15] - m_Data[11] * m_Data[14]) -
-           (m_Data[0] * m_Data[6] - m_Data[2] * m_Data[4]) * (m_Data[9]  * m_Data[15] - m_Data[11] * m_Data[13]) +
-           (m_Data[0] * m_Data[7] - m_Data[3] * m_Data[4]) * (m_Data[9]  * m_Data[14] - m_Data[10] * m_Data[13]) +
-           (m_Data[1] * m_Data[6] - m_Data[2] * m_Data[5]) * (m_Data[8]  * m_Data[15] - m_Data[11] * m_Data[12]) -
-           (m_Data[1] * m_Data[7] - m_Data[3] * m_Data[5]) * (m_Data[8]  * m_Data[14] - m_Data[10] * m_Data[12]) +
-           (m_Data[2] * m_Data[7] - m_Data[3] * m_Data[6]) * (m_Data[8]  * m_Data[13] - m_Data[9]  * m_Data[12]);
-}
-
 Matrix4x4 Matrix4x4::Transposed() const
 {
     return Matrix4x4(m_Data[0], m_Data[4], m_Data[8], m_Data[12],
                      m_Data[1], m_Data[5], m_Data[9], m_Data[13],
                      m_Data[2], m_Data[6], m_Data[10], m_Data[14],
                      m_Data[3], m_Data[7], m_Data[11], m_Data[15]);
-}
-
-Matrix4x4 Matrix4x4::Inversed() const
-{
-    double d = GetDeterminant();
-    if (fabs(d) < 0.0001)
-        return Matrix4x4();
-
-    // use Cramer's rule
-    d = 1.0f / d;
-    Matrix4x4 out;
-    out.m_Data[0]  = d * (m_Data[5]  * (m_Data[10] * m_Data[15] - m_Data[11] * m_Data[14]) + m_Data[6]  * (m_Data[11] * m_Data[13] - m_Data[9]  * m_Data[15]) + m_Data[7]  * (m_Data[9]  * m_Data[14] - m_Data[10] * m_Data[13]));
-    out.m_Data[1]  = d * (m_Data[9]  * (m_Data[2]  * m_Data[15] - m_Data[3]  * m_Data[14]) + m_Data[10] * (m_Data[3]  * m_Data[13] - m_Data[1]  * m_Data[15]) + m_Data[11] * (m_Data[1]  * m_Data[14] - m_Data[2]  * m_Data[13]));
-    out.m_Data[2]  = d * (m_Data[13] * (m_Data[2]  * m_Data[7]  - m_Data[3]  * m_Data[6])  + m_Data[14] * (m_Data[3]  * m_Data[5]  - m_Data[1]  * m_Data[7])  + m_Data[15] * (m_Data[1]  * m_Data[6]  - m_Data[2]  * m_Data[5]));
-    out.m_Data[3]  = d * (m_Data[1]  * (m_Data[7]  * m_Data[10] - m_Data[6]  * m_Data[11]) + m_Data[2]  * (m_Data[5]  * m_Data[11] - m_Data[7]  * m_Data[9])  + m_Data[3]  * (m_Data[6]  * m_Data[9]  - m_Data[5]  * m_Data[10]));
-    out.m_Data[4]  = d * (m_Data[6]  * (m_Data[8]  * m_Data[15] - m_Data[11] * m_Data[12]) + m_Data[7]  * (m_Data[10] * m_Data[12] - m_Data[8]  * m_Data[14]) + m_Data[4]  * (m_Data[11] * m_Data[14] - m_Data[10] * m_Data[15]));
-    out.m_Data[5]  = d * (m_Data[10] * (m_Data[0]  * m_Data[15] - m_Data[3]  * m_Data[12]) + m_Data[11] * (m_Data[2]  * m_Data[12] - m_Data[0]  * m_Data[14]) + m_Data[8]  * (m_Data[3]  * m_Data[14] - m_Data[2]  * m_Data[15]));
-    out.m_Data[6]  = d * (m_Data[14] * (m_Data[0]  * m_Data[7]  - m_Data[3]  * m_Data[4])  + m_Data[15] * (m_Data[2]  * m_Data[4]  - m_Data[0]  * m_Data[6])  + m_Data[12] * (m_Data[3]  * m_Data[6]  - m_Data[2]  * m_Data[7]));
-    out.m_Data[7]  = d * (m_Data[2]  * (m_Data[7]  * m_Data[8]  - m_Data[4]  * m_Data[11]) + m_Data[3]  * (m_Data[4]  * m_Data[10] - m_Data[6]  * m_Data[8])  + m_Data[0]  * (m_Data[6]  * m_Data[11] - m_Data[7]  * m_Data[10]));
-    out.m_Data[8]  = d * (m_Data[7]  * (m_Data[8]  * m_Data[13] - m_Data[9]  * m_Data[12]) + m_Data[4]  * (m_Data[9]  * m_Data[15] - m_Data[11] * m_Data[13]) + m_Data[5]  * (m_Data[11] * m_Data[12] - m_Data[8]  * m_Data[15]));
-    out.m_Data[9]  = d * (m_Data[11] * (m_Data[0]  * m_Data[13] - m_Data[1]  * m_Data[12]) + m_Data[8]  * (m_Data[1]  * m_Data[15] - m_Data[3]  * m_Data[13]) + m_Data[9]  * (m_Data[3]  * m_Data[12] - m_Data[0]  * m_Data[15]));
-    out.m_Data[10] = d * (m_Data[15] * (m_Data[0]  * m_Data[5]  - m_Data[1]  * m_Data[4])  + m_Data[12] * (m_Data[1]  * m_Data[7]  - m_Data[3]  * m_Data[5])  + m_Data[13] * (m_Data[3]  * m_Data[4]  - m_Data[0]  * m_Data[7]));
-    out.m_Data[11] = d * (m_Data[3]  * (m_Data[5]  * m_Data[8]  - m_Data[4]  * m_Data[9])  + m_Data[0]  * (m_Data[7]  * m_Data[9]  - m_Data[5]  * m_Data[11]) + m_Data[1]  * (m_Data[4]  * m_Data[11] - m_Data[7]  * m_Data[8]));
-    out.m_Data[12] = d * (m_Data[4]  * (m_Data[10] * m_Data[13] - m_Data[9]  * m_Data[14]) + m_Data[5]  * (m_Data[8]  * m_Data[14] - m_Data[10] * m_Data[12]) + m_Data[6]  * (m_Data[9]  * m_Data[12] - m_Data[8]  * m_Data[13]));
-    out.m_Data[13] = d * (m_Data[8]  * (m_Data[2]  * m_Data[13] - m_Data[1]  * m_Data[14]) + m_Data[9]  * (m_Data[0]  * m_Data[14] - m_Data[2]  * m_Data[12]) + m_Data[10] * (m_Data[1]  * m_Data[12] - m_Data[0]  * m_Data[13]));
-    out.m_Data[14] = d * (m_Data[12] * (m_Data[2]  * m_Data[5]  - m_Data[1]  * m_Data[6])  + m_Data[13] * (m_Data[0]  * m_Data[6]  - m_Data[2]  * m_Data[4])  + m_Data[14] * (m_Data[1]  * m_Data[4]  - m_Data[0]  * m_Data[5]));
-    out.m_Data[15] = d * (m_Data[0]  * (m_Data[5]  * m_Data[10] - m_Data[6]  * m_Data[9])  + m_Data[1]  * (m_Data[6]  * m_Data[8]  - m_Data[4]  * m_Data[10]) + m_Data[2]  * (m_Data[4]  * m_Data[9]  - m_Data[5]  * m_Data[8]));
-
-    return out;
 }
 
