@@ -64,7 +64,7 @@ bool Matrix4x4::operator==(const Matrix4x4& m2) const
 {
     vdoublen<16> data1 = load<vdoublen<16>>(m_Data);
     vdoublen<16> data2 = load<vdoublen<16>>(m2.m_Data);
-    return all(data1 == data2);
+    return all(near_equal(data1, data2));
 }
 
 Matrix4x4 Matrix4x4::operator*(const Matrix4x4& m2) const
