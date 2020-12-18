@@ -67,6 +67,10 @@ public:
     static double CosAngle(const Vector4& a, const Vector4& b);
     static Vector4 Cross(const Vector4& a, const Vector4& b);
 
-    double m_Data[4];
+    union
+    {
+        struct { double m_Data[4]; };
+        struct { double x, y, z, w; };
+    };
 };
 

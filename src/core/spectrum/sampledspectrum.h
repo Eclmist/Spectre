@@ -23,7 +23,6 @@
 #include "spectrum.h"
 #include "sample.h"
 #include "spectralcoefficients.h"
-#include "math/vector4.h"
 
 static constexpr int MinWavelength = 360;
 static constexpr int MaxWavelength = 830;

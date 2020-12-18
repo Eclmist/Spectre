@@ -19,7 +19,6 @@
 */
 
 #include "matrix4x4.h"
-#include "vector4.h"
 #include "tsimd/tsimd.h"
 
 using namespace tsimd;

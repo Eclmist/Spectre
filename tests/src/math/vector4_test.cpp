@@ -28,54 +28,54 @@ TEST(Vector4Test, CanBeCreated)
 TEST(Vector4Test, DefaultsToZeroVector)
 {
     Vector4 v;
-    EXPECT_DOUBLE_EQ(v[0], 0.0);
-    EXPECT_DOUBLE_EQ(v[1], 0.0);
-    EXPECT_DOUBLE_EQ(v[2], 0.0);
-    EXPECT_DOUBLE_EQ(v[3], 0.0);
+    EXPECT_DOUBLE_EQ(v.x, 0.0);
+    EXPECT_DOUBLE_EQ(v.y, 0.0);
+    EXPECT_DOUBLE_EQ(v.z, 0.0);
+    EXPECT_DOUBLE_EQ(v.w, 0.0);
 }
 
 TEST(Vector4Test, CanBeCreatedScalar)
 {
     Vector4 v(22.0);
-    EXPECT_DOUBLE_EQ(v[0], 22.0);
-    EXPECT_DOUBLE_EQ(v[1], 22.0);
-    EXPECT_DOUBLE_EQ(v[2], 22.0);
-    EXPECT_DOUBLE_EQ(v[3], 22.0);
+    EXPECT_DOUBLE_EQ(v.x, 22.0);
+    EXPECT_DOUBLE_EQ(v.y, 22.0);
+    EXPECT_DOUBLE_EQ(v.z, 22.0);
+    EXPECT_DOUBLE_EQ(v.w, 22.0);
 }
 
 TEST(Vector4Test, CanBeCreatedPerComponent)
 {
     Vector4 v(1.0, 2.0, 3.0, 4.0);
-    EXPECT_DOUBLE_EQ(v[0], 1.0);
-    EXPECT_DOUBLE_EQ(v[1], 2.0);
-    EXPECT_DOUBLE_EQ(v[2], 3.0);
-    EXPECT_DOUBLE_EQ(v[3], 4.0);
+    EXPECT_DOUBLE_EQ(v.x, 1.0);
+    EXPECT_DOUBLE_EQ(v.y, 2.0);
+    EXPECT_DOUBLE_EQ(v.z, 3.0);
+    EXPECT_DOUBLE_EQ(v.w, 4.0);
 
     Vector4 u(1.0, 2.0);
-    EXPECT_DOUBLE_EQ(u[0], 1.0);
-    EXPECT_DOUBLE_EQ(u[1], 2.0);
-    EXPECT_DOUBLE_EQ(u[2], 0.0);
-    EXPECT_DOUBLE_EQ(u[3], 0.0);
+    EXPECT_DOUBLE_EQ(u.x, 1.0);
+    EXPECT_DOUBLE_EQ(u.y, 2.0);
+    EXPECT_DOUBLE_EQ(u.z, 0.0);
+    EXPECT_DOUBLE_EQ(u.w, 0.0);
 
     Vector4 w(1.0, 2.0, 3.0);
-    EXPECT_DOUBLE_EQ(w[0], 1.0);
-    EXPECT_DOUBLE_EQ(w[1], 2.0);
-    EXPECT_DOUBLE_EQ(w[2], 3.0);
-    EXPECT_DOUBLE_EQ(w[3], 0.0);
+    EXPECT_DOUBLE_EQ(w.x, 1.0);
+    EXPECT_DOUBLE_EQ(w.y, 2.0);
+    EXPECT_DOUBLE_EQ(w.z, 3.0);
+    EXPECT_DOUBLE_EQ(w.w, 0.0);
 }
 
 TEST(Vector4Test, CanBeSetPerComponents)
 {
     Vector4 v;
-    v[0] = 1.0;
-    v[1] = 2.0;
-    v[2] = 3.0;
-    v[3] = 4.0;
+    v.x = 1.0;
+    v.y = 2.0;
+    v.z = 3.0;
+    v.w = 4.0;
 
-    EXPECT_DOUBLE_EQ(v[0], 1.0);
-    EXPECT_DOUBLE_EQ(v[1], 2.0);
-    EXPECT_DOUBLE_EQ(v[2], 3.0);
-    EXPECT_DOUBLE_EQ(v[3], 4.0);
+    EXPECT_DOUBLE_EQ(v.x, 1.0);
+    EXPECT_DOUBLE_EQ(v.y, 2.0);
+    EXPECT_DOUBLE_EQ(v.z, 3.0);
+    EXPECT_DOUBLE_EQ(v.w, 4.0);
 }
 
 TEST(Vector4Test, CanBeAccessedPerComponent)
@@ -86,10 +86,10 @@ TEST(Vector4Test, CanBeAccessedPerComponent)
     EXPECT_DOUBLE_EQ(v[1], 2.0);
     EXPECT_DOUBLE_EQ(v[2], 3.0);
     EXPECT_DOUBLE_EQ(v[3], 4.0);
-    EXPECT_DOUBLE_EQ(v[0], 1.0);
-    EXPECT_DOUBLE_EQ(v[1], 2.0);
-    EXPECT_DOUBLE_EQ(v[2], 3.0);
-    EXPECT_DOUBLE_EQ(v[3], 4.0);
+    EXPECT_DOUBLE_EQ(v.x, 1.0);
+    EXPECT_DOUBLE_EQ(v.y, 2.0);
+    EXPECT_DOUBLE_EQ(v.z, 3.0);
+    EXPECT_DOUBLE_EQ(v.w, 4.0);
 }
 
 TEST(Vector4Test, CanBeCopyConstructed)
@@ -97,13 +97,13 @@ TEST(Vector4Test, CanBeCopyConstructed)
     Vector4 a(22.0);
     Vector4 b(a);
 
-    EXPECT_DOUBLE_EQ(b[0], 22.0);
-    EXPECT_DOUBLE_EQ(b[1], 22.0);
-    EXPECT_DOUBLE_EQ(b[2], 22.0);
-    EXPECT_DOUBLE_EQ(b[3], 22.0);
+    EXPECT_DOUBLE_EQ(b.x, 22.0);
+    EXPECT_DOUBLE_EQ(b.y, 22.0);
+    EXPECT_DOUBLE_EQ(b.z, 22.0);
+    EXPECT_DOUBLE_EQ(b.w, 22.0);
 
-    b[0] = 0.0;
-    EXPECT_DOUBLE_EQ(a[0], 22.0);
+    b.x = 0.0;
+    EXPECT_DOUBLE_EQ(a.x, 22.0);
 }
 
 TEST(Vector4Test, CanBeCopied)
@@ -111,13 +111,13 @@ TEST(Vector4Test, CanBeCopied)
     Vector4 a(22.0);
     Vector4 b = a;
 
-    EXPECT_DOUBLE_EQ(b[0], 22.0);
-    EXPECT_DOUBLE_EQ(b[1], 22.0);
-    EXPECT_DOUBLE_EQ(b[2], 22.0);
-    EXPECT_DOUBLE_EQ(b[3], 22.0);
+    EXPECT_DOUBLE_EQ(b.x, 22.0);
+    EXPECT_DOUBLE_EQ(b.y, 22.0);
+    EXPECT_DOUBLE_EQ(b.z, 22.0);
+    EXPECT_DOUBLE_EQ(b.w, 22.0);
 
-    b[0] = 0.0;
-    EXPECT_DOUBLE_EQ(a[0], 22.0);
+    b.x = 0.0;
+    EXPECT_DOUBLE_EQ(a.x, 22.0);
 }
 
 TEST(Vector4Test, CanBeAdded)
@@ -126,10 +126,10 @@ TEST(Vector4Test, CanBeAdded)
     Vector4 b(2.0, 3.0, 4.0, 5.0);
 
     Vector4 c = a + b;
-    EXPECT_DOUBLE_EQ(c[0], 3.0);
-    EXPECT_DOUBLE_EQ(c[1], 5.0);
-    EXPECT_DOUBLE_EQ(c[2], 7.0);
-    EXPECT_DOUBLE_EQ(c[3], 9.0);
+    EXPECT_DOUBLE_EQ(c.x, 3.0);
+    EXPECT_DOUBLE_EQ(c.y, 5.0);
+    EXPECT_DOUBLE_EQ(c.z, 7.0);
+    EXPECT_DOUBLE_EQ(c.w, 9.0);
 }
 
 TEST(Vector4Test, CanBeAddAssigned)
@@ -138,10 +138,10 @@ TEST(Vector4Test, CanBeAddAssigned)
     Vector4 b(2.0, 3.0, 4.0, 5.0);
     b += a;
 
-    EXPECT_DOUBLE_EQ(b[0], 3.0);
-    EXPECT_DOUBLE_EQ(b[1], 5.0);
-    EXPECT_DOUBLE_EQ(b[2], 7.0);
-    EXPECT_DOUBLE_EQ(b[3], 9.0);
+    EXPECT_DOUBLE_EQ(b.x, 3.0);
+    EXPECT_DOUBLE_EQ(b.y, 5.0);
+    EXPECT_DOUBLE_EQ(b.z, 7.0);
+    EXPECT_DOUBLE_EQ(b.w, 9.0);
 }
 
 TEST(Vector4Test, CanBeSubtracted)
@@ -150,10 +150,10 @@ TEST(Vector4Test, CanBeSubtracted)
     Vector4 b(2.0, 3.0, 4.0, 5.0);
 
     Vector4 c = a - b;
-    EXPECT_DOUBLE_EQ(c[0], -1.0);
-    EXPECT_DOUBLE_EQ(c[1], -1.0);
-    EXPECT_DOUBLE_EQ(c[2], -1.0);
-    EXPECT_DOUBLE_EQ(c[3], -1.0);
+    EXPECT_DOUBLE_EQ(c.x, -1.0);
+    EXPECT_DOUBLE_EQ(c.y, -1.0);
+    EXPECT_DOUBLE_EQ(c.z, -1.0);
+    EXPECT_DOUBLE_EQ(c.w, -1.0);
 }
 
 TEST(Vector4Test, CanBeSubtractAssigned)
@@ -162,30 +162,30 @@ TEST(Vector4Test, CanBeSubtractAssigned)
     Vector4 b(2.0, 3.0, 4.0, 5.0);
     b -= a;
 
-    EXPECT_DOUBLE_EQ(b[0], 1.0);
-    EXPECT_DOUBLE_EQ(b[1], 1.0);
-    EXPECT_DOUBLE_EQ(b[2], 1.0);
-    EXPECT_DOUBLE_EQ(b[3], 1.0);
+    EXPECT_DOUBLE_EQ(b.x, 1.0);
+    EXPECT_DOUBLE_EQ(b.y, 1.0);
+    EXPECT_DOUBLE_EQ(b.z, 1.0);
+    EXPECT_DOUBLE_EQ(b.w, 1.0);
 }
 
 TEST(Vector4Test, CanBeNegated)
 {
     Vector4 a(-1.0);
     Vector4 b = -a;
-    EXPECT_DOUBLE_EQ(b[0], 1.0);
-    EXPECT_DOUBLE_EQ(b[1], 1.0);
-    EXPECT_DOUBLE_EQ(b[2], 1.0);
-    EXPECT_DOUBLE_EQ(b[3], 1.0);
+    EXPECT_DOUBLE_EQ(b.x, 1.0);
+    EXPECT_DOUBLE_EQ(b.y, 1.0);
+    EXPECT_DOUBLE_EQ(b.z, 1.0);
+    EXPECT_DOUBLE_EQ(b.w, 1.0);
 }
 
 TEST(Vector4Test, DoesNotChangeWithPveSign)
 {
     Vector4 a(-1.0);
     Vector4 b = +a;
-    EXPECT_DOUBLE_EQ(b[0], -1.0);
-    EXPECT_DOUBLE_EQ(b[1], -1.0);
-    EXPECT_DOUBLE_EQ(b[2], -1.0);
-    EXPECT_DOUBLE_EQ(b[3], -1.0);
+    EXPECT_DOUBLE_EQ(b.x, -1.0);
+    EXPECT_DOUBLE_EQ(b.y, -1.0);
+    EXPECT_DOUBLE_EQ(b.z, -1.0);
+    EXPECT_DOUBLE_EQ(b.w, -1.0);
 }
 
 TEST(Vector4Test, CanComputeMagnitude)
@@ -276,10 +276,10 @@ TEST(Vector4Test, CanBeNormalized)
 
     Vector4 a(2.0, 2.0, 3.0);
     a.Normalize();
-    EXPECT_DOUBLE_EQ(a[0], 0.48507125007266594);
-    EXPECT_DOUBLE_EQ(a[1], 0.48507125007266594);
-    EXPECT_DOUBLE_EQ(a[2], 0.7276068751089989);
-    EXPECT_DOUBLE_EQ(a[3], 0.0);
+    EXPECT_DOUBLE_EQ(a.x, 0.48507125007266594);
+    EXPECT_DOUBLE_EQ(a.y, 0.48507125007266594);
+    EXPECT_DOUBLE_EQ(a.z, 0.7276068751089989);
+    EXPECT_DOUBLE_EQ(a.w, 0.0);
 }
 
 TEST(Vector4Test, CanComputeDotProduct)
