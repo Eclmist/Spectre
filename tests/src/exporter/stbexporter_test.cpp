@@ -18,23 +18,33 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "googletest/gtest.h"
-#include "exporter/exporter.h"
+#include "gtest.h"
+#include "exporter/stbexporter.h"
+#include <filesystem>
 
-class ExporterImplStub : public Exporter
+TEST(StbExporterTest, CanBeCreated)
 {
-public:
-    void Export(const Film& film) const override {};
-};
-
-TEST(ExporterTest, CanBeCreated)
-{
-    ASSERT_NO_THROW(ExporterImplStub exporter);
+    ASSERT_NO_THROW(StbExporter exporter);
 }
 
-TEST(ExporterTest, CanExport)
+TEST(ExporterTest, HasDefaultOutputName)
 {
+    StbExporter exporter;
+    EXPECT_EQ(exporter.GetOutputName(), "RTCore_Output");
+}
+
+TEST(ExporterTest, CanSetOutputName)
+{
+    StbExporter exporter;
+    exporter.SetOutputName("Output");
+    EXPECT_EQ(exporter.GetOutputName(), "Output");
+}
+
+TEST(ExporterTest, FilmCanBeExported)
+{
+    StbExporter exporter;
     Film film;
-    ExporterImplStub exporter;
     ASSERT_NO_THROW(exporter.Export(film));
+    EXPECT_TRUE(std::filesystem::exists(exporter.GetOutputName() + ".png"));
 }
+

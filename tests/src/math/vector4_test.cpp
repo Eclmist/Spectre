@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "googletest/gtest.h"
+#include "gtest.h"
 #include "math/vector4.h"
 #include <stdexcept>
 

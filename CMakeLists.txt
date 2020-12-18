@@ -34,43 +34,33 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-# Set the project source directories. This is set when running the CMake GUI
-set(RTC_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
-set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-
 # =========================================================================== #
 #                        ADD SOURCE FILES TO PROJECT                          #
 # =========================================================================== #
 
-include_directories("${RTC_SOURCE_DIR}/src")
-include_directories("${RTC_SOURCE_DIR}/test")
-include_directories("${RTC_SOURCE_DIR}/include")
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/src")
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 file(GLOB_RECURSE project_headers src/*.h)
 file(GLOB_RECURSE project_cpps src/*.cpp)
 set(all_files ${project_headers} ${project_cpps})
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${all_files})
 
-file(GLOB_RECURSE tests_cpps src/*.cpp)
-set(tests_files ${tests_cpps})
-source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${tests_files})
-
 # =========================================================================== #
 #                   SETUP THIRD PARTY/EXTERN DEPENDENCIES                     #
 # =========================================================================== #
 
 file(GLOB_RECURSE stb include/stb/*)
-file(GLOB_RECURSE gtest include/googletest/*)
 file(GLOB_RECURSE tsimd include/tsimd/*)
-set(extern_files ${stb} ${gtest} ${tsimd})
+set(extern_files ${stb} ${tsimd})
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${extern_files})
 
 # =========================================================================== #
 #                          SET COMPILATION TARGETS                            #
 # =========================================================================== #
 
-add_executable(${PROJECT_NAME} ${all_files} ${extern_files})
-set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY $<1:${RTC_SOURCE_DIR}/bin>)
+add_library(${PROJECT_NAME} STATIC ${all_files} ${extern_files})
+set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY $<1:${CMAKE_CURRENT_SOURCE_DIR}/bin>)
 
 # =========================================================================== #
 #                        PLATFORM SPECIFIC SETTIGNS                           #
@@ -101,7 +91,8 @@ elseif(UNIX)
 endif()
 
 # =========================================================================== #
-#                          LINK EXTERNAL LIBRARIES                            #
+#                             INCLUDE SUBPROJECTS                             #
 # =========================================================================== #
 
-# Nothing to link for now :)
+add_subdirectory(tests)
+

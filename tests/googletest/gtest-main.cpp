@@ -18,32 +18,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <iostream>
-
-void PrintUsage()
-{
-    std::cout << "Usage: rtcore [options] <One or more scene files>\n\n";
-    std::cout << "Rendering Options: \n";
-    std::cout << "   -h, --help              Display this help page\n";
-    //std::cout << "For documentations, please refer to <http://docs.rtcore.io/>\n";
-}
-
-int ProcessArgs(int argc, char* argv[])
-{
-    // Process command-line arguments
-    for (int i = 1; i < argc; ++i)
-    {
-        if (!strcmp(argv[i], "--help") || !strcmp(argv[i], "-h"))
-        {
-            PrintUsage();
-            exit(EXIT_FAILURE);
-        }
-    }
-
-    return EXIT_SUCCESS;
-}
+#include "gtest.h"
 
 int main(int argc, char* argv[])
 {
-    return ProcessArgs(argc, argv);
+    testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
 }
+
