@@ -24,5 +24,7 @@ class Component
 {
 public:
     Component() = default;
-    ~Component() = default;
+    virtual ~Component() = 0;
 };
+
+inline Component::~Component() {}
