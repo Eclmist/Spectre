@@ -18,7 +18,6 @@
 
 #include "gtest.h"
 #include "core/entity/components/transform.h"
-
 TEST(TransformTest, CanBeCreated)
 {
     ASSERT_NO_THROW(Transform());
@@ -45,16 +44,6 @@ TEST(TransformTest, CanGetTranslation)
     EXPECT_EQ(Transform().GetTranslation(), Vector4());
 }
 
-TEST(TransformTest, CanTranslate)
-{
-    Transform t;
-    ASSERT_NO_THROW(t.Translate({ 1, 2, 3 }));
-    EXPECT_EQ(t.GetTranslation(), Vector4(1, 2, 3, 0));
-    ASSERT_NO_THROW(t.Translate({ 1, 2, 3 }));
-    EXPECT_EQ(t.GetTranslation(), Vector4(2, 4, 6, 0));
-    ASSERT_THROW(t.Translate({ 1, 2, 3, 1 }), std::invalid_argument);
-}
-
 TEST(TransformTest, CanSetTranlation)
 {
     Transform t;
@@ -70,16 +59,6 @@ TEST(TransformTest, CanGetRotation)
     EXPECT_EQ(Transform().GetRotation(), Vector4());
 }
 
-TEST(TransformTest, CanRotate)
-{
-    Transform t;
-    ASSERT_NO_THROW(t.Rotate({ 1, 2, 3 }));
-    EXPECT_EQ(t.GetRotation(), Vector4(1, 2, 3, 0));
-    ASSERT_NO_THROW(t.Rotate({ 1, 2, 3 }));
-    EXPECT_EQ(t.GetRotation(), Vector4(2, 4, 6, 0));
-    ASSERT_THROW(t.Rotate({ 1, 2, 3, 1 }), std::invalid_argument);
-}
-
 TEST(TransformTest, CanSetRotation)
 {
     Transform t;
@@ -88,16 +67,6 @@ TEST(TransformTest, CanSetRotation)
     ASSERT_NO_THROW(t.SetRotation({ 1, 2, 4 }));
     EXPECT_EQ(t.GetRotation(), Vector4(1, 2, 4, 0));
     ASSERT_THROW(t.SetRotation({ 1, 2, 3, 1 }), std::invalid_argument);
-}
-
-TEST(TransformTest, CanScale)
-{
-    Transform t;
-    ASSERT_NO_THROW(t.Scale({ 1, 2, 3 }));
-    EXPECT_EQ(t.GetScale(), Vector4(1, 2, 3, 0));
-    ASSERT_NO_THROW(t.Scale({ 1, 2, 3 }));
-    EXPECT_EQ(t.GetScale(), Vector4(1, 4, 9, 0));
-    ASSERT_THROW(t.Scale({ 1, 2, 3, 1 }), std::invalid_argument);
 }
 
 TEST(TransformTest, CanGetScale)
@@ -114,4 +83,20 @@ TEST(TransformTest, CanSetScale)
     EXPECT_EQ(t.GetScale(), Vector4(1, 2, 4, 0));
     ASSERT_THROW(t.SetScale({ 1, 2, 3, 1 }), std::invalid_argument);
 }
+
+TEST(TransformTest, MatrixHasCorrectValues)
+{
+    Transform t, t2;
+    ASSERT_NO_THROW(t.SetTranslation({ 1, 2, 3 }));
+    EXPECT_EQ(t.GetMatrix(), Matrix4x4(1, 0, 0, 1, 0, 1, 0, 2, 0, 0, 1, 3, 0, 0, 0, 1));
+    ASSERT_NO_THROW(t.SetScale({ 1, 1, 4 }));
+    EXPECT_EQ(t.GetMatrix(), Matrix4x4(1, 0, 0, 1, 0, 1, 0, 2, 0, 0, 4, 3, 0, 0, 0, 1));
+    ASSERT_NO_THROW(t2.SetRotation({ M_PI_2, 0, 0 }));
+    EXPECT_EQ(t2.GetMatrix(), Matrix4x4(1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 1));
+    ASSERT_NO_THROW(t2.SetRotation({ M_PI_2, M_PI_2, M_PI_2 }));
+    EXPECT_EQ(t2.GetMatrix(), Matrix4x4(0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 0, 1));
+    ASSERT_NO_THROW(t.SetRotation({ M_PI_2, M_PI_2, M_PI_2 }));
+    EXPECT_EQ(t.GetMatrix(), Matrix4x4(0, 0, 4, 1, 0, 1, 0, 2, -1, 0, 0, 3, 0, 0, 0, 1));
+}
+
 
