@@ -46,17 +46,14 @@ void Film::SetPixel(unsigned int x, unsigned int y, const XYZCoefficients& xyz)
 
 void Film::SplatPixel(unsigned int x, unsigned int y, const XYZCoefficients& xyz, double deltaArea)
 {
+    if (!m_Resolution.IsWithinBounds(x, y))
+        throw std::invalid_argument("Pixel position out of bounds");
+
     if (deltaArea > 1.0 || deltaArea <= 0.0)
-    {
         throw std::invalid_argument("A greater than 1 or smaller than 0 deltaArea is invalid ");
-        return;
-    }
 
     if (deltaArea + m_Pixels[GetIndex(x, y)].m_TotalSplat > 1.0)
-    {
         throw std::invalid_argument("Total splat area for this pixel exceeds 1 given the current delta area");
-        return;
-    }
     
     m_Pixels[GetIndex(x, y)].m_XYZ += xyz * deltaArea;
     m_Pixels[GetIndex(x, y)].m_TotalSplat += deltaArea;
