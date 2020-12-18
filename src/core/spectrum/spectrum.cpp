@@ -126,9 +126,10 @@ bool Spectrum::IsEqual(const Spectrum& other) const
     return true;
 }
 
-void Spectrum::Clamp(const Spectrum& l, const Spectrum& h)
+void Spectrum::ClampZero()
 {
-    *this = Clamp(*this, l, h);
+    for (int i = 0; i < numSpectralSamples; ++i)
+        m_Coefficients[i] = m_Coefficients[i] < 0 ? 0 : m_Coefficients[i];
 }
 
 Spectrum Spectrum::Sqrt(const Spectrum& s)

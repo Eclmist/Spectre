@@ -43,7 +43,8 @@ public:
     bool IsBlack() const;
     bool HasNans() const;
     bool IsEqual(const Spectrum& other) const;
-    void Clamp(const Spectrum& l, const Spectrum& h);
+
+    void ClampZero();
 
 public:
     static Spectrum Sqrt(const Spectrum& s);

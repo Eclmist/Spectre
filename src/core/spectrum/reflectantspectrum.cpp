@@ -51,7 +51,7 @@ ReflectantSpectrum::ReflectantSpectrum(const RGBCoefficients& rgb)
             InitAscendingBGR(rgb);
     }
 
-    this->Clamp(0, INFINITY);
+    ClampZero();
 }
 
 void ReflectantSpectrum::InitAscendingRGB(const RGBCoefficients& rgb)

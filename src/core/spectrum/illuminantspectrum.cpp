@@ -51,48 +51,48 @@ IlluminantSpectrum::IlluminantSpectrum(const RGBCoefficients& rgb)
             InitAscendingBGR(rgb);
     }
 
-    this->Clamp(0, INFINITY);
+    ClampZero();
 }
 
 void IlluminantSpectrum::InitAscendingRGB(const RGBCoefficients& rgb)
 {
-    *this += stdReflW * rgb[0];
-    *this += stdReflC * (rgb[1] - rgb[0]);
-    *this += stdReflB * (rgb[2] - rgb[1]);
+    *this += stdIllumW * rgb[0];
+    *this += stdIllumC * (rgb[1] - rgb[0]);
+    *this += stdIllumB * (rgb[2] - rgb[1]);
 }
 
 void IlluminantSpectrum::InitAscendingRBG(const RGBCoefficients& rgb)
 {
-    *this += stdReflW * rgb[0];
-    *this += stdReflC * (rgb[2] - rgb[0]);
-    *this += stdReflG * (rgb[1] - rgb[2]);
+    *this += stdIllumW * rgb[0];
+    *this += stdIllumC * (rgb[2] - rgb[0]);
+    *this += stdIllumG * (rgb[1] - rgb[2]);
 }
 
 void IlluminantSpectrum::InitAscendingGRB(const RGBCoefficients& rgb)
 {
-    *this += stdReflW * rgb[1];
-    *this += stdReflM * (rgb[0] - rgb[1]);
-    *this += stdReflB * (rgb[2] - rgb[0]);
+    *this += stdIllumW * rgb[1];
+    *this += stdIllumM * (rgb[0] - rgb[1]);
+    *this += stdIllumB * (rgb[2] - rgb[0]);
 }
 
 void IlluminantSpectrum::InitAscendingGBR(const RGBCoefficients& rgb)
 {
-    *this += stdReflW * rgb[1];
-    *this += stdReflM * (rgb[2] - rgb[1]);
-    *this += stdReflR * (rgb[0] - rgb[2]);
+    *this += stdIllumW * rgb[1];
+    *this += stdIllumM * (rgb[2] - rgb[1]);
+    *this += stdIllumR * (rgb[0] - rgb[2]);
 }
 
 void IlluminantSpectrum::InitAscendingBRG(const RGBCoefficients& rgb)
 {
-    *this += stdReflW * rgb[2];
-    *this += stdReflY * (rgb[0] - rgb[2]);
-    *this += stdReflG * (rgb[1] - rgb[0]);
+    *this += stdIllumW * rgb[2];
+    *this += stdIllumY * (rgb[0] - rgb[2]);
+    *this += stdIllumG * (rgb[1] - rgb[0]);
 }
 
 void IlluminantSpectrum::InitAscendingBGR(const RGBCoefficients& rgb)
 {
-    *this += stdReflW * rgb[2];
-    *this += stdReflY * (rgb[1] - rgb[2]);
-    *this += stdReflR * (rgb[0] - rgb[1]);
+    *this += stdIllumW * rgb[2];
+    *this += stdIllumY * (rgb[1] - rgb[2]);
+    *this += stdIllumR * (rgb[0] - rgb[1]);
 }
 
