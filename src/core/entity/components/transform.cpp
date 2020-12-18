@@ -19,3 +19,84 @@
 */
 
 #include "transform.h"
+
+Transform::Transform()
+    : m_Translation(0.0)
+    , m_EulerRotation(0.0)
+    , m_Scale(1.0)
+{
+}
+
+void Transform::Translate(const Vector4& translation)
+{
+    if (IsValidTranslation(translation))
+        throw std::invalid_argument("The input translation is invalid");
+
+    m_Translation += translation;
+}
+
+void Transform::Rotate(const Vector4& eulerRotation)
+{
+    if (IsValidRotation(eulerRotation))
+        throw std::invalid_argument("The input rotation is invalid");
+
+    m_EulerRotation += eulerRotation;
+}
+
+void Transform::Scale(const Vector4& scale)
+{
+    if (IsValidScale(scale))
+        throw std::invalid_argument("The input scale is invalid");
+
+    m_Scale *= scale;
+}
+
+void Transform::SetTranslation(const Vector4& translation)
+{
+    if (IsValidTranslation(translation))
+        throw std::invalid_argument("The input translation is invalid");
+
+    m_Translation = translation;
+}
+
+void Transform::SetRotation(const Vector4& eulerRotation)
+{
+    if (IsValidRotation(eulerRotation))
+        throw std::invalid_argument("The input rotation is invalid");
+
+    m_EulerRotation = eulerRotation;
+}
+
+void Transform::SetScale(const Vector4& scale)
+{
+    if (IsValidScale(scale))
+        throw std::invalid_argument("The input scale is invalid");
+
+    m_Scale = scale;
+}
+
+const Matrix4x4& Transform::GetMatrix() const
+{
+    return {};
+}
+
+const Matrix4x4& Transform::GetInverseMatrix() const
+{
+    return {};
+}
+
+bool Transform::IsValidTranslation(const Vector4& translation) const
+{
+    return translation.w != 0;
+}
+
+bool Transform::IsValidRotation(const Vector4& eulerRotation) const
+{
+    return eulerRotation.w != 0;
+}
+
+bool Transform::IsValidScale(const Vector4& scale) const
+{
+    return scale.w != 0;
+}
+
