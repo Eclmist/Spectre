@@ -2,7 +2,7 @@
     This file is part of RTCore, an open-source physically based
     renderer.
 
-    Copyright (c) 2019 Samuel Van Allen - All rights reserved.
+    Copyright (c) 2020-2021 Samuel Van Allen - All rights reserved.
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
