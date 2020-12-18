@@ -19,10 +19,11 @@
 */
 
 #include "stbexporter.h"
+#include <vector>
+#include "core/spectrum/sampledspectrum.h"
 
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb/stb_image_write.h"
-#include <vector>
 
 #define DEFAULT_OUTPUT_NAME "RTCore_Output"
 #define DEFAULT_OUTPUT_TYPE ".png"
@@ -54,9 +55,10 @@ std::vector<char> StbExporter::ExtractPixelData(const Film& film) const
         for (unsigned int x = 0; x < resolution.GetWidth(); ++x)
         {
             Pixel p = film.GetPixel(x, y);
-            data[iterator++] = (char)(p.m_XYZ[0] * 255.0);
-            data[iterator++] = (char)(p.m_XYZ[1] * 255.0);
-            data[iterator++] = (char)(p.m_XYZ[2] * 255.0);
+            RGBCoefficients rgb = SampledSpectrum::XYZToRGB({ p.m_XYZ[0], p.m_XYZ[1], p.m_XYZ[2] });
+            data[iterator++] = (char)(rgb[0] * 255.0);
+            data[iterator++] = (char)(rgb[1] * 255.0);
+            data[iterator++] = (char)(rgb[2] * 255.0);
         }
     }
 
