@@ -110,7 +110,7 @@ Vector4& Vector4::operator/=(const Vector4& b)
 
 bool Vector4::operator==(const Vector4& b) const
 {
-    return all(load<vdouble4>(m_Data) == load<vdouble4>(b.m_Data));
+    return all(near_equal(load<vdouble4>(m_Data), load<vdouble4>(b.m_Data)));
 }
 
 bool Vector4::operator!=(const Vector4& b) const
