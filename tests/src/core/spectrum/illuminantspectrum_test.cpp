@@ -18,33 +18,21 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "googletest/gtest.h"
-#include "exporter/stbexporter.h"
-#include <filesystem>
+#include "gtest.h"
+#include "core/spectrum/illuminantspectrum.h"
 
-TEST(StbExporterTest, CanBeCreated)
+TEST(IlluminantSpectrumTest, CanBeCreated)
 {
-    ASSERT_NO_THROW(StbExporter exporter);
+    ASSERT_NO_THROW(IlluminantSpectrum({ 0.2, 0.3, 0.4 }));
 }
 
-TEST(ExporterTest, HasDefaultOutputName)
+TEST(IlluminantSpectrumTest, HasCorrectValues)
 {
-    StbExporter exporter;
-    EXPECT_EQ(exporter.GetOutputName(), "RTCore_Output");
-}
-
-TEST(ExporterTest, CanSetOutputName)
-{
-    StbExporter exporter;
-    exporter.SetOutputName("Output");
-    EXPECT_EQ(exporter.GetOutputName(), "Output");
-}
-
-TEST(ExporterTest, FilmCanBeExported)
-{
-    StbExporter exporter;
-    Film film;
-    ASSERT_NO_THROW(exporter.Export(film));
-    EXPECT_TRUE(std::filesystem::exists(exporter.GetOutputName() + ".png"));
+    IlluminantSpectrum white({ 1, 1, 1 });
+    RGBCoefficients rgb = white.ToRGB();
+    static const double tolerance = 0.1;
+    EXPECT_LT(abs(rgb[0] - 1.205), tolerance);
+    EXPECT_LT(abs(rgb[1] - 0.94), tolerance);
+    EXPECT_LT(abs(rgb[2] - 0.909), tolerance);
 }
 

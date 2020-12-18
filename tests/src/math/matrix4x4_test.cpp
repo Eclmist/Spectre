@@ -18,7 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "googletest/gtest.h"
+#include "gtest.h"
 #include "math/matrix4x4.h"
 
 TEST(Matrix4x4Test, CanBeCreated)

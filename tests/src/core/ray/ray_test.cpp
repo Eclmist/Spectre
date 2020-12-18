@@ -18,21 +18,25 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "googletest/gtest.h"
-#include "core/spectrum/reflectantspectrum.h"
+#include "gtest.h"
+#include "core/ray/ray.h"
 
-TEST(ReflectantSpectrumTest, CanBeCreated)
+TEST(RayTest, CanBeCreated)
 {
-    ASSERT_NO_THROW(ReflectantSpectrum({ 0.2, 0.3, 0.4 }));
+    ASSERT_NO_THROW(Ray({ 0.0 }, { 1.0, 2.0, 3.0 }));
 }
 
-TEST(ReflectantSpectrumTest, HasCorrectValues)
+TEST(RayTest, DirectionIsNormalized)
 {
-    ReflectantSpectrum white({ 1, 1, 1 });
-    RGBCoefficients rgb = white.ToRGB();
-    static const double tolerance = 0.1;
-    EXPECT_LT(abs(rgb[0] - 1.205), tolerance);
-    EXPECT_LT(abs(rgb[1] - 0.94), tolerance);
-    EXPECT_LT(abs(rgb[2] - 0.909), tolerance);
+    EXPECT_EQ(Ray({ 0.0 }, { 6.0, 0.0, 0.0 }).m_Direction, Vector4(1.0, 0.0, 0.0));
+    EXPECT_EQ(Ray({ 0.0 }, { 1.0, 2.0, 3.0 }).m_Direction, Vector4(1.0, 2.0, 3.0).Normalized());
+}
+
+TEST(RayTest, CanBeCopied)
+{
+    Ray r({ 0.0 }, { 1.0, 2.0, 3.0 });
+    Ray copy(r);
+    EXPECT_EQ(r.m_Direction, copy.m_Direction);
+    EXPECT_EQ(r.m_Origin, copy.m_Origin);
 }
 

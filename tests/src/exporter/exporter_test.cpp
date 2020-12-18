@@ -18,21 +18,23 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "googletest/gtest.h"
-#include "core/spectrum/illuminantspectrum.h"
+#include "gtest.h"
+#include "exporter/exporter.h"
 
-TEST(IlluminantSpectrumTest, CanBeCreated)
+class ExporterImplStub : public Exporter
 {
-    ASSERT_NO_THROW(IlluminantSpectrum({ 0.2, 0.3, 0.4 }));
+public:
+    void Export(const Film& film) const override {};
+};
+
+TEST(ExporterTest, CanBeCreated)
+{
+    ASSERT_NO_THROW(ExporterImplStub exporter);
 }
 
-TEST(IlluminantSpectrumTest, HasCorrectValues)
+TEST(ExporterTest, CanExport)
 {
-    IlluminantSpectrum white({ 1, 1, 1 });
-    RGBCoefficients rgb = white.ToRGB();
-    static const double tolerance = 0.1;
-    EXPECT_LT(abs(rgb[0] - 1.205), tolerance);
-    EXPECT_LT(abs(rgb[1] - 0.94), tolerance);
-    EXPECT_LT(abs(rgb[2] - 0.909), tolerance);
+    Film film;
+    ExporterImplStub exporter;
+    ASSERT_NO_THROW(exporter.Export(film));
 }
-

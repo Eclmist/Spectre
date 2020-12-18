@@ -17,7 +17,7 @@ jobs:
         shell: cmd
       - name: Run Unit Tests
         run: |
-             ./bin/RTCore.exe --unittest
+             ./bin/unittests/UnitTests.exe
         shell: powershell
   Macos:
     runs-on: macOS-latest
@@ -30,7 +30,7 @@ jobs:
              cmake --build ./build --config Release
       - name: Run Unit Tests
         run: |
-             ./bin/RTCore --unittest
+             ./bin/unittests/UnitTests
   Ubuntu:
     runs-on: ubuntu-18.04
     steps:
@@ -45,5 +45,5 @@ jobs:
          CXX:  g++-10
       - name: Run Unit Tests
         run: |
-             ./bin/RTCore --unittest
+             ./bin/unittests/UnitTests
         

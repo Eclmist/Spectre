@@ -18,7 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "googletest/gtest.h"
+#include "gtest.h"
 #include "core/film/film.h"
 #include "core/film/standardresolution.h"
 
