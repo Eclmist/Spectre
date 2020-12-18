@@ -54,9 +54,9 @@ std::vector<char> StbExporter::ExtractPixelData(const Film& film) const
         for (unsigned int x = 0; x < resolution.GetWidth(); ++x)
         {
             Pixel p = film.GetPixel(x, y);
-            data[iterator++] = (char)(p.m_RGB[0] * 255.0);
-            data[iterator++] = (char)(p.m_RGB[1] * 255.0);
-            data[iterator++] = (char)(p.m_RGB[2] * 255.0);
+            data[iterator++] = (char)(p.m_XYZ[0] * 255.0);
+            data[iterator++] = (char)(p.m_XYZ[1] * 255.0);
+            data[iterator++] = (char)(p.m_XYZ[2] * 255.0);
         }
     }
 

@@ -39,11 +39,11 @@ void Film::SetResolution(const Resolution& resolution)
     ResizePixelData();
 }
 
-void Film::SetPixel(unsigned int x, unsigned int y, float r, float g, float b)
+void Film::SetPixel(unsigned int x, unsigned int y, const XYZCoefficients& xyz)
 {
-    m_Pixels[GetIndex(x, y)].m_RGB[0] = r;
-    m_Pixels[GetIndex(x, y)].m_RGB[1] = g;
-    m_Pixels[GetIndex(x, y)].m_RGB[2] = b;
+    m_Pixels[GetIndex(x, y)].m_XYZ[0] = xyz[0];
+    m_Pixels[GetIndex(x, y)].m_XYZ[1] = xyz[1];
+    m_Pixels[GetIndex(x, y)].m_XYZ[2] = xyz[2];
 }
 
 void Film::ResizePixelData()

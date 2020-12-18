@@ -46,9 +46,9 @@ TEST(FilmTest, CanGetPixelValue)
 {
     Film film;
     Pixel p = film.GetPixel(50, 50);
-    EXPECT_FLOAT_EQ(p.m_RGB[0], 0.0f);
-    EXPECT_FLOAT_EQ(p.m_RGB[1], 0.0f);
-    EXPECT_FLOAT_EQ(p.m_RGB[2], 0.0f);
+    EXPECT_FLOAT_EQ(p.m_XYZ[0], 0.0f);
+    EXPECT_FLOAT_EQ(p.m_XYZ[1], 0.0f);
+    EXPECT_FLOAT_EQ(p.m_XYZ[2], 0.0f);
 }
 
 TEST(FilmTest, ThrowOnInvalidPixelPosition)
@@ -70,11 +70,11 @@ TEST(FilmTest, CanGetPixelValueAfterResize)
 TEST(FilmTest, CanSetPixelValue)
 {
     Film film;
-    ASSERT_NO_THROW(film.SetPixel(50, 50, 0.2f, 0.3f, 0.4f));
+    ASSERT_NO_THROW(film.SetPixel(50, 50, {0.2, 0.3, 0.4}));
     Pixel p = film.GetPixel(50, 50);
-    EXPECT_FLOAT_EQ(p.m_RGB[0], 0.2f);
-    EXPECT_FLOAT_EQ(p.m_RGB[1], 0.3f);
-    EXPECT_FLOAT_EQ(p.m_RGB[2], 0.4f);
+    EXPECT_FLOAT_EQ(p.m_XYZ[0], 0.2f);
+    EXPECT_FLOAT_EQ(p.m_XYZ[1], 0.3f);
+    EXPECT_FLOAT_EQ(p.m_XYZ[2], 0.4f);
 }
 
 TEST(FilmTest, CanGetTotalPixelCount)

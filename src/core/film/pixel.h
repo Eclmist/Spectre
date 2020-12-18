@@ -24,22 +24,22 @@
 
 struct Pixel
 {
-    Pixel(float r = 0, float g = 0, float b = 0)
+    Pixel(float x = 0, float y = 0, float z = 0)
     {
-        m_RGB[0] = r;
-        m_RGB[1] = g;
-        m_RGB[2] = b;
+        m_XYZ[0] = x;
+        m_XYZ[1] = y;
+        m_XYZ[2] = z;
     }
 
     Pixel(const Pixel& copy)
     {
-        m_RGB[0].Add(copy.m_RGB[0]);
-        m_RGB[1].Add(copy.m_RGB[1]);
-        m_RGB[2].Add(copy.m_RGB[2]);
+        m_XYZ[0].Add(copy.m_XYZ[0]);
+        m_XYZ[1].Add(copy.m_XYZ[1]);
+        m_XYZ[2].Add(copy.m_XYZ[2]);
     }
 
-    inline Pixel operator=(Pixel p) { return Pixel(p.m_RGB[0], p.m_RGB[1], p.m_RGB[2]); }
+    inline Pixel operator=(Pixel p) { return Pixel(p.m_XYZ[0], p.m_XYZ[1], p.m_XYZ[2]); }
 
-    AtomicFloat m_RGB[3];
+    AtomicFloat m_XYZ[3];
 };
 

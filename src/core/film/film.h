@@ -22,6 +22,7 @@
 
 #include "resolution.h"
 #include "pixel.h"
+#include "core/spectrum/spectralcoefficients.h"
 
 class Film
 {
@@ -35,7 +36,7 @@ public:
     Pixel GetPixel(unsigned int x, unsigned int y) const;
 
     void SetResolution(const Resolution& resolution);
-    void SetPixel(unsigned int x, unsigned int y, float r, float g, float b);
+    void SetPixel(unsigned int x, unsigned int y, const XYZCoefficients& xyz);
 
 private:
     void ResizePixelData();
