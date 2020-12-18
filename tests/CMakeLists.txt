@@ -49,3 +49,4 @@ set_target_properties(UnitTests PROPERTIES RUNTIME_OUTPUT_DIRECTORY $<1:${CMAKE_
 # =========================================================================== #
 
 target_link_libraries(UnitTests RTCore)
+
