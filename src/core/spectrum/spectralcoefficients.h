@@ -22,13 +22,6 @@
 
 struct Coefficients
 {
-    Coefficients(double v)
-    {
-        m_Data[0] = v;
-        m_Data[1] = v;
-        m_Data[2] = v;
-    }
-
     Coefficients(double r = 0, double g = 0, double b = 0)
     {
         m_Data[0] = r;
@@ -39,8 +32,13 @@ struct Coefficients
     double operator[](int i) const { return m_Data[i]; }
     double& operator[](int i) { return m_Data[i]; }
 
-    Coefficients operator*(double scale) { return { m_Data[0] * scale, m_Data[1] * scale, m_Data[2] * scale }; }
-    Coefficients operator/(double div) { return { m_Data[0] / div, m_Data[1] / div, m_Data[2] / div }; }
+    Coefficients operator*(double scale) const { return { m_Data[0] * scale, m_Data[1] * scale, m_Data[2] * scale }; }
+    Coefficients operator/(double div) const { return { m_Data[0] / div, m_Data[1] / div, m_Data[2] / div }; }
+
+    void operator+=(const Coefficients& v) { m_Data[0] += v.m_Data[0]; m_Data[1] += v.m_Data[1]; m_Data[2] += v.m_Data[2]; };
+    void operator-=(const Coefficients& v) { m_Data[0] -= v.m_Data[0]; m_Data[1] -= v.m_Data[1]; m_Data[2] -= v.m_Data[2]; };
+    void operator*=(double scale) { m_Data[0] *= scale; m_Data[1] *= scale; m_Data[2] *= scale; };
+    void operator/=(double scale) { m_Data[0] /= scale; m_Data[1] /= scale; m_Data[2] /= scale; };
 
     double m_Data[3];
 };

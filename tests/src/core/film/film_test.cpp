@@ -46,9 +46,9 @@ TEST(FilmTest, CanGetPixelValue)
 {
     Film film;
     Pixel p = film.GetPixel(50, 50);
-    EXPECT_FLOAT_EQ(p.m_XYZ[0], 0.0f);
-    EXPECT_FLOAT_EQ(p.m_XYZ[1], 0.0f);
-    EXPECT_FLOAT_EQ(p.m_XYZ[2], 0.0f);
+    EXPECT_DOUBLE_EQ(p.m_XYZ[0], 0.0);
+    EXPECT_DOUBLE_EQ(p.m_XYZ[1], 0.0);
+    EXPECT_DOUBLE_EQ(p.m_XYZ[2], 0.0);
 }
 
 TEST(FilmTest, ThrowOnInvalidPixelPosition)
@@ -72,9 +72,23 @@ TEST(FilmTest, CanSetPixelValue)
     Film film;
     ASSERT_NO_THROW(film.SetPixel(50, 50, {0.2, 0.3, 0.4}));
     Pixel p = film.GetPixel(50, 50);
-    EXPECT_FLOAT_EQ(p.m_XYZ[0], 0.2f);
-    EXPECT_FLOAT_EQ(p.m_XYZ[1], 0.3f);
-    EXPECT_FLOAT_EQ(p.m_XYZ[2], 0.4f);
+    EXPECT_DOUBLE_EQ(p.m_XYZ[0], 0.2);
+    EXPECT_DOUBLE_EQ(p.m_XYZ[1], 0.3);
+    EXPECT_DOUBLE_EQ(p.m_XYZ[2], 0.4);
+}
+
+TEST(FilmTest, CanSplatPixelValue)
+{
+    Film film;
+    ASSERT_THROW(film.SplatPixel(50, 50, { 0.2, 0.3, 0.4 }, 1.0001), std::invalid_argument);
+    ASSERT_THROW(film.SplatPixel(50, 50, { 0.2, 0.3, 0.4 }, -0.0001), std::invalid_argument);
+    ASSERT_NO_THROW(film.SplatPixel(50, 50, { 0.2, 0.3, 0.4 }, 1.0));
+    Pixel p = film.GetPixel(50, 50);
+    EXPECT_DOUBLE_EQ(p.m_XYZ[0], 0.2);
+    EXPECT_DOUBLE_EQ(p.m_XYZ[1], 0.3);
+    EXPECT_DOUBLE_EQ(p.m_XYZ[2], 0.4);
+    ASSERT_THROW(film.SplatPixel(50, 50, { 0.2, 0.3, 0.4 }, 0.0001), std::invalid_argument);
+
 }
 
 TEST(FilmTest, CanGetTotalPixelCount)

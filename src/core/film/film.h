@@ -37,6 +37,7 @@ public:
 
     void SetResolution(const Resolution& resolution);
     void SetPixel(unsigned int x, unsigned int y, const XYZCoefficients& xyz);
+    void SplatPixel(unsigned int x, unsigned int y, const XYZCoefficients& xyz, double deltaArea);
 
 private:
     void ResizePixelData();

@@ -20,26 +20,19 @@
 
 #pragma once
 
-#include "system/parallel/atomicfloat.h"
+#include "core/spectrum/spectralcoefficients.h"
 
-struct Pixel
+class Pixel
 {
-    Pixel(float x = 0, float y = 0, float z = 0)
+public:
+    Pixel() = default;
+    Pixel(const XYZCoefficients& xyz)
     {
-        m_XYZ[0] = x;
-        m_XYZ[1] = y;
-        m_XYZ[2] = z;
+        m_XYZ = xyz;
+        m_TotalSplat = 0.0;
     }
 
-    Pixel(const Pixel& copy)
-    {
-        m_XYZ[0].Add(copy.m_XYZ[0]);
-        m_XYZ[1].Add(copy.m_XYZ[1]);
-        m_XYZ[2].Add(copy.m_XYZ[2]);
-    }
-
-    inline Pixel operator=(Pixel p) { return Pixel(p.m_XYZ[0], p.m_XYZ[1], p.m_XYZ[2]); }
-
-    AtomicFloat m_XYZ[3];
+    XYZCoefficients m_XYZ;
+    double m_TotalSplat;
 };
 

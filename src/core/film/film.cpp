@@ -41,9 +41,25 @@ void Film::SetResolution(const Resolution& resolution)
 
 void Film::SetPixel(unsigned int x, unsigned int y, const XYZCoefficients& xyz)
 {
-    m_Pixels[GetIndex(x, y)].m_XYZ[0] = xyz[0];
-    m_Pixels[GetIndex(x, y)].m_XYZ[1] = xyz[1];
-    m_Pixels[GetIndex(x, y)].m_XYZ[2] = xyz[2];
+    m_Pixels[GetIndex(x, y)].m_XYZ = xyz;
+}
+
+void Film::SplatPixel(unsigned int x, unsigned int y, const XYZCoefficients& xyz, double deltaArea)
+{
+    if (deltaArea > 1.0 || deltaArea <= 0.0)
+    {
+        throw std::invalid_argument("A greater than 1 or smaller than 0 deltaArea is invalid ");
+        return;
+    }
+
+    if (deltaArea + m_Pixels[GetIndex(x, y)].m_TotalSplat > 1.0)
+    {
+        throw std::invalid_argument("Total splat area for this pixel exceeds 1 given the current delta area");
+        return;
+    }
+    
+    m_Pixels[GetIndex(x, y)].m_XYZ += xyz * deltaArea;
+    m_Pixels[GetIndex(x, y)].m_TotalSplat += deltaArea;
 }
 
 void Film::ResizePixelData()
