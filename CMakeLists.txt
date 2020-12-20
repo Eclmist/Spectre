@@ -39,7 +39,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # =========================================================================== #
 
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/src")
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 file(GLOB_RECURSE project_headers src/*.h)
 file(GLOB_RECURSE project_cpps src/*.cpp)
@@ -49,6 +48,8 @@ source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${all_files})
 # =========================================================================== #
 #                   SETUP THIRD PARTY/EXTERN DEPENDENCIES                     #
 # =========================================================================== #
+
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 file(GLOB_RECURSE stb include/stb/*)
 file(GLOB_RECURSE tsimd include/tsimd/*)
