@@ -31,13 +31,13 @@ public:
     ~Film() = default;
 
     inline const Resolution& GetResolution() const { return m_Resolution; }
-    inline int GetIndex(unsigned int x, unsigned int y) const { return x + y * m_Resolution.GetWidth(); }
+    inline int GetIndex(const Vector2u& point) const { return point.x + point.y * m_Resolution.GetWidth(); }
     inline int GetNumPixels() const { return m_Resolution.GetWidth() * m_Resolution.GetHeight(); }
-    Pixel GetPixel(unsigned int x, unsigned int y) const;
+    Pixel GetPixel(const Vector2u& point) const;
 
     void SetResolution(const Resolution& resolution);
-    void SetPixel(unsigned int x, unsigned int y, const XYZCoefficients& xyz);
-    void SplatPixel(unsigned int x, unsigned int y, const XYZCoefficients& xyz, double deltaArea);
+    void SetPixel(const Vector2u& point, const XYZCoefficients& xyz);
+    void SplatPixel(const Vector2u& point, const XYZCoefficients& xyz, double deltaArea);
 
 private:
     void ResizePixelData();

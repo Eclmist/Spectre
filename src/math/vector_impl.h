@@ -24,43 +24,44 @@ template<typename T, int N>
 Vector<T, N>::Vector(T v)
 {
     for (int i = 0; i < N; ++i)
-        m_Data[i] = v;
+        this->m_Data[i] = v;
 
     for (int i = N; i < 4; ++i)
-        m_Data[i] = 0;
+        this->m_Data[i] = 0;
 }
 
 template<typename T, int N>
 Vector<T, N>::Vector(T x, T y)
 {
     static_assert(N == 2, "2 component constructor only available for N = 2");
-    m_Data[0] = x;
-    m_Data[1] = y;
+    this->m_Data[0] = x;
+    this->m_Data[1] = y;
 }
 
 template<typename T, int N>
 Vector<T, N>::Vector(T x, T y, T z)
 {
     static_assert(N == 3, "3 component constructor only available for N = 3");
-    m_Data[0] = x;
-    m_Data[1] = y;
-    m_Data[2] = z;
+    this->m_Data[0] = x;
+    this->m_Data[1] = y;
+    this->m_Data[2] = z;
 }
 
 template<typename T, int N>
 Vector<T, N>::Vector(T x, T y, T z, T w)
 {
     static_assert(N == 4, "4 component constructor only available for N = 4");
-    m_Data[0] = x;
-    m_Data[1] = y;
-    m_Data[2] = z;
-    m_Data[3] = w;
+    this->m_Data[0] = x;
+    this->m_Data[1] = y;
+    this->m_Data[2] = z;
+    this->m_Data[3] = w;
 }
 
 template<typename T, int N>
 Vector<T, N>::Vector(T data[N])
 {
-    memcpy(m_Data, data, sizeof(T) * N);
+    for (int i = 0; i < N; ++i)
+        this->m_Data[i] = data[i];
 }
 
 template<typename T, int N>
@@ -74,7 +75,7 @@ Vector<T, N> Vector<T, N>::operator-() const
 {
     using namespace tsimd;
     T data[4];
-    store(load<pack<T, 4>>(m_Data) * -1, data);
+    store(load<pack<T, 4>>(this->m_Data) * -1, data);
     return data;
 }
 
@@ -83,7 +84,7 @@ Vector<T, N> Vector<T, N>::operator+(const Vector& b) const
 {
     using namespace tsimd;
     T data[4];
-    store(load<pack<T, 4>>(m_Data) + load<pack<T, 4>>(b.m_Data), data);
+    store(load<pack<T, 4>>(this->m_Data) + load<pack<T, 4>>(b.m_Data), data);
     return data;
 }
 
@@ -92,7 +93,7 @@ Vector<T, N> Vector<T, N>::operator-(const Vector& b) const
 {
     using namespace tsimd;
     T data[4];
-    store(load<pack<T, 4>>(m_Data) - load<pack<T, 4>>(b.m_Data), data);
+    store(load<pack<T, 4>>(this->m_Data) - load<pack<T, 4>>(b.m_Data), data);
     return data;
 }
 
@@ -101,7 +102,7 @@ Vector<T, N> Vector<T, N>::operator*(const Vector& b) const
 {
     using namespace tsimd;
     T data[4];
-    store(load<pack<T, 4>>(m_Data) * load<pack<T, 4>>(b.m_Data), data);
+    store(load<pack<T, 4>>(this->m_Data) * load<pack<T, 4>>(b.m_Data), data);
     return data;
 }
 
@@ -110,8 +111,8 @@ Vector<T, N> Vector<T, N>::operator/(const Vector& b) const
 {
     using namespace tsimd;
     T data[4];
-    store(load<pack<T, 4>>(m_Data) / load<pack<T, 4>>(b.m_Data), data);
-    RemoveNans(data);
+    store(load<pack<T, 4>>(this->m_Data) / load<pack<T, 4>>(b.m_Data), data);
+    this->RemoveNans(data);
     return data;
 }
 
@@ -119,7 +120,7 @@ template<typename T, int N>
 Vector<T, N>& Vector<T, N>::operator+=(const Vector& b)
 {
     using namespace tsimd;
-    store(load<pack<T, 4>>(m_Data) + load<pack<T, 4>>(b.m_Data), m_Data);
+    store(load<pack<T, 4>>(this->m_Data) + load<pack<T, 4>>(b.m_Data), this->m_Data);
     return *this;
 }
 
@@ -127,7 +128,7 @@ template<typename T, int N>
 Vector<T, N>& Vector<T, N>::operator-=(const Vector& b)
 {
     using namespace tsimd;
-    store(load<pack<T, 4>>(m_Data) - load<pack<T, 4>>(b.m_Data), m_Data);
+    store(load<pack<T, 4>>(this->m_Data) - load<pack<T, 4>>(b.m_Data), this->m_Data);
     return *this;
 }
 
@@ -135,7 +136,7 @@ template<typename T, int N>
 Vector<T, N>& Vector<T, N>::operator*=(const Vector& b)
 {
     using namespace tsimd;
-    store(load<pack<T, 4>>(m_Data) * load<pack<T, 4>>(b.m_Data), m_Data);
+    store(load<pack<T, 4>>(this->m_Data) * load<pack<T, 4>>(b.m_Data), this->m_Data);
     return *this;
 }
 
@@ -143,8 +144,8 @@ template<typename T, int N>
 Vector<T, N>& Vector<T, N>::operator/=(const Vector& b)
 {
     using namespace tsimd;
-    store(load<pack<T, 4>>(m_Data) / load<pack<T, 4>>(b.m_Data), m_Data);
-    RemoveNans();
+    store(load<pack<T, 4>>(this->m_Data) / load<pack<T, 4>>(b.m_Data), this->m_Data);
+    this->RemoveNans();
     return *this;
 }
 
@@ -154,9 +155,9 @@ bool Vector<T, N>::operator==(const Vector& b) const
     using namespace tsimd;
 
     if constexpr (std::is_floating_point_v<T>)
-        return all(near_equal(load<pack<T, 4>>(m_Data), load<pack<T, 4>>(b.m_Data)));
+        return all(near_equal(load<pack<T, 4>>(this->m_Data), load<pack<T, 4>>(b.m_Data)));
     else
-        return all(load<pack<T, 4>>(m_Data), load<pack<T, 4>>(b.m_Data));
+        return all(load<pack<T, 4>>(this->m_Data), load<pack<T, 4>>(b.m_Data));
 }
 
 template<typename T, int N>
@@ -197,7 +198,7 @@ template<typename T, int N>
 void Vector<T, N>::Normalize()
 {
     using namespace tsimd;
-    store(load<pack<T, 4>>(m_Data) / Magnitude(), m_Data);
+    store(load<pack<T, 4>>(this->m_Data) / Magnitude(), this->m_Data);
 }
 
 template<typename T, int N>

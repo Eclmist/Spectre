@@ -25,12 +25,12 @@ Film::Film()
     ResizePixelData();
 }
 
-Pixel Film::GetPixel(unsigned int x, unsigned int y) const
+Pixel Film::GetPixel(const Vector2u& point) const
 {
-    if (!m_Resolution.IsWithinBounds(x, y))
+    if (!m_Resolution.IsWithinBounds(point))
         throw std::invalid_argument("Pixel position out of bounds");
 
-    return m_Pixels[GetIndex(x, y)];
+    return m_Pixels[GetIndex(point)];
 }
 
 void Film::SetResolution(const Resolution& resolution)
@@ -39,24 +39,24 @@ void Film::SetResolution(const Resolution& resolution)
     ResizePixelData();
 }
 
-void Film::SetPixel(unsigned int x, unsigned int y, const XYZCoefficients& xyz)
+void Film::SetPixel(const Vector2u& point, const XYZCoefficients& xyz)
 {
-    m_Pixels[GetIndex(x, y)].m_XYZ = xyz;
+    m_Pixels[GetIndex(point)].m_XYZ = xyz;
 }
 
-void Film::SplatPixel(unsigned int x, unsigned int y, const XYZCoefficients& xyz, double deltaArea)
+void Film::SplatPixel(const Vector2u& point, const XYZCoefficients& xyz, double deltaArea)
 {
-    if (!m_Resolution.IsWithinBounds(x, y))
+    if (!m_Resolution.IsWithinBounds(point))
         throw std::invalid_argument("Pixel position out of bounds");
 
     if (deltaArea > 1.0 || deltaArea <= 0.0)
         throw std::invalid_argument("A greater than 1 or smaller than 0 deltaArea is invalid ");
 
-    if (deltaArea + m_Pixels[GetIndex(x, y)].m_TotalSplat > 1.0)
+    if (deltaArea + m_Pixels[GetIndex(point)].m_TotalSplat > 1.0)
         throw std::invalid_argument("Total splat area for this pixel exceeds 1 given the current delta area");
     
-    m_Pixels[GetIndex(x, y)].m_XYZ += xyz * deltaArea;
-    m_Pixels[GetIndex(x, y)].m_TotalSplat += deltaArea;
+    m_Pixels[GetIndex(point)].m_XYZ += xyz * deltaArea;
+    m_Pixels[GetIndex(point)].m_TotalSplat += deltaArea;
 }
 
 void Film::ResizePixelData()

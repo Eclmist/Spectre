@@ -45,7 +45,7 @@ TEST(FilmTest, CanSetResolution)
 TEST(FilmTest, CanGetPixelValue)
 {
     Film film;
-    Pixel p = film.GetPixel(50, 50);
+    Pixel p = film.GetPixel({ 50, 50 });
     EXPECT_DOUBLE_EQ(p.m_XYZ[0], 0.0);
     EXPECT_DOUBLE_EQ(p.m_XYZ[1], 0.0);
     EXPECT_DOUBLE_EQ(p.m_XYZ[2], 0.0);
@@ -54,24 +54,23 @@ TEST(FilmTest, CanGetPixelValue)
 TEST(FilmTest, ThrowOnInvalidPixelPosition)
 {
     Film film;
-    ASSERT_NO_THROW(film.GetPixel(0, 0));
-    ASSERT_NO_THROW(film.GetPixel(799, 479));
-    ASSERT_THROW(film.GetPixel(800, 480), std::invalid_argument);
-    ASSERT_THROW(film.GetPixel(-1, -1), std::invalid_argument);
+    ASSERT_NO_THROW(film.GetPixel({ 0, 0 }));
+    ASSERT_NO_THROW(film.GetPixel({ 799, 479 }));
+    ASSERT_THROW(film.GetPixel({ 800, 480 }), std::invalid_argument);
 }
 
 TEST(FilmTest, CanGetPixelValueAfterResize)
 {
     Film film;
     film.SetResolution(Resolution800X600());
-    ASSERT_NO_THROW(film.GetPixel(799, 599));
+    ASSERT_NO_THROW(film.GetPixel({ 799, 599 }));
 }
 
 TEST(FilmTest, CanSetPixelValue)
 {
     Film film;
-    ASSERT_NO_THROW(film.SetPixel(50, 50, {0.2, 0.3, 0.4}));
-    Pixel p = film.GetPixel(50, 50);
+    ASSERT_NO_THROW(film.SetPixel({ 50, 50 }, {0.2, 0.3, 0.4}));
+    Pixel p = film.GetPixel({ 50, 50 });
     EXPECT_DOUBLE_EQ(p.m_XYZ[0], 0.2);
     EXPECT_DOUBLE_EQ(p.m_XYZ[1], 0.3);
     EXPECT_DOUBLE_EQ(p.m_XYZ[2], 0.4);
@@ -80,14 +79,14 @@ TEST(FilmTest, CanSetPixelValue)
 TEST(FilmTest, CanSplatPixelValue)
 {
     Film film;
-    ASSERT_THROW(film.SplatPixel(50, 50, { 0.2, 0.3, 0.4 }, 1.0001), std::invalid_argument);
-    ASSERT_THROW(film.SplatPixel(50, 50, { 0.2, 0.3, 0.4 }, -0.0001), std::invalid_argument);
-    ASSERT_NO_THROW(film.SplatPixel(50, 50, { 0.2, 0.3, 0.4 }, 1.0));
-    Pixel p = film.GetPixel(50, 50);
+    ASSERT_THROW(film.SplatPixel({ 50, 50 }, { 0.2, 0.3, 0.4 }, 1.0001), std::invalid_argument);
+    ASSERT_THROW(film.SplatPixel({ 50, 50 }, { 0.2, 0.3, 0.4 }, -0.0001), std::invalid_argument);
+    ASSERT_NO_THROW(film.SplatPixel({ 50, 50 }, { 0.2, 0.3, 0.4 }, 1.0));
+    Pixel p = film.GetPixel({ 50, 50 });
     EXPECT_DOUBLE_EQ(p.m_XYZ[0], 0.2);
     EXPECT_DOUBLE_EQ(p.m_XYZ[1], 0.3);
     EXPECT_DOUBLE_EQ(p.m_XYZ[2], 0.4);
-    ASSERT_THROW(film.SplatPixel(50, 50, { 0.2, 0.3, 0.4 }, 0.0001), std::invalid_argument);
+    ASSERT_THROW(film.SplatPixel({ 50, 50 }, { 0.2, 0.3, 0.4 }, 0.0001), std::invalid_argument);
 
 }
 

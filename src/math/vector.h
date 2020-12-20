@@ -36,7 +36,7 @@ template <typename T>
 class VectorData<T, 2>
 {
 public:
-    VectorData() { for (int i = 0; i < 4; ++i) m_Data[i] = 0; }
+    VectorData() { for (int i = 0; i < 4; ++i) this->m_Data[i] = 0; }
     union
     {
         struct { T x, y; };
@@ -44,7 +44,7 @@ public:
     };
 
 protected:
-    inline void RemoveNans() { m_Data[2] = 0; m_Data[3] = 0; }
+    inline void RemoveNans() { this->m_Data[2] = 0; this->m_Data[3] = 0; }
     inline void RemoveNans(T data[4]) const { data[2] = 0; data[3] = 0; }
 };
 
@@ -52,7 +52,7 @@ template <typename T>
 class VectorData<T, 3>
 {
 public:
-    VectorData() { for (int i = 0; i < 4; ++i) m_Data[i] = 0; }
+    VectorData() { for (int i = 0; i < 4; ++i) this->m_Data[i] = 0; }
     union
     {
         struct { T x, y, z; };
@@ -60,7 +60,7 @@ public:
     };
 
 protected:
-    inline void RemoveNans() { m_Data[3] = 0; }
+    inline void RemoveNans() { this->m_Data[3] = 0; }
     inline void RemoveNans(T data[4]) const { data[3] = 0; }
 };
 
@@ -68,7 +68,7 @@ template <typename T>
 class VectorData<T, 4>
 {
 public:
-    VectorData() { for (int i = 0; i < 4; ++i) m_Data[i] = 0; }
+    VectorData() { for (int i = 0; i < 4; ++i) this->m_Data[i] = 0; }
     union
     {
         struct { T x, y, z, w; };
@@ -109,8 +109,8 @@ public:
     bool operator==(const Vector& b) const;
     bool operator!=(const Vector& b) const;
 
-    inline T operator[](int i) const { return m_Data[i]; }
-    inline T& operator[](int i) { return m_Data[i]; }
+    inline T operator[](int i) const { return this->m_Data[i]; }
+    inline T& operator[](int i) { return this->m_Data[i]; }
 
 public:
     double Magnitude() const;
@@ -129,5 +129,9 @@ public:
 typedef Vector<double, 4> Vector4;
 typedef Vector<double, 3> Vector3;
 typedef Vector<double, 2> Vector2;
+
+typedef Vector<unsigned int, 2> Vector2u;
+typedef Vector<unsigned int, 3> Vector3u;
+typedef Vector<unsigned int, 4> Vector4u;
 
 #include "vector_impl.h" 

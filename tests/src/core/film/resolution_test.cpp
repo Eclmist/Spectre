@@ -111,9 +111,8 @@ TEST(ResolutionTest, HaveCommonWidthHeightPresets)
 TEST(ResolutionTest, CanCheckIfInBounds)
 {
     Resolution640X360 res;
-    EXPECT_TRUE(res.IsWithinBounds(0, 0));
-    EXPECT_TRUE(res.IsWithinBounds(639, 359));
-    EXPECT_FALSE(res.IsWithinBounds(-1, -1));
-    EXPECT_FALSE(res.IsWithinBounds(640, 340));
+    EXPECT_TRUE(res.IsWithinBounds({0, 0}));
+    EXPECT_TRUE(res.IsWithinBounds({639, 359}));
+    EXPECT_FALSE(res.IsWithinBounds({640, 340}));
 }
 

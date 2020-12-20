@@ -31,9 +31,9 @@ Resolution::Resolution()
 {
 }
 
-bool Resolution::IsWithinBounds(unsigned int x, unsigned int y) const
+bool Resolution::IsWithinBounds(const Vector2u& point) const
 {
-    return x >= 0 && x < m_Width && y >= 0 && y < m_Height;
+    return point.x >= 0 && point.x < m_Width && point.y >= 0 && point.y < m_Height;
 }
 
 void Resolution::SetWidth(unsigned int width)

@@ -54,7 +54,7 @@ std::vector<char> StbExporter::ExtractPixelData(const Film& film) const
     {
         for (unsigned int x = 0; x < resolution.GetWidth(); ++x)
         {
-            Pixel p = film.GetPixel(x, y);
+            Pixel p = film.GetPixel({x, y});
             RGBCoefficients rgb = SampledSpectrum::XYZToRGB({ p.m_XYZ[0], p.m_XYZ[1], p.m_XYZ[2] });
             data[iterator++] = (char)(rgb[0] * 255.0);
             data[iterator++] = (char)(rgb[1] * 255.0);

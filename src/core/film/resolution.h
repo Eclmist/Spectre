@@ -21,6 +21,7 @@
 #pragma once
 
 #include "system/system.h"
+#include "math/vector.h"
 
 class Resolution
 {
@@ -30,7 +31,7 @@ public:
 
     inline unsigned int GetWidth() const { return m_Width; }
     inline unsigned int GetHeight() const { return m_Height; }
-    bool IsWithinBounds(unsigned int x, unsigned int y) const;
+    bool IsWithinBounds(const Vector2u& point) const;
 
     void SetWidth(unsigned int width);
     void SetHeight(unsigned int height);
