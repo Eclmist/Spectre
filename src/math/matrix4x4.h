@@ -33,8 +33,9 @@ public:
               double _31, double _32, double _33, double _34,
               double _41, double _42, double _43, double _44);
 
-    double operator[](int i) const { return m_Data[i]; }
-    double& operator[](int i) { return m_Data[i]; }
+    inline double operator[](int i) const { return m_Data[i]; }
+    inline double& operator[](int i) { return m_Data[i]; }
+
     bool operator==(const Matrix4x4& m2) const;
     Matrix4x4 operator*(const Matrix4x4& m2) const;
 
