@@ -41,47 +41,44 @@ TEST(TransformTest, DefaultsToIdentity)
 
 TEST(TransformTest, CanGetTranslation)
 {
-    EXPECT_EQ(Transform().GetTranslation(), Vector4());
+    EXPECT_EQ(Transform().GetTranslation(), Vector3());
 }
 
 TEST(TransformTest, CanSetTranlation)
 {
     Transform t;
     ASSERT_NO_THROW(t.SetTranslation({ 1, 2, 3 }));
-    EXPECT_EQ(t.GetTranslation(), Vector4(1, 2, 3, 0));
+    EXPECT_EQ(t.GetTranslation(), Vector3(1, 2, 3));
     ASSERT_NO_THROW(t.SetTranslation({ 1, 2, 4 }));
-    EXPECT_EQ(t.GetTranslation(), Vector4(1, 2, 4, 0));
-    ASSERT_THROW(t.SetTranslation({ 1, 2, 3, 1 }), std::invalid_argument);
+    EXPECT_EQ(t.GetTranslation(), Vector3(1, 2, 4));
 }
 
 TEST(TransformTest, CanGetRotation)
 {
-    EXPECT_EQ(Transform().GetRotation(), Vector4());
+    EXPECT_EQ(Transform().GetRotation(), Vector3());
 }
 
 TEST(TransformTest, CanSetRotation)
 {
     Transform t;
     ASSERT_NO_THROW(t.SetRotation({ 1, 2, 3 }));
-    EXPECT_EQ(t.GetRotation(), Vector4(1, 2, 3, 0));
+    EXPECT_EQ(t.GetRotation(), Vector3(1, 2, 3));
     ASSERT_NO_THROW(t.SetRotation({ 1, 2, 4 }));
-    EXPECT_EQ(t.GetRotation(), Vector4(1, 2, 4, 0));
-    ASSERT_THROW(t.SetRotation({ 1, 2, 3, 1 }), std::invalid_argument);
+    EXPECT_EQ(t.GetRotation(), Vector3(1, 2, 4));
 }
 
 TEST(TransformTest, CanGetScale)
 {
-    EXPECT_EQ(Transform().GetScale(), Vector4(1));
+    EXPECT_EQ(Transform().GetScale(), Vector3(1));
 }
 
 TEST(TransformTest, CanSetScale)
 {
     Transform t;
     ASSERT_NO_THROW(t.SetScale({ 1, 2, 3 }));
-    EXPECT_EQ(t.GetScale(), Vector4(1, 2, 3, 0));
+    EXPECT_EQ(t.GetScale(), Vector3(1, 2, 3));
     ASSERT_NO_THROW(t.SetScale({ 1, 2, 4 }));
-    EXPECT_EQ(t.GetScale(), Vector4(1, 2, 4, 0));
-    ASSERT_THROW(t.SetScale({ 1, 2, 3, 1 }), std::invalid_argument);
+    EXPECT_EQ(t.GetScale(), Vector3(1, 2, 4));
 }
 
 TEST(TransformTest, MatrixHasCorrectValues)

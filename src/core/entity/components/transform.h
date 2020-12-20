@@ -22,7 +22,7 @@
 
 #include "component.h"
 #include "math/matrix4x4.h"
-#include "math/vector4.h"
+#include "math/vector.h"
 
 class Transform : public Component
 {
@@ -30,32 +30,28 @@ public:
     Transform();
     ~Transform() = default;
 
-    inline Vector4 GetTranslation() const { return m_Translation; }
-    inline Vector4 GetRotation() const { return m_EulerRotation; }
-    inline Vector4 GetScale() const { return m_Scale; }
+    inline Vector3 GetTranslation() const { return m_Translation; }
+    inline Vector3 GetRotation() const { return m_EulerRotation; }
+    inline Vector3 GetScale() const { return m_Scale; }
 
-    void SetTranslation(const Vector4& translation);
-    void SetRotation(const Vector4& eulerRotation);
-    void SetScale(const Vector4& scale);
+    void SetTranslation(const Vector3& translation);
+    void SetRotation(const Vector3& eulerRotation);
+    void SetScale(const Vector3& scale);
 
     Matrix4x4 GetMatrix() const;
     Matrix4x4 GetInverseMatrix() const;
 
 private:
-    bool IsValidTranslation(const Vector4& translation) const;
-    bool IsValidRotation(const Vector4& rotation) const;
-    bool IsValidScale(const Vector4& scale) const;
-
-    static Matrix4x4 GetTranslationMatrix(const Vector4& translation);
-    static Matrix4x4 GetRotationMatrix(const Vector4& rotation);
-    static Matrix4x4 GetScaleMatrix(const Vector4& scale);
+    static Matrix4x4 GetTranslationMatrix(const Vector3& translation);
+    static Matrix4x4 GetRotationMatrix(const Vector3& rotation);
+    static Matrix4x4 GetScaleMatrix(const Vector3& scale);
 
     static Matrix4x4 GetRotationMatrixX(double rotX);
     static Matrix4x4 GetRotationMatrixY(double rotY);
     static Matrix4x4 GetRotationMatrixZ(double rotZ);
 
 private:
-    Vector4 m_Translation;
-    Vector4 m_EulerRotation;
-    Vector4 m_Scale;
+    Vector3 m_Translation;
+    Vector3 m_EulerRotation;
+    Vector3 m_Scale;
 };

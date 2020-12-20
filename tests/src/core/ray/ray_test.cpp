@@ -28,8 +28,8 @@ TEST(RayTest, CanBeCreated)
 
 TEST(RayTest, DirectionIsNormalized)
 {
-    EXPECT_EQ(Ray({ 0.0 }, { 6.0, 0.0, 0.0 }).m_Direction, Vector4(1.0, 0.0, 0.0));
-    EXPECT_EQ(Ray({ 0.0 }, { 1.0, 2.0, 3.0 }).m_Direction, Vector4(1.0, 2.0, 3.0).Normalized());
+    EXPECT_EQ(Ray({ 0.0 }, { 6.0, 0.0, 0.0 }).m_Direction, Vector3(1.0, 0.0, 0.0));
+    EXPECT_EQ(Ray({ 0.0 }, { 1.0, 2.0, 3.0 }).m_Direction, Vector3(1.0, 2.0, 3.0).Normalized());
 }
 
 TEST(RayTest, CanBeCopied)

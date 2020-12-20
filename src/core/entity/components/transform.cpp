@@ -27,27 +27,18 @@ Transform::Transform()
 {
 }
 
-void Transform::SetTranslation(const Vector4& translation)
+void Transform::SetTranslation(const Vector3& translation)
 {
-    if (IsValidTranslation(translation))
-        throw std::invalid_argument("The input translation is invalid");
-
     m_Translation = translation;
 }
 
-void Transform::SetRotation(const Vector4& eulerRotation)
+void Transform::SetRotation(const Vector3& eulerRotation)
 {
-    if (IsValidRotation(eulerRotation))
-        throw std::invalid_argument("The input rotation is invalid");
-
     m_EulerRotation = eulerRotation;
 }
 
-void Transform::SetScale(const Vector4& scale)
+void Transform::SetScale(const Vector3& scale)
 {
-    if (IsValidScale(scale))
-        throw std::invalid_argument("The input scale is invalid");
-
     m_Scale = scale;
 }
 
@@ -58,25 +49,10 @@ Matrix4x4 Transform::GetMatrix() const
 
 Matrix4x4 Transform::GetInverseMatrix() const
 {
-    return GetScaleMatrix(Vector4(1.0) / m_Scale) * GetRotationMatrix(-m_EulerRotation) * GetTranslationMatrix(-m_Translation);
+    return GetScaleMatrix(Vector3(1.0) / m_Scale) * GetRotationMatrix(-m_EulerRotation) * GetTranslationMatrix(-m_Translation);
 }
 
-bool Transform::IsValidTranslation(const Vector4& translation) const
-{
-    return translation.w != 0;
-}
-
-bool Transform::IsValidRotation(const Vector4& eulerRotation) const
-{
-    return eulerRotation.w != 0;
-}
-
-bool Transform::IsValidScale(const Vector4& scale) const
-{
-    return scale.w != 0;
-}
-
-Matrix4x4 Transform::GetTranslationMatrix(const Vector4& translation)
+Matrix4x4 Transform::GetTranslationMatrix(const Vector3& translation)
 {
     return { 1.0, 0.0, 0.0, translation.x,
              0.0, 1.0, 0.0, translation.y,
@@ -84,11 +60,11 @@ Matrix4x4 Transform::GetTranslationMatrix(const Vector4& translation)
              0.0, 0.0, 0.0, 1.0 };
 }
 
-Matrix4x4 Transform::GetRotationMatrix(const Vector4& rotation)
+Matrix4x4 Transform::GetRotationMatrix(const Vector3& rotation)
 {
     return GetRotationMatrixZ(rotation.z) * GetRotationMatrixY(rotation.y) * GetRotationMatrixX(rotation.x); }
 
-Matrix4x4 Transform::GetScaleMatrix(const Vector4& scale)
+Matrix4x4 Transform::GetScaleMatrix(const Vector3& scale)
 {
     return { scale.x, 0.0, 0.0, 0.0,
              0.0, scale.y, 0.0, 0.0,

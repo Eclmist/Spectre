@@ -20,17 +20,17 @@
 
 #pragma once
 
-#include "math/vector4.h"
+#include "math/vector.h"
 
 class Ray
 {
 public:
-    Ray(const Vector4& origin, const Vector4& direction);
+    Ray(const Vector3& origin, const Vector3& direction);
     ~Ray() = default;
 
-    inline Vector4 operator()(double t) const { return m_Origin + m_Direction * t; }
+    inline Vector3 operator()(double t) const { return m_Origin + m_Direction * t; }
 
 public:
-    Vector4 m_Origin;
-    Vector4 m_Direction;
+    Vector3 m_Origin;
+    Vector3 m_Direction;
 };
