@@ -21,7 +21,6 @@
 #include "gtest.h"
 #include "core/spectrum/spectrum.h"
 
-
 TEST(SpectrumTest, CanBeCreated)
 {
     ASSERT_NO_THROW(Spectrum spectrum);
