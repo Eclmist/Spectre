@@ -18,29 +18,5 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#pragma once
-
-#include "system/system.h"
-#include "math/vector.h"
-
-class Resolution
-{
-public:
-    Resolution();
-    ~Resolution() = default;
-
-    bool operator==(const Resolution& resolution) const;
-    bool operator!=(const Resolution& resolution) const;
-
-    inline unsigned int GetWidth() const { return m_Width; }
-    inline unsigned int GetHeight() const { return m_Height; }
-    bool IsWithinBounds(const Vector2u& point) const;
-
-    void SetWidth(unsigned int width);
-    void SetHeight(unsigned int height);
-
-protected:
-    unsigned int m_Width;
-    unsigned int m_Height;
-};
+#include "camera.h"
 

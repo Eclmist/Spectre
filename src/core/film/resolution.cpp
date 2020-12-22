@@ -31,6 +31,16 @@ Resolution::Resolution()
 {
 }
 
+bool Resolution::operator==(const Resolution& resolution) const
+{
+    return m_Width == resolution.m_Width && m_Height == resolution.m_Height;
+}
+
+bool Resolution::operator!=(const Resolution& resolution) const
+{
+    return !(*this == resolution);
+}
+
 bool Resolution::IsWithinBounds(const Vector2u& point) const
 {
     return point.x >= 0 && point.x < m_Width && point.y >= 0 && point.y < m_Height;

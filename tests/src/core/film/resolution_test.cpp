@@ -116,3 +116,23 @@ TEST(ResolutionTest, CanCheckIfInBounds)
     EXPECT_FALSE(res.IsWithinBounds({640, 340}));
 }
 
+TEST(ResolutionTest, CanCheckEquality)
+{
+    Resolution640X360 res;
+    EXPECT_EQ(res, Resolution640X360());
+    Resolution res2;
+    res2.SetWidth(640);
+    res2.SetHeight(360);
+    EXPECT_EQ(res, res2);
+
+    res2.SetWidth(641);
+    EXPECT_NE(res, res2);
+
+    res2.SetWidth(640);
+    res2.SetHeight(361);
+    EXPECT_NE(res, res2);
+
+    res2.SetHeight(360);
+    EXPECT_EQ(res, res2);
+}
+
