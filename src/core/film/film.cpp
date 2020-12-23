@@ -20,47 +20,52 @@
 
 #include "film.h"
 
+static constexpr int TileSize = 128;
+
 Film::Film()
 {
-    ResizePixelData();
+    SetupTiles();
 }
 
-Pixel Film::GetPixel(const Vector2u& point) const
+FilmTile& Film::GetTile(int index)
 {
-    if (!m_Resolution.IsWithinBounds(point))
-        throw std::invalid_argument("Pixel position out of bounds");
+    return m_Tiles[index];
+}
 
-    return m_Pixels[GetIndex(point)];
+FilmTile& Film::GetTile(const Vector2i& position)
+{
+    return GetTile(GetTileIndex(position));
+}
+
+void Film::SetupTiles()
+{
+    m_Tiles.clear();
+
+    for (int y = 0; y < m_Resolution.GetHeight(); y += TileSize)
+    {
+        for (int x = 0; x < m_Resolution.GetWidth(); x += TileSize)
+        {
+            int sizeX = std::min(TileSize, m_Resolution.GetWidth() - x);
+            int sizeY = std::min(TileSize, m_Resolution.GetHeight() - y);
+            m_Tiles.push_back(FilmTile({ x, y }, { sizeX, sizeY }));
+        }
+    }
+}
+
+int Film::GetTileIndex(const Vector2i& position) const
+{
+    if (!m_Resolution.IsWithinBounds(position))
+        throw std::invalid_argument("Position is outside film bounds");
+
+    int x = position.x / TileSize;
+    int y = position.y / TileSize;
+    int numTilesX = m_Resolution.GetWidth() / TileSize + 1;
+    return x + y * numTilesX;
 }
 
 void Film::SetResolution(const Resolution& resolution)
 {
     m_Resolution = resolution;
-    ResizePixelData();
-}
-
-void Film::SetPixel(const Vector2u& point, const XYZCoefficients& xyz)
-{
-    m_Pixels[GetIndex(point)].m_XYZ = xyz;
-}
-
-void Film::SplatPixel(const Vector2u& point, const XYZCoefficients& xyz, double deltaArea)
-{
-    if (!m_Resolution.IsWithinBounds(point))
-        throw std::invalid_argument("Pixel position out of bounds");
-
-    if (deltaArea > 1.0 || deltaArea <= 0.0)
-        throw std::invalid_argument("A greater than 1 or smaller than 0 deltaArea is invalid ");
-
-    if (deltaArea + m_Pixels[GetIndex(point)].m_TotalSplat > 1.0)
-        throw std::invalid_argument("Total splat area for this pixel exceeds 1 given the current delta area");
-    
-    m_Pixels[GetIndex(point)].m_XYZ += xyz * deltaArea;
-    m_Pixels[GetIndex(point)].m_TotalSplat += deltaArea;
-}
-
-void Film::ResizePixelData()
-{
-    m_Pixels = std::make_unique<Pixel[]>(m_Resolution.GetWidth() * m_Resolution.GetHeight());
+    SetupTiles();
 }
 

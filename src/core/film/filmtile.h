@@ -46,5 +46,5 @@ private:
 
 private:
     const Rect m_Rect;
-    std::unique_ptr<Pixel[]> m_Pixels;
+    std::vector<Pixel> m_Pixels;
 };

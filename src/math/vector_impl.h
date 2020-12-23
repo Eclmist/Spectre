@@ -157,7 +157,7 @@ bool Vector<T, N>::operator==(const Vector& b) const
     if constexpr (std::is_floating_point_v<T>)
         return all(near_equal(load<pack<T, 4>>(this->m_Data), load<pack<T, 4>>(b.m_Data)));
     else
-        return all(load<pack<T, 4>>(this->m_Data), load<pack<T, 4>>(b.m_Data));
+        return all(load<pack<T, 4>>(this->m_Data) == load<pack<T, 4>>(b.m_Data));
 }
 
 template<typename T, int N>

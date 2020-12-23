@@ -32,15 +32,15 @@ public:
     bool operator==(const Resolution& resolution) const;
     bool operator!=(const Resolution& resolution) const;
 
-    inline unsigned int GetWidth() const { return m_Width; }
-    inline unsigned int GetHeight() const { return m_Height; }
-    bool IsWithinBounds(const Vector2u& point) const;
+    inline int GetWidth() const { return m_Width; }
+    inline int GetHeight() const { return m_Height; }
+    bool IsWithinBounds(const Vector2i& point) const;
 
-    void SetWidth(unsigned int width);
-    void SetHeight(unsigned int height);
+    void SetWidth(int width);
+    void SetHeight(int height);
 
 protected:
-    unsigned int m_Width;
-    unsigned int m_Height;
+    int m_Width;
+    int m_Height;
 };
 

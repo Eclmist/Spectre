@@ -21,7 +21,7 @@
 #pragma once
 
 #include "resolution.h"
-#include "pixel.h"
+#include "filmtile.h"
 #include "core/spectrum/spectralcoefficients.h"
 
 class Film
@@ -31,19 +31,19 @@ public:
     ~Film() = default;
 
     inline const Resolution& GetResolution() const { return m_Resolution; }
-    inline int GetIndex(const Vector2u& point) const { return point.x + point.y * m_Resolution.GetWidth(); }
     inline int GetNumPixels() const { return m_Resolution.GetWidth() * m_Resolution.GetHeight(); }
-    Pixel GetPixel(const Vector2u& point) const;
+
+    FilmTile& GetTile(int index);
+    FilmTile& GetTile(const Vector2i& position);
 
     void SetResolution(const Resolution& resolution);
-    void SetPixel(const Vector2u& point, const XYZCoefficients& xyz);
-    void SplatPixel(const Vector2u& point, const XYZCoefficients& xyz, double deltaArea);
 
 private:
-    void ResizePixelData();
+    void SetupTiles();
+    int GetTileIndex(const Vector2i& position) const;
 
 private:
     Resolution m_Resolution;
-    std::unique_ptr<Pixel[]> m_Pixels;
+    std::vector<FilmTile> m_Tiles;
 };
 

@@ -130,8 +130,8 @@ typedef Vector<double, 4> Vector4;
 typedef Vector<double, 3> Vector3;
 typedef Vector<double, 2> Vector2;
 
-typedef Vector<unsigned int, 2> Vector2u;
-typedef Vector<unsigned int, 3> Vector3u;
-typedef Vector<unsigned int, 4> Vector4u;
+typedef Vector<int, 2> Vector2i;
+typedef Vector<int, 3> Vector3i;
+typedef Vector<int, 4> Vector4i;
 
 #include "vector_impl.h" 

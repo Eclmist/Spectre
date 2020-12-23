@@ -27,7 +27,7 @@ FilmTile::FilmTile(const Vector2i& pos, const Vector2i& size)
     if (pos.x < 0 || pos.y < 0)
         throw std::invalid_argument("Film tile cannot have negative position");
 
-    m_Pixels = std::make_unique<Pixel[]>(m_Rect.w * m_Rect.h);
+    m_Pixels.resize(size.x * size.y);
 }
 
 Vector2i FilmTile::TileToFilmSpace(const Vector2i& tileSpacePos) const
@@ -52,15 +52,12 @@ int FilmTile::GetIndex(const Vector2i& tileSpacePos) const
 
 const Pixel& FilmTile::GetTileSpacePixel(const Vector2i& tileSpacePos) const
 {
-    return GetFilmSpacePixel(TileToFilmSpace(tileSpacePos));
+    return m_Pixels[GetIndex(tileSpacePos)];
 }
 
 const Pixel& FilmTile::GetFilmSpacePixel(const Vector2i& filmSpacePos) const
 {
-    if (!m_Rect.IsWithinBounds(filmSpacePos.x, filmSpacePos.y))
-        throw std::invalid_argument("Pixel position is out of tile bounds");
-
-    return m_Pixels[GetIndex(filmSpacePos)];
+    return GetTileSpacePixel(FilmToTileSpace(filmSpacePos));
 }
 
 void FilmTile::SetPixel(const Vector2i& tileSpacePoint, const XYZCoefficients& xyz)
@@ -70,9 +67,6 @@ void FilmTile::SetPixel(const Vector2i& tileSpacePoint, const XYZCoefficients& x
 
 void FilmTile::SplatPixel(const Vector2i& tileSpacePoint, const XYZCoefficients& xyz, double deltaArea)
 {
-    if (!m_Rect.IsWithinBounds(tileSpacePoint.x, tileSpacePoint.y))
-        throw std::invalid_argument("Pixel position out of bounds");
-
     if (deltaArea > 1.0 || deltaArea <= 0.0)
         throw std::invalid_argument("A greater than 1 or smaller than 0 deltaArea is invalid ");
 

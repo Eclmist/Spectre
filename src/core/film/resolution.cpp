@@ -41,12 +41,12 @@ bool Resolution::operator!=(const Resolution& resolution) const
     return !(*this == resolution);
 }
 
-bool Resolution::IsWithinBounds(const Vector2u& point) const
+bool Resolution::IsWithinBounds(const Vector2i& point) const
 {
     return point.x >= 0 && point.x < m_Width && point.y >= 0 && point.y < m_Height;
 }
 
-void Resolution::SetWidth(unsigned int width)
+void Resolution::SetWidth(int width)
 {
     if (width > MAX_WIDTH || width <= 0)
         throw std::invalid_argument("Film width is invalid");
@@ -54,7 +54,7 @@ void Resolution::SetWidth(unsigned int width)
     m_Width = width;
 }
 
-void Resolution::SetHeight(unsigned int height)
+void Resolution::SetHeight(int height)
 {
     if (height > MAX_HEIGHT || height <= 0)
         throw std::invalid_argument("Film height is invalid");
