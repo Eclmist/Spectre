@@ -25,24 +25,24 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb/stb_image_write.h"
 
-#define DEFAULT_OUTPUT_NAME "RTCore_Output"
-#define DEFAULT_OUTPUT_TYPE ".png"
-#define NUM_COLOR_CHANNELS 3L
+static constexpr char* OutputFileName = "RTCore_Output";
+static constexpr char* OutputFileType = ".png";
+static constexpr long NumColorChannels = 3L;
 
 StbExporter::StbExporter()
-    : m_OutputFileName(DEFAULT_OUTPUT_NAME)
+    : m_OutputFileName(OutputFileName)
 {
 }
 
 void StbExporter::Export(const Film& film) const 
 {
     stbi_write_png(
-        (m_OutputFileName + DEFAULT_OUTPUT_TYPE).c_str(),
+        (m_OutputFileName + OutputFileType).c_str(),
         film.GetResolution().GetWidth(),
         film.GetResolution().GetHeight(),
-        NUM_COLOR_CHANNELS,
+        NumColorChannels,
         ExtractPixelData(film).data(),
-        NUM_COLOR_CHANNELS * film.GetResolution().GetWidth());
+        NumColorChannels * film.GetResolution().GetWidth());
 }
 
 std::vector<char> StbExporter::ExtractPixelData(const Film& film) const
@@ -67,6 +67,6 @@ std::vector<char> StbExporter::ExtractPixelData(const Film& film) const
 
 int StbExporter::GetBufferSize(const Film& film) const
 {
-    return film.GetNumPixels() * NUM_COLOR_CHANNELS;
+    return film.GetNumPixels() * NumColorChannels;
 }
 

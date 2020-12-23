@@ -20,14 +20,14 @@
 
 #include "resolution.h"
 
-#define DEFAULT_WIDTH 800
-#define DEFAULT_HEIGHT 480
-#define MAX_WIDTH 3840
-#define MAX_HEIGHT 2160
+static constexpr int DefaultWidth = 800;
+static constexpr int DefaultHeight = 480;
+static constexpr int MaxWidth = 3840;
+static constexpr int MaxHeight = 2160;
 
 Resolution::Resolution()
-    : m_Width(DEFAULT_WIDTH)
-    , m_Height(DEFAULT_HEIGHT)
+    : m_Width(DefaultWidth)
+    , m_Height(DefaultHeight)
 {
 }
 
@@ -48,7 +48,7 @@ bool Resolution::IsWithinBounds(const Vector2i& point) const
 
 void Resolution::SetWidth(int width)
 {
-    if (width > MAX_WIDTH || width <= 0)
+    if (width > MaxWidth || width <= 0)
         throw std::invalid_argument("Film width is invalid");
 
     m_Width = width;
@@ -56,7 +56,7 @@ void Resolution::SetWidth(int width)
 
 void Resolution::SetHeight(int height)
 {
-    if (height > MAX_HEIGHT || height <= 0)
+    if (height > MaxHeight || height <= 0)
         throw std::invalid_argument("Film height is invalid");
 
     m_Height = height;
