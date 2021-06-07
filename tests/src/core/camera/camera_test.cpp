@@ -22,6 +22,8 @@
 
 class CameraImplStub : public Camera
 {
+public:
+    void Render() override {}
 };
 
 TEST(CameraTest, CanBeCreated)

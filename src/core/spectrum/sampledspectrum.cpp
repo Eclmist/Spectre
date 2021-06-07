@@ -204,7 +204,7 @@ double SampledSpectrum::ComputeAverageInRange(const SampleArray& samples, double
 
 double SampledSpectrum::GetXYZNormalizationConstant() const
 {
-    double scale = (MaxWavelength - MinWavelength + 1) / float(numSpectralSamples);
+    double scale = (MaxWavelength - MinWavelength + 1) / double(numSpectralSamples);
     return scale / cieIntegralY;
 }
 

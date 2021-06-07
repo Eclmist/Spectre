@@ -32,6 +32,9 @@ public:
     inline Transform& GetTransform() { return m_Transform; }
     inline Film& GetFilm() { return m_Film; }
 
+public:
+    virtual void Render() = 0;
+
 private:
     Transform m_Transform;
     Film m_Film;

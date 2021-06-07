@@ -80,7 +80,6 @@ protected:
     inline void RemoveNans(T data[4]) const {}
 };
 
-
 template<typename T, int N>
 class Vector : public VectorData<T, N>
 {
