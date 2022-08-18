@@ -18,23 +18,12 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "gtest.h"
-#include "exporter/exporter.h"
+#pragma once
 
-class ExporterImplStub : public Exporter
-{
-public:
-    void Export(const Film& film) const override {};
-};
+#include <algorithm>
+#include <memory>
+#include <vector>
+#include <stdexcept>
 
-TEST(ExporterTest, CanBeCreated)
-{
-    ASSERT_NO_THROW(ExporterImplStub exporter);
-}
-
-TEST(ExporterTest, CanExport)
-{
-    Film film;
-    ExporterImplStub exporter;
-    ASSERT_NO_THROW(exporter.Export(film));
-}
+#include "system/platform/platformutils.h"
+#include "math/math.h"

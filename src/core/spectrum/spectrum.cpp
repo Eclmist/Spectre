@@ -106,12 +106,8 @@ bool Spectrum::IsBlack() const
 
 bool Spectrum::HasNans() const
 {
-    // MSVC, Clang, and GCC aren't consistent with whether isnan is part of the std namespace
-    // Probably because isnan() is declared in <math.h> and std::isnan in <cmath>.
-    using namespace std; 
-
     for (int i = 0; i < numSpectralSamples; ++i)
-        if (isnan(m_Coefficients[i]))
+        if (std::isnan(m_Coefficients[i]))
             return true;
 
     return false;

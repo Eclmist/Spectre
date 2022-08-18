@@ -164,7 +164,7 @@ bool Vector<T, N>::operator!=(const Vector& b) const
 template<typename T, int N>
 double Vector<T, N>::Magnitude() const
 {
-    return sqrt(Dot(*this, *this));
+    return std::sqrt(Dot(*this, *this));
 }
 
 template<typename T, int N>
@@ -186,7 +186,7 @@ T Vector<T, N>::Dot(const Vector& a, const Vector& b)
 template<typename T, int N>
 T Vector<T, N>::AbsDot(const Vector& a, const Vector& b)
 {
-    return fabs(Dot(a, b));
+    return std::fabs(Dot(a, b));
 }
 
 template<typename T, int N>

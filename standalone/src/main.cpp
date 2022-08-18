@@ -17,7 +17,7 @@
 */
 
 #include <iostream>
-#include "system/platform/platformutils.h"
+#include <cstring>
 
 void PrintTitle()
 {

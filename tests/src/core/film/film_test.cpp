@@ -45,7 +45,7 @@ TEST(FilmTest, CanSetResolution)
 TEST(FilmTest, CanGetTile)
 {
     Film film;
-    FilmTile& p = film.GetTile({ 50, 50 });
+    film.GetTile({ 50, 50 });
 }
 
 TEST(FilmTest, ThrowOnInvalidPixelPosition)

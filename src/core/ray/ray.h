@@ -20,8 +20,6 @@
 
 #pragma once
 
-#include "math/vector.h"
-
 class Ray
 {
 public:

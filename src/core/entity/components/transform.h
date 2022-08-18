@@ -21,7 +21,6 @@
 #pragma once
 
 #include "component.h"
-#include "math/math.h"
 
 class Transform : public Component
 {

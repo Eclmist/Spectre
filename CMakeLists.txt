@@ -64,6 +64,13 @@ add_library(${PROJECT_NAME} STATIC ${all_files} ${extern_files})
 set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY $<1:${CMAKE_CURRENT_SOURCE_DIR}/bin>)
 
 # =========================================================================== #
+#                            PRECOMPILED HEADERS                              #
+# =========================================================================== #
+
+target_precompile_headers(${PROJECT_NAME} PUBLIC src/pch.h)
+
+
+# =========================================================================== #
 #                        PLATFORM SPECIFIC SETTIGNS                           #
 # =========================================================================== #
 

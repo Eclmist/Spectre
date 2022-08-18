@@ -213,7 +213,7 @@ TEST(Vector3Test, CanComputeMagnitude)
     Vector3 c(0.0, 2.0, 0.0);
     Vector3 d(0.0, 0.0, 3.0);
 
-    EXPECT_DOUBLE_EQ(a.Magnitude(), sqrt(14.0));
+    EXPECT_DOUBLE_EQ(a.Magnitude(), std::sqrt(14.0));
     EXPECT_DOUBLE_EQ(b.Magnitude(), 1.0);
     EXPECT_DOUBLE_EQ(c.Magnitude(), 2.0);
     EXPECT_DOUBLE_EQ(d.Magnitude(), 3.0);
@@ -270,7 +270,6 @@ TEST(Vector3Test, CanComputeDotProduct)
 
 TEST(Vector3Test, CanComputeAngle)
 {
-    double d = Vector3::Angle({ 1.0 }, { 1.0 });
     EXPECT_DOUBLE_EQ(Vector3::Angle({ 1.0 }, { 1.0 }), 0.0);
     EXPECT_DOUBLE_EQ(Vector3::Angle({ 1.0, 0.0, 0.0 }, { 0.0, 1.0, 0.0 }), 1.5707963267948966);
     EXPECT_DOUBLE_EQ(Vector3::Angle({ 2.0, 3.0, 4.0 }, { 5.0, 6.0, 7.0 }), 0.1304771607247695);

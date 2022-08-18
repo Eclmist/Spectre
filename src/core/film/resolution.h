@@ -20,9 +20,6 @@
 
 #pragma once
 
-#include "system/system.h"
-#include "math/vector.h"
-
 class Resolution
 {
 public:

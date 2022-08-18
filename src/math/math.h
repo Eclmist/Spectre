@@ -20,9 +20,15 @@
 
 #pragma once
 
-#define _USE_MATH_DEFINES
-#include <math.h>
+#include <cmath>
 
 #include "vector.h"
 #include "matrix.h"
+#include "rect.h"
+
+namespace Math
+{
+	static constexpr double E        = 2.71828182845904523536;       // e
+	static constexpr double PI       = 3.14159265358979323846;       // pi
+}
 

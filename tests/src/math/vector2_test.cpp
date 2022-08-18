@@ -198,7 +198,7 @@ TEST(Vector2Test, CanComputeMagnitude)
     Vector2 c(0.0, 2.0);
     Vector2 d(0.0, 3.0);
 
-    EXPECT_DOUBLE_EQ(a.Magnitude(), sqrt(5.0));
+    EXPECT_DOUBLE_EQ(a.Magnitude(), std::sqrt(5.0));
     EXPECT_DOUBLE_EQ(b.Magnitude(), 1.0);
     EXPECT_DOUBLE_EQ(c.Magnitude(), 2.0);
     EXPECT_DOUBLE_EQ(d.Magnitude(), 3.0);

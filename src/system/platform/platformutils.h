@@ -21,9 +21,8 @@
 #pragma once
 
 #ifdef RTC_PLATFORM_WIN
-    #define RTC_WIN32_ONLY(stmt, alt) stmt
+    #define RTC_WIN32_ONLY(stmt) stmt
 #else
-    #define RTC_WIN32_ONLY(stmt, alt) alt
-    #define RTC_WIN32_ONLY(stmt, alt) alt
+    #define RTC_WIN32_ONLY(stmt) void(0)
 #endif
 
