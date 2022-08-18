@@ -21,8 +21,7 @@
 #pragma once
 
 #include "component.h"
-#include "math/matrix4x4.h"
-#include "math/vector.h"
+#include "math/math.h"
 
 class Transform : public Component
 {

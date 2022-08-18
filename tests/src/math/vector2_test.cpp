@@ -19,8 +19,6 @@
 #include "gtest.h"
 #include "math/vector.h"
 
-#define CHECK_PADDING(v) EXPECT_EQ(v[2], 0); EXPECT_EQ(v[3], 0);
-
 TEST(Vector2Test, CanBeCreated)
 {
     ASSERT_NO_THROW(Vector2 v);
@@ -31,7 +29,6 @@ TEST(Vector2Test, DefaultsToZeroVector)
     Vector2 v;
     EXPECT_DOUBLE_EQ(v.x, 0.0);
     EXPECT_DOUBLE_EQ(v.y, 0.0);
-    CHECK_PADDING(v);
 }
 
 TEST(Vector2Test, CanBeCreatedScalar)
@@ -39,7 +36,6 @@ TEST(Vector2Test, CanBeCreatedScalar)
     Vector2 v(22.0);
     EXPECT_DOUBLE_EQ(v.x, 22.0);
     EXPECT_DOUBLE_EQ(v.y, 22.0);
-    CHECK_PADDING(v);
 }
 
 TEST(Vector2Test, CanBeCreatedPerComponent)
@@ -47,7 +43,6 @@ TEST(Vector2Test, CanBeCreatedPerComponent)
     Vector2 v(1.0, 2.0);
     EXPECT_DOUBLE_EQ(v.x, 1.0);
     EXPECT_DOUBLE_EQ(v.y, 2.0);
-    CHECK_PADDING(v);
 }
 
 TEST(Vector2Test, CanBeSetPerComponents)
@@ -58,7 +53,6 @@ TEST(Vector2Test, CanBeSetPerComponents)
 
     EXPECT_DOUBLE_EQ(v.x, 1.0);
     EXPECT_DOUBLE_EQ(v.y, 2.0);
-    CHECK_PADDING(v);
 }
 
 TEST(Vector2Test, CanBeAccessedPerComponent)
@@ -69,7 +63,6 @@ TEST(Vector2Test, CanBeAccessedPerComponent)
     EXPECT_DOUBLE_EQ(v[1], 2.0);
     EXPECT_DOUBLE_EQ(v.x, 1.0);
     EXPECT_DOUBLE_EQ(v.y, 2.0);
-    CHECK_PADDING(v);
 }
 
 TEST(Vector2Test, CanBeCopyConstructed)
@@ -82,7 +75,6 @@ TEST(Vector2Test, CanBeCopyConstructed)
 
     b.x = 0.0;
     EXPECT_DOUBLE_EQ(a.x, 22.0);
-    CHECK_PADDING(b);
 }
 
 TEST(Vector2Test, CanBeCopied)
@@ -95,7 +87,6 @@ TEST(Vector2Test, CanBeCopied)
 
     b.x = 0.0;
     EXPECT_DOUBLE_EQ(a.x, 22.0);
-    CHECK_PADDING(b);
 }
 
 TEST(Vector2Test, CanCheckEquality)
@@ -116,7 +107,6 @@ TEST(Vector2Test, CanBeAdded)
     Vector2 c = a + b;
     EXPECT_DOUBLE_EQ(c.x, 3.0);
     EXPECT_DOUBLE_EQ(c.y, 5.0);
-    CHECK_PADDING(c);
 }
 
 TEST(Vector2Test, CanBeAddAssigned)
@@ -127,7 +117,6 @@ TEST(Vector2Test, CanBeAddAssigned)
 
     EXPECT_DOUBLE_EQ(b.x, 3.0);
     EXPECT_DOUBLE_EQ(b.y, 5.0);
-    CHECK_PADDING(b);
 }
 
 TEST(Vector2Test, CanBeSubtracted)
@@ -138,7 +127,6 @@ TEST(Vector2Test, CanBeSubtracted)
     Vector2 c = a - b;
     EXPECT_DOUBLE_EQ(c.x, -1.0);
     EXPECT_DOUBLE_EQ(c.y, -1.0);
-    CHECK_PADDING(c);
 }
 
 TEST(Vector2Test, CanBeSubtractAssigned)
@@ -149,7 +137,6 @@ TEST(Vector2Test, CanBeSubtractAssigned)
 
     EXPECT_DOUBLE_EQ(b.x, 1.0);
     EXPECT_DOUBLE_EQ(b.y, 1.0);
-    CHECK_PADDING(b);
 }
 
 TEST(Vector2Test, CanBeMultipled)
@@ -169,7 +156,6 @@ TEST(Vector2Test, CanBeMultiplyAssigned)
     EXPECT_EQ(a, -Vector2(2.0, 2.0));
     a *= 0.0;
     EXPECT_EQ(a, Vector2(0.0));
-    CHECK_PADDING(a);
 }
 
 TEST(Vector2Test, CanBeDivided)
@@ -187,7 +173,6 @@ TEST(Vector2Test, CanBeDivideAssigned)
     EXPECT_EQ(a, Vector2(0.5, 2.0));
     a /= -1.0;
     EXPECT_EQ(a, -Vector2(0.5, 2.0));
-    CHECK_PADDING(a);
 }
 
 TEST(Vector2Test, CanBeNegated)
@@ -196,7 +181,6 @@ TEST(Vector2Test, CanBeNegated)
     Vector2 b = -a;
     EXPECT_DOUBLE_EQ(b.x, 1.0);
     EXPECT_DOUBLE_EQ(b.y, 1.0);
-    CHECK_PADDING(b);
 }
 
 TEST(Vector2Test, DoesNotChangeWithPveSign)
@@ -205,7 +189,6 @@ TEST(Vector2Test, DoesNotChangeWithPveSign)
     Vector2 b = +a;
     EXPECT_DOUBLE_EQ(b.x, -1.0);
     EXPECT_DOUBLE_EQ(b.y, -1.0);
-    CHECK_PADDING(b);
 }
 
 TEST(Vector2Test, CanComputeMagnitude)
@@ -252,12 +235,6 @@ TEST(Vector2Test, CanBeNormalized)
     a.Normalize();
     EXPECT_DOUBLE_EQ(a.x, 0.70710678118654746);
     EXPECT_DOUBLE_EQ(a.y, 0.70710678118654746);
-    EXPECT_DOUBLE_EQ(a[2], 0.0);
-    EXPECT_DOUBLE_EQ(a[3], 0.0);
-
-    CHECK_PADDING(a);
-    CHECK_PADDING(b);
-    CHECK_PADDING(c);
 }
 
 TEST(Vector2Test, CanComputeDotProduct)

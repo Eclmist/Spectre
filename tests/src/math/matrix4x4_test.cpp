@@ -19,7 +19,7 @@
 */
 
 #include "gtest.h"
-#include "math/matrix4x4.h"
+#include "math/matrix.h"
 
 TEST(Matrix4x4Test, CanBeCreated)
 {
@@ -66,7 +66,7 @@ TEST(Matrix4x4Test, CanBeInitializedWithArray)
 TEST(Matrix4x4Test, CanBeInitializedWithArray2D)
 {
     double data2D[4][4] = { {0, 1, 2, 3}, {4, 5, 6, 7}, {8, 9, 10, 11}, {12, 13, 14, 15} };
-    Matrix4x4 m(data2D);
+    Matrix4x4 m(data2D[0]);
     for (int i = 0; i < 16; ++i)
         EXPECT_DOUBLE_EQ(m.m_Data[i], i);
 }
@@ -101,8 +101,10 @@ TEST(Matrix4x4Test, CanMultiply)
 {
     Matrix4x4 m(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
     Matrix4x4 res(56, 62, 68, 74, 152, 174, 196, 218, 248, 286, 324, 362, 344, 398, 452, 506);
+    Matrix4x4 res2(1680,1940,2200,2460,4880,5620,6360,7100,8080,9300,10520,11740,11280,12980,14680,16380);
 
     EXPECT_EQ(m * m, res);
+    EXPECT_EQ(m * res, res2);
 }
 
 

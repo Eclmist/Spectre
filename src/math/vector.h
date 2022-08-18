@@ -20,7 +20,8 @@
 
 #pragma once
 
-#include "math.h"
+#pragma once
+
 #include <type_traits>
 
 template <typename T, int N>
@@ -36,48 +37,33 @@ template <typename T>
 class VectorData<T, 2>
 {
 public:
-    VectorData() { for (int i = 0; i < 4; ++i) this->m_Data[i] = 0; }
     union
     {
         struct { T x, y; };
-        struct { T m_Data[4]; };
+        struct { T m_Data[2]; };
     };
-
-protected:
-    inline void RemoveNans() { this->m_Data[2] = 0; this->m_Data[3] = 0; }
-    inline void RemoveNans(T data[4]) const { data[2] = 0; data[3] = 0; }
 };
 
 template <typename T>
 class VectorData<T, 3>
 {
 public:
-    VectorData() { for (int i = 0; i < 4; ++i) this->m_Data[i] = 0; }
     union
     {
         struct { T x, y, z; };
-        struct { T m_Data[4]; };
+        struct { T m_Data[3]; };
     };
-
-protected:
-    inline void RemoveNans() { this->m_Data[3] = 0; }
-    inline void RemoveNans(T data[4]) const { data[3] = 0; }
 };
 
 template <typename T>
 class VectorData<T, 4>
 {
 public:
-    VectorData() { for (int i = 0; i < 4; ++i) this->m_Data[i] = 0; }
     union
     {
         struct { T x, y, z, w; };
         struct { T m_Data[4]; };
     };
-
-protected:
-    inline void RemoveNans() {}
-    inline void RemoveNans(T data[4]) const {}
 };
 
 template<typename T, int N>
@@ -90,7 +76,7 @@ public:
     Vector(T x, T y);
     Vector(T x, T y, T z);
     Vector(T x, T y, T z, T w);
-    Vector(T data[N]);
+    Vector(const T* data);
 
     Vector operator+() const;
     Vector operator-() const;
@@ -134,3 +120,5 @@ typedef Vector<int, 3> Vector3i;
 typedef Vector<int, 4> Vector4i;
 
 #include "vector_impl.h" 
+
+

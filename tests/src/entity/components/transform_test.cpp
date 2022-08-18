@@ -84,15 +84,25 @@ TEST(TransformTest, CanSetScale)
 TEST(TransformTest, MatrixHasCorrectValues)
 {
     Transform t, t2;
+
     ASSERT_NO_THROW(t.SetTranslation({ 1, 2, 3 }));
+    Matrix4x4 temp = t.GetMatrix();
     EXPECT_EQ(t.GetMatrix(), Matrix4x4(1, 0, 0, 1, 0, 1, 0, 2, 0, 0, 1, 3, 0, 0, 0, 1));
+
     ASSERT_NO_THROW(t.SetScale({ 1, 1, 4 }));
+    temp = t.GetMatrix();
     EXPECT_EQ(t.GetMatrix(), Matrix4x4(1, 0, 0, 1, 0, 1, 0, 2, 0, 0, 4, 3, 0, 0, 0, 1));
+
     ASSERT_NO_THROW(t2.SetRotation({ M_PI_2, 0, 0 }));
+    temp = t2.GetMatrix();
     EXPECT_EQ(t2.GetMatrix(), Matrix4x4(1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 1));
+
     ASSERT_NO_THROW(t2.SetRotation({ M_PI_2, M_PI_2, M_PI_2 }));
+    temp = t2.GetMatrix();
     EXPECT_EQ(t2.GetMatrix(), Matrix4x4(0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 0, 1));
+
     ASSERT_NO_THROW(t.SetRotation({ M_PI_2, M_PI_2, M_PI_2 }));
+    temp = t.GetMatrix();
     EXPECT_EQ(t.GetMatrix(), Matrix4x4(0, 0, 4, 1, 0, 1, 0, 2, -1, 0, 0, 3, 0, 0, 0, 1));
 }
 

@@ -16,8 +16,9 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+
 #pragma once
-#include "tsimd/tsimd.h"
+#include "vector.h"
 #include <algorithm>
 
 template<typename T, int N>
@@ -25,9 +26,6 @@ Vector<T, N>::Vector(T v)
 {
     for (int i = 0; i < N; ++i)
         this->m_Data[i] = v;
-
-    for (int i = N; i < 4; ++i)
-        this->m_Data[i] = 0;
 }
 
 template<typename T, int N>
@@ -58,7 +56,7 @@ Vector<T, N>::Vector(T x, T y, T z, T w)
 }
 
 template<typename T, int N>
-Vector<T, N>::Vector(T data[N])
+Vector<T, N>::Vector(const T* data)
 {
     for (int i = 0; i < N; ++i)
         this->m_Data[i] = data[i];
@@ -73,91 +71,88 @@ Vector<T, N> Vector<T, N>::operator+() const
 template<typename T, int N>
 Vector<T, N> Vector<T, N>::operator-() const
 {
-    using namespace tsimd;
-    T data[4];
-    store(load<pack<T, 4>>(this->m_Data) * -1, data);
+    Vector<T, N> data;
+    for (int i = 0; i < N; ++i)
+        data[i] = this->m_Data[i] * -1;
     return data;
 }
 
 template<typename T, int N>
 Vector<T, N> Vector<T, N>::operator+(const Vector& b) const
 {
-    using namespace tsimd;
-    T data[4];
-    store(load<pack<T, 4>>(this->m_Data) + load<pack<T, 4>>(b.m_Data), data);
+    Vector<T, N> data;
+    for (int i = 0; i < N; ++i)
+        data[i] = this->m_Data[i] + b.m_Data[i];
     return data;
 }
 
 template<typename T, int N>
 Vector<T, N> Vector<T, N>::operator-(const Vector& b) const
 {
-    using namespace tsimd;
-    T data[4];
-    store(load<pack<T, 4>>(this->m_Data) - load<pack<T, 4>>(b.m_Data), data);
+    Vector<T, N> data;
+    for (int i = 0; i < N; ++i)
+        data[i] = this->m_Data[i] - b.m_Data[i];
     return data;
 }
 
 template<typename T, int N>
 Vector<T, N> Vector<T, N>::operator*(const Vector& b) const
 {
-    using namespace tsimd;
-    T data[4];
-    store(load<pack<T, 4>>(this->m_Data) * load<pack<T, 4>>(b.m_Data), data);
+    Vector<T, N> data;
+    for (int i = 0; i < N; ++i)
+        data[i] = this->m_Data[i] * b.m_Data[i];
     return data;
 }
 
 template<typename T, int N>
 Vector<T, N> Vector<T, N>::operator/(const Vector& b) const
 {
-    using namespace tsimd;
-    T data[4];
-    store(load<pack<T, 4>>(this->m_Data) / load<pack<T, 4>>(b.m_Data), data);
-    this->RemoveNans(data);
+    Vector<T, N> data;
+    for (int i = 0; i < N; ++i)
+        data[i] = this->m_Data[i] / b.m_Data[i];
     return data;
 }
 
 template<typename T, int N>
 Vector<T, N>& Vector<T, N>::operator+=(const Vector& b)
 {
-    using namespace tsimd;
-    store(load<pack<T, 4>>(this->m_Data) + load<pack<T, 4>>(b.m_Data), this->m_Data);
+    for (int i = 0; i < N; ++i)
+        this->m_Data[i] += b.m_Data[i];
     return *this;
 }
 
 template<typename T, int N>
 Vector<T, N>& Vector<T, N>::operator-=(const Vector& b)
 {
-    using namespace tsimd;
-    store(load<pack<T, 4>>(this->m_Data) - load<pack<T, 4>>(b.m_Data), this->m_Data);
+    for (int i = 0; i < N; ++i)
+        this->m_Data[i] -= b.m_Data[i];
     return *this;
 }
 
 template<typename T, int N>
 Vector<T, N>& Vector<T, N>::operator*=(const Vector& b)
 {
-    using namespace tsimd;
-    store(load<pack<T, 4>>(this->m_Data) * load<pack<T, 4>>(b.m_Data), this->m_Data);
+    for (int i = 0; i < N; ++i)
+        this->m_Data[i] *= b.m_Data[i];
     return *this;
 }
 
 template<typename T, int N>
 Vector<T, N>& Vector<T, N>::operator/=(const Vector& b)
 {
-    using namespace tsimd;
-    store(load<pack<T, 4>>(this->m_Data) / load<pack<T, 4>>(b.m_Data), this->m_Data);
-    this->RemoveNans();
+    for (int i = 0; i < N; ++i)
+        this->m_Data[i] /= b.m_Data[i];
     return *this;
 }
 
 template<typename T, int N>
 bool Vector<T, N>::operator==(const Vector& b) const
 {
-    using namespace tsimd;
+    for (int i = 0; i < N; ++i)
+        if (this->m_Data[i] != b.m_Data[i])
+            return false;
 
-    if constexpr (std::is_floating_point_v<T>)
-        return all(near_equal(load<pack<T, 4>>(this->m_Data), load<pack<T, 4>>(b.m_Data)));
-    else
-        return all(load<pack<T, 4>>(this->m_Data) == load<pack<T, 4>>(b.m_Data));
+    return true;
 }
 
 template<typename T, int N>
@@ -181,10 +176,10 @@ T Vector<T, N>::SquareMagnitude() const
 template<typename T, int N>
 T Vector<T, N>::Dot(const Vector& a, const Vector& b)
 {
-    using namespace tsimd;
     T dot = 0;
-    pack<T, 4> axb = load<pack<T, 4>>(a.m_Data) * load<pack<T, 4>>(b.m_Data);
-    for (int i = 0; i < N; ++i) dot += axb[i];
+    Vector<T, N> axb = a * b;
+    for (int i = 0; i < N; ++i)
+        dot += axb[i];
     return dot;
 }
 
@@ -197,14 +192,13 @@ T Vector<T, N>::AbsDot(const Vector& a, const Vector& b)
 template<typename T, int N>
 void Vector<T, N>::Normalize()
 {
-    using namespace tsimd;
-    store(load<pack<T, 4>>(this->m_Data) / Magnitude(), this->m_Data);
+    *this /= Vector<T, N>(Magnitude());
 }
 
 template<typename T, int N>
 Vector<T, N> Vector<T, N>::Normalized() const
 {
-    return *this * (1.0 / Magnitude());
+    return *this / Vector<T, N>(Magnitude());
 }
 
 template<typename T, int N>
@@ -223,11 +217,8 @@ template<typename T, int N>
 Vector<T, 3> Vector<T, N>::Cross(const Vector& a, const Vector& b)
 {
     static_assert(N == 3, "Cross product only available for 3 dimensional vectors");
-    using namespace tsimd;
-    T data[4];
-    pack<T, 4> tmp0 = pack<T, 4>(a[1], a[2], a[0], 0) * load<pack<T, 4>>(b.m_Data);
-    pack<T, 4> tmp1 = pack<T, 4>(b[1], b[2], b[0], 0) * load<pack<T, 4>>(a.m_Data);
-    store(tmp1 - tmp0, data);
-    return { data[1], data[2], data[0] };
+    Vector<T, 3> tmp0 = Vector<T, 3>(a[1], a[2], a[0]) * b;
+    Vector<T, 3> tmp1 = Vector<T, 3>(b[1], b[2], b[0]) * a;
+    Vector<T, 3> tmp2 = tmp1 - tmp0;
+    return { tmp2[1], tmp2[2], tmp2[0] };
 }
-

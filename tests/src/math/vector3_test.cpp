@@ -19,8 +19,6 @@
 #include "gtest.h"
 #include "math/vector.h"
 
-#define CHECK_PADDING(v) EXPECT_EQ(v[3], 0);
-
 TEST(Vector3Test, CanBeCreated)
 {
     ASSERT_NO_THROW(Vector3 v);
@@ -32,7 +30,6 @@ TEST(Vector3Test, DefaultsToZeroVector)
     EXPECT_DOUBLE_EQ(v.x, 0.0);
     EXPECT_DOUBLE_EQ(v.y, 0.0);
     EXPECT_DOUBLE_EQ(v.z, 0.0);
-    CHECK_PADDING(v);
 }
 
 TEST(Vector3Test, CanBeCreatedScalar)
@@ -41,7 +38,6 @@ TEST(Vector3Test, CanBeCreatedScalar)
     EXPECT_DOUBLE_EQ(v.x, 22.0);
     EXPECT_DOUBLE_EQ(v.y, 22.0);
     EXPECT_DOUBLE_EQ(v.z, 22.0);
-    CHECK_PADDING(v);
 }
 
 TEST(Vector3Test, CanBeCreatedPerComponent)
@@ -50,7 +46,6 @@ TEST(Vector3Test, CanBeCreatedPerComponent)
     EXPECT_DOUBLE_EQ(v.x, 1.0);
     EXPECT_DOUBLE_EQ(v.y, 2.0);
     EXPECT_DOUBLE_EQ(v.z, 3.0);
-    CHECK_PADDING(v);
 }
 
 TEST(Vector3Test, CanBeSetPerComponents)
@@ -63,7 +58,6 @@ TEST(Vector3Test, CanBeSetPerComponents)
     EXPECT_DOUBLE_EQ(v.x, 1.0);
     EXPECT_DOUBLE_EQ(v.y, 2.0);
     EXPECT_DOUBLE_EQ(v.z, 3.0);
-    CHECK_PADDING(v);
 }
 
 TEST(Vector3Test, CanBeAccessedPerComponent)
@@ -76,7 +70,6 @@ TEST(Vector3Test, CanBeAccessedPerComponent)
     EXPECT_DOUBLE_EQ(v.x, 1.0);
     EXPECT_DOUBLE_EQ(v.y, 2.0);
     EXPECT_DOUBLE_EQ(v.z, 3.0);
-    CHECK_PADDING(v);
 }
 
 TEST(Vector3Test, CanBeCopyConstructed)
@@ -90,7 +83,6 @@ TEST(Vector3Test, CanBeCopyConstructed)
 
     b.x = 0.0;
     EXPECT_DOUBLE_EQ(a.x, 22.0);
-    CHECK_PADDING(b);
 }
 
 TEST(Vector3Test, CanBeCopied)
@@ -104,7 +96,6 @@ TEST(Vector3Test, CanBeCopied)
 
     b.x = 0.0;
     EXPECT_DOUBLE_EQ(a.x, 22.0);
-    CHECK_PADDING(b);
 }
 
 TEST(Vector3Test, CanCheckEquality)
@@ -126,7 +117,6 @@ TEST(Vector3Test, CanBeAdded)
     EXPECT_DOUBLE_EQ(c.x, 3.0);
     EXPECT_DOUBLE_EQ(c.y, 5.0);
     EXPECT_DOUBLE_EQ(c.z, 7.0);
-    CHECK_PADDING(c);
 }
 
 TEST(Vector3Test, CanBeAddAssigned)
@@ -138,7 +128,6 @@ TEST(Vector3Test, CanBeAddAssigned)
     EXPECT_DOUBLE_EQ(b.x, 3.0);
     EXPECT_DOUBLE_EQ(b.y, 5.0);
     EXPECT_DOUBLE_EQ(b.z, 7.0);
-    CHECK_PADDING(b);
 }
 
 TEST(Vector3Test, CanBeSubtracted)
@@ -150,7 +139,6 @@ TEST(Vector3Test, CanBeSubtracted)
     EXPECT_DOUBLE_EQ(c.x, -1.0);
     EXPECT_DOUBLE_EQ(c.y, -1.0);
     EXPECT_DOUBLE_EQ(c.z, -1.0);
-    CHECK_PADDING(c);
 }
 
 TEST(Vector3Test, CanBeSubtractAssigned)
@@ -162,7 +150,6 @@ TEST(Vector3Test, CanBeSubtractAssigned)
     EXPECT_DOUBLE_EQ(b.x, 1.0);
     EXPECT_DOUBLE_EQ(b.y, 1.0);
     EXPECT_DOUBLE_EQ(b.z, 1.0);
-    CHECK_PADDING(b);
 }
 
 TEST(Vector3Test, CanBeMultipled)
@@ -182,7 +169,6 @@ TEST(Vector3Test, CanBeMultiplyAssigned)
     EXPECT_EQ(a, -Vector3(2.0, 2.0, 3.0));
     a *= 0.0;
     EXPECT_EQ(a, Vector3(0.0));
-    CHECK_PADDING(a);
 }
 
 TEST(Vector3Test, CanBeDivided)
@@ -200,7 +186,6 @@ TEST(Vector3Test, CanBeDivideAssigned)
     EXPECT_EQ(a, Vector3(0.5, 2.0, 3.0));
     a /= -1.0;
     EXPECT_EQ(a, -Vector3(0.5, 2.0, 3.0));
-    CHECK_PADDING(a);
 }
 
 TEST(Vector3Test, CanBeNegated)
@@ -210,7 +195,6 @@ TEST(Vector3Test, CanBeNegated)
     EXPECT_DOUBLE_EQ(b.x, 1.0);
     EXPECT_DOUBLE_EQ(b.y, 1.0);
     EXPECT_DOUBLE_EQ(b.z, 1.0);
-    CHECK_PADDING(b);
 }
 
 TEST(Vector3Test, DoesNotChangeWithPveSign)
@@ -220,7 +204,6 @@ TEST(Vector3Test, DoesNotChangeWithPveSign)
     EXPECT_DOUBLE_EQ(b.x, -1.0);
     EXPECT_DOUBLE_EQ(b.y, -1.0);
     EXPECT_DOUBLE_EQ(b.z, -1.0);
-    CHECK_PADDING(b);
 }
 
 TEST(Vector3Test, CanComputeMagnitude)
@@ -273,10 +256,6 @@ TEST(Vector3Test, CanBeNormalized)
     EXPECT_DOUBLE_EQ(a.x, 0.48507125007266594);
     EXPECT_DOUBLE_EQ(a.y, 0.48507125007266594);
     EXPECT_DOUBLE_EQ(a.z, 0.7276068751089989);
-    CHECK_PADDING(a);
-    CHECK_PADDING(b);
-    CHECK_PADDING(c);
-    CHECK_PADDING(d);
 }
 
 TEST(Vector3Test, CanComputeDotProduct)

@@ -21,6 +21,7 @@
 #include "math/rect.h"
 #include "math/vector.h"
 #include "pixel.h"
+#include <vector>
 
 class FilmTile
 {
