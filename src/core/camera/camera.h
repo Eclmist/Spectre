@@ -35,7 +35,7 @@ public:
 public:
     virtual void Render() = 0;
 
-private:
+protected:
     Transform m_Transform;
     Film m_Film;
 };

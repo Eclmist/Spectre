@@ -24,9 +24,6 @@
 #include "filmtile.h"
 #include "core/spectrum/spectralcoefficients.h"
 
-const int TileSize = 128;
-constexpr int PixelsPerTile = TileSize * TileSize;
-
 class Film
 {
 public:
@@ -36,6 +33,7 @@ public:
 public:
     inline const Resolution& GetResolution() const { return m_Resolution; }
     inline int GetNumPixels() const { return m_Resolution.GetArea(); }
+    inline int GetTileSize() const { return m_TileSize; }
 
 public:
     void SetResolution(const Resolution& resolution);
@@ -51,5 +49,7 @@ private:
 private:
     Resolution m_Resolution;
     std::vector<FilmTile> m_Tiles;
+
+    const int m_TileSize;
 };
 

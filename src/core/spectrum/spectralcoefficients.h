@@ -43,6 +43,6 @@ struct Coefficients
     double m_Data[3];
 };
 
-typedef Coefficients RGBCoefficients;
-typedef Coefficients XYZCoefficients;
+typedef Coefficients RgbCoefficients;
+typedef Coefficients XyzCoefficients;
 

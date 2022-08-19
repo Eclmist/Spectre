@@ -20,10 +20,10 @@
 
 #include "illuminantspectrum.h"
 
-IlluminantSpectrum::IlluminantSpectrum(const RGBCoefficients& rgb)
+IlluminantSpectrum::IlluminantSpectrum(const RgbCoefficients& rgb)
     : SampledSpectrum()
 {
-    // An RGB to Spectrum Conversion for Reflectances, Smits(2000)
+    // An Rgb to Spectrum Conversion for Reflectances, Smits(2000)
     // http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.40.9608&rep=rep1&type=pdf
     double r = rgb[0];
     double g = rgb[1];
@@ -32,64 +32,64 @@ IlluminantSpectrum::IlluminantSpectrum(const RGBCoefficients& rgb)
     if (r <= g && r <= b)
     {
         if (g <= b)
-            InitAscendingRGB(rgb);
+            InitAscendingRgb(rgb);
         else
-            InitAscendingRBG(rgb);
+            InitAscendingRbg(rgb);
     }
     else if (g <= r && g <= b)
     {
         if (r <= b)
-            InitAscendingGRB(rgb);
+            InitAscendingGrb(rgb);
         else
-            InitAscendingGBR(rgb);
+            InitAscendingGbr(rgb);
     }
     else
     {
         if (r <= g)
-            InitAscendingBRG(rgb);
+            InitAscendingBrg(rgb);
         else
-            InitAscendingBGR(rgb);
+            InitAscendingBgr(rgb);
     }
 
     ClampZero();
 }
 
-void IlluminantSpectrum::InitAscendingRGB(const RGBCoefficients& rgb)
+void IlluminantSpectrum::InitAscendingRgb(const RgbCoefficients& rgb)
 {
     *this += stdIllumW * rgb[0];
     *this += stdIllumC * (rgb[1] - rgb[0]);
     *this += stdIllumB * (rgb[2] - rgb[1]);
 }
 
-void IlluminantSpectrum::InitAscendingRBG(const RGBCoefficients& rgb)
+void IlluminantSpectrum::InitAscendingRbg(const RgbCoefficients& rgb)
 {
     *this += stdIllumW * rgb[0];
     *this += stdIllumC * (rgb[2] - rgb[0]);
     *this += stdIllumG * (rgb[1] - rgb[2]);
 }
 
-void IlluminantSpectrum::InitAscendingGRB(const RGBCoefficients& rgb)
+void IlluminantSpectrum::InitAscendingGrb(const RgbCoefficients& rgb)
 {
     *this += stdIllumW * rgb[1];
     *this += stdIllumM * (rgb[0] - rgb[1]);
     *this += stdIllumB * (rgb[2] - rgb[0]);
 }
 
-void IlluminantSpectrum::InitAscendingGBR(const RGBCoefficients& rgb)
+void IlluminantSpectrum::InitAscendingGbr(const RgbCoefficients& rgb)
 {
     *this += stdIllumW * rgb[1];
     *this += stdIllumM * (rgb[2] - rgb[1]);
     *this += stdIllumR * (rgb[0] - rgb[2]);
 }
 
-void IlluminantSpectrum::InitAscendingBRG(const RGBCoefficients& rgb)
+void IlluminantSpectrum::InitAscendingBrg(const RgbCoefficients& rgb)
 {
     *this += stdIllumW * rgb[2];
     *this += stdIllumY * (rgb[0] - rgb[2]);
     *this += stdIllumG * (rgb[1] - rgb[0]);
 }
 
-void IlluminantSpectrum::InitAscendingBGR(const RGBCoefficients& rgb)
+void IlluminantSpectrum::InitAscendingBgr(const RgbCoefficients& rgb)
 {
     *this += stdIllumW * rgb[2];
     *this += stdIllumY * (rgb[1] - rgb[2]);

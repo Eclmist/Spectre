@@ -132,46 +132,46 @@ TEST(SampledSpectrumTest, CanPopulateStandardCurves)
     EXPECT_LT(abs(1.0 - zSum / cieIntegralY), tolerance);
 }
 
-TEST(SampledSpectrumTest, CanConvertBetweenRGBandXYZ)
+TEST(SampledSpectrumTest, CanConvertBetweenRgbandXyz)
 {
-    RGBCoefficients rgb(1.2, 3.4, 5.6);
-    XYZCoefficients xyz = SampledSpectrum::RGBToXYZ(rgb);
-    RGBCoefficients rgb2 = SampledSpectrum::XYZToRGB(xyz);
+    RgbCoefficients rgb(1.2, 3.4, 5.6);
+    XyzCoefficients xyz = SampledSpectrum::RgbToXyz(rgb);
+    RgbCoefficients rgb2 = SampledSpectrum::XyzToRgb(xyz);
 
     static const double tolerance = 0.0005;
     EXPECT_LT(abs(rgb[0] - rgb2[0]), tolerance);
     EXPECT_LT(abs(rgb[1] - rgb2[1]), tolerance);
     EXPECT_LT(abs(rgb[2] - rgb2[2]), tolerance);
 
-    xyz = SampledSpectrum::RGBToXYZ({1, 1, 1});
+    xyz = SampledSpectrum::RgbToXyz({1, 1, 1});
     EXPECT_LT(abs(xyz[0] - 0.950), tolerance);
     EXPECT_LT(abs(xyz[1] - 1.000), tolerance);
     EXPECT_LT(abs(xyz[2] - 1.089), tolerance);
 }
 
-TEST(SampledSpectrumTest, CanConvertToXYZ)
+TEST(SampledSpectrumTest, CanConvertToXyz)
 {
     SampledSpectrum s(1.0);
 
-    XYZCoefficients trueXYZ;
+    XyzCoefficients trueXyz;
     for (int i = 0; i < numCieSamples; ++i)
     {
-        trueXYZ[0] += cieSamplesX[i];
-        trueXYZ[1] += cieSamplesY[i];
-        trueXYZ[2] += cieSamplesZ[i];
+        trueXyz[0] += cieSamplesX[i];
+        trueXyz[1] += cieSamplesY[i];
+        trueXyz[2] += cieSamplesZ[i];
     }
-    trueXYZ = trueXYZ / cieIntegralY;
+    trueXyz = trueXyz / cieIntegralY;
     static const double tolerance = 0.1;
-    EXPECT_LT(abs(s.ToXYZ()[0] - trueXYZ[0]), tolerance);
-    EXPECT_LT(abs(s.ToXYZ()[1] - trueXYZ[1]), tolerance);
-    EXPECT_LT(abs(s.ToXYZ()[2] - trueXYZ[2]), tolerance);
+    EXPECT_LT(abs(s.ToXyz()[0] - trueXyz[0]), tolerance);
+    EXPECT_LT(abs(s.ToXyz()[1] - trueXyz[1]), tolerance);
+    EXPECT_LT(abs(s.ToXyz()[2] - trueXyz[2]), tolerance);
 }
 
-TEST(SampledSpectrumTest, CanConvertToRGB)
+TEST(SampledSpectrumTest, CanConvertToRgb)
 {
     SampledSpectrum s(1.0);
 
-    RGBCoefficients rgb = s.ToRGB();
+    RgbCoefficients rgb = s.ToRgb();
     static const double tolerance = 0.1;
     EXPECT_LT(abs(rgb[0] - 1.205), tolerance);
     EXPECT_LT(abs(rgb[1] - 0.94), tolerance);

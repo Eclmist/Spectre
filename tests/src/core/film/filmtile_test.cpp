@@ -92,14 +92,14 @@ TEST(FilmTileTest, CanGetPixelValue)
 {
     FilmTile filmTile({ 0, 0 }, { 50, 50 });
     Pixel p = filmTile.GetFilmSpacePixel({ 49, 49 });
-    EXPECT_EQ(p.m_XYZ[0], 0.0);
-    EXPECT_EQ(p.m_XYZ[1], 0.0);
-    EXPECT_EQ(p.m_XYZ[2], 0.0);
+    EXPECT_EQ(p.m_Xyz[0], 0.0);
+    EXPECT_EQ(p.m_Xyz[1], 0.0);
+    EXPECT_EQ(p.m_Xyz[2], 0.0);
 
     p = filmTile.GetTileSpacePixel({ 49, 49 });
-    EXPECT_EQ(p.m_XYZ[0], 0.0);
-    EXPECT_EQ(p.m_XYZ[1], 0.0);
-    EXPECT_EQ(p.m_XYZ[2], 0.0);
+    EXPECT_EQ(p.m_Xyz[0], 0.0);
+    EXPECT_EQ(p.m_Xyz[1], 0.0);
+    EXPECT_EQ(p.m_Xyz[2], 0.0);
 }
 
 TEST(FilmTileTest, CanSetPixelValue)
@@ -107,9 +107,9 @@ TEST(FilmTileTest, CanSetPixelValue)
     FilmTile filmTile({ 0, 0 }, { 100, 100 });
     ASSERT_NO_THROW(filmTile.SetPixel({ 50, 50 }, { 0.2, 0.3, 0.4 }));
     Pixel p = filmTile.GetFilmSpacePixel({ 50, 50 });
-    EXPECT_DOUBLE_EQ(p.m_XYZ[0], 0.2);
-    EXPECT_DOUBLE_EQ(p.m_XYZ[1], 0.3);
-    EXPECT_DOUBLE_EQ(p.m_XYZ[2], 0.4);
+    EXPECT_DOUBLE_EQ(p.m_Xyz[0], 0.2);
+    EXPECT_DOUBLE_EQ(p.m_Xyz[1], 0.3);
+    EXPECT_DOUBLE_EQ(p.m_Xyz[2], 0.4);
 }
 
 TEST(FilmTileTest, CanSplatPixelValue)
@@ -119,9 +119,9 @@ TEST(FilmTileTest, CanSplatPixelValue)
     ASSERT_THROW(filmTile.SplatPixel({ 50, 50 }, { 0.2, 0.3, 0.4 }, -0.0001), std::invalid_argument);
     ASSERT_NO_THROW(filmTile.SplatPixel({ 50, 50 }, { 0.2, 0.3, 0.4 }, 1.0));
     Pixel p = filmTile.GetFilmSpacePixel({ 50, 50 });
-    EXPECT_DOUBLE_EQ(p.m_XYZ[0], 0.2);
-    EXPECT_DOUBLE_EQ(p.m_XYZ[1], 0.3);
-    EXPECT_DOUBLE_EQ(p.m_XYZ[2], 0.4);
+    EXPECT_DOUBLE_EQ(p.m_Xyz[0], 0.2);
+    EXPECT_DOUBLE_EQ(p.m_Xyz[1], 0.3);
+    EXPECT_DOUBLE_EQ(p.m_Xyz[2], 0.4);
     ASSERT_THROW(filmTile.SplatPixel({ 50, 50 }, { 0.2, 0.3, 0.4 }, 0.0001), std::invalid_argument);
 }
 

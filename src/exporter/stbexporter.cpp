@@ -55,10 +55,10 @@ std::vector<char> StbExporter::ExtractPixelData(const Film& film) const
         for (int x = 0; x < resolution.GetWidth(); ++x)
         {
             Pixel p = const_cast<Film&>(film).GetTile({ x, y }).GetFilmSpacePixel({ x, y });
-            RGBCoefficients rgb = SampledSpectrum::XYZToRGB({ p.m_XYZ[0], p.m_XYZ[1], p.m_XYZ[2] });
-            data[iterator++] = (char)(rgb[0] * 255.0);
-            data[iterator++] = (char)(rgb[1] * 255.0);
-            data[iterator++] = (char)(rgb[2] * 255.0);
+            RgbCoefficients rgb = SampledSpectrum::XyzToRgb(p.m_Xyz);
+            data[iterator++] = (char)(std::clamp(rgb[0] * 255.0, 0.0, 255.0));
+            data[iterator++] = (char)(std::clamp(rgb[1] * 255.0, 0.0,  255.0));
+            data[iterator++] = (char)(std::clamp(rgb[2] * 255.0, 0.0, 255.0));
         }
     }
 

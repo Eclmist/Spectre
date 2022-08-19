@@ -20,10 +20,10 @@
 
 #include "reflectantspectrum.h"
 
-ReflectantSpectrum::ReflectantSpectrum(const RGBCoefficients& rgb)
+ReflectantSpectrum::ReflectantSpectrum(const RgbCoefficients& rgb)
     : SampledSpectrum()
 {
-    // An RGB to Spectrum Conversion for Reflectances, Smits(2000)
+    // An Rgb to Spectrum Conversion for Reflectances, Smits(2000)
     // http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.40.9608&rep=rep1&type=pdf
     double r = rgb[0];
     double g = rgb[1];
@@ -32,64 +32,64 @@ ReflectantSpectrum::ReflectantSpectrum(const RGBCoefficients& rgb)
     if (r <= g && r <= b)
     {
         if (g <= b)
-            InitAscendingRGB(rgb);
+            InitAscendingRgb(rgb);
         else
-            InitAscendingRBG(rgb);
+            InitAscendingRbg(rgb);
     }
     else if (g <= r && g <= b)
     {
         if (r <= b)
-            InitAscendingGRB(rgb);
+            InitAscendingGrb(rgb);
         else
-            InitAscendingGBR(rgb);
+            InitAscendingGbr(rgb);
     }
     else
     {
         if (r <= g)
-            InitAscendingBRG(rgb);
+            InitAscendingBrg(rgb);
         else
-            InitAscendingBGR(rgb);
+            InitAscendingBgr(rgb);
     }
 
     ClampZero();
 }
 
-void ReflectantSpectrum::InitAscendingRGB(const RGBCoefficients& rgb)
+void ReflectantSpectrum::InitAscendingRgb(const RgbCoefficients& rgb)
 {
     *this += stdReflW * rgb[0];
     *this += stdReflC * (rgb[1] - rgb[0]);
     *this += stdReflB * (rgb[2] - rgb[1]);
 }
 
-void ReflectantSpectrum::InitAscendingRBG(const RGBCoefficients& rgb)
+void ReflectantSpectrum::InitAscendingRbg(const RgbCoefficients& rgb)
 {
     *this += stdReflW * rgb[0];
     *this += stdReflC * (rgb[2] - rgb[0]);
     *this += stdReflG * (rgb[1] - rgb[2]);
 }
 
-void ReflectantSpectrum::InitAscendingGRB(const RGBCoefficients& rgb)
+void ReflectantSpectrum::InitAscendingGrb(const RgbCoefficients& rgb)
 {
     *this += stdReflW * rgb[1];
     *this += stdReflM * (rgb[0] - rgb[1]);
     *this += stdReflB * (rgb[2] - rgb[0]);
 }
 
-void ReflectantSpectrum::InitAscendingGBR(const RGBCoefficients& rgb)
+void ReflectantSpectrum::InitAscendingGbr(const RgbCoefficients& rgb)
 {
     *this += stdReflW * rgb[1];
     *this += stdReflM * (rgb[2] - rgb[1]);
     *this += stdReflR * (rgb[0] - rgb[2]);
 }
 
-void ReflectantSpectrum::InitAscendingBRG(const RGBCoefficients& rgb)
+void ReflectantSpectrum::InitAscendingBrg(const RgbCoefficients& rgb)
 {
     *this += stdReflW * rgb[2];
     *this += stdReflY * (rgb[0] - rgb[2]);
     *this += stdReflG * (rgb[1] - rgb[0]);
 }
 
-void ReflectantSpectrum::InitAscendingBGR(const RGBCoefficients& rgb)
+void ReflectantSpectrum::InitAscendingBgr(const RgbCoefficients& rgb)
 {
     *this += stdReflW * rgb[2];
     *this += stdReflY * (rgb[1] - rgb[2]);

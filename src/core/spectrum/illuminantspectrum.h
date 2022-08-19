@@ -25,16 +25,16 @@
 class IlluminantSpectrum : public SampledSpectrum
 {
 public:
-    IlluminantSpectrum(const RGBCoefficients& rgb);
+    IlluminantSpectrum(const RgbCoefficients& rgb);
 
     // TODO: Might have to override the normalization constant to 
     // 683lm/W: https://light-measurement.com/colorimetry/
 
 private:
-    void InitAscendingRGB(const RGBCoefficients& rgb);
-    void InitAscendingRBG(const RGBCoefficients& rgb);
-    void InitAscendingGRB(const RGBCoefficients& rgb);
-    void InitAscendingGBR(const RGBCoefficients& rgb);
-    void InitAscendingBRG(const RGBCoefficients& rgb);
-    void InitAscendingBGR(const RGBCoefficients& rgb);
+    void InitAscendingRgb(const RgbCoefficients& rgb);
+    void InitAscendingRbg(const RgbCoefficients& rgb);
+    void InitAscendingGrb(const RgbCoefficients& rgb);
+    void InitAscendingGbr(const RgbCoefficients& rgb);
+    void InitAscendingBrg(const RgbCoefficients& rgb);
+    void InitAscendingBgr(const RgbCoefficients& rgb);
 };

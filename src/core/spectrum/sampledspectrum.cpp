@@ -64,27 +64,27 @@ SampledSpectrum SampledSpectrum::FromSortedRawSamples(const double* lambda, cons
     return sampleArray;
 }
 
-RGBCoefficients SampledSpectrum::XYZToRGB(const XYZCoefficients& xyz)
+RgbCoefficients SampledSpectrum::XyzToRgb(const XyzCoefficients& xyz)
 {
-    RGBCoefficients rgb;
+    RgbCoefficients rgb;
     rgb[0] = 3.240479 * xyz[0] - 1.537150 * xyz[1] - 0.498535 * xyz[2];
     rgb[1] =-0.969256 * xyz[0] + 1.875991 * xyz[1] + 0.041556 * xyz[2];
     rgb[2] = 0.055648 * xyz[0] - 0.204043 * xyz[1] + 1.057311 * xyz[2];
     return rgb;
 }
 
-XYZCoefficients SampledSpectrum::RGBToXYZ(const RGBCoefficients& rgb)
+XyzCoefficients SampledSpectrum::RgbToXyz(const RgbCoefficients& rgb)
 {
-    XYZCoefficients xyz;
+    XyzCoefficients xyz;
     xyz[0] = 0.412453 * rgb[0] + 0.357580 * rgb[1] + 0.180423 * rgb[2];
     xyz[1] = 0.212671 * rgb[0] + 0.715160 * rgb[1] + 0.072169 * rgb[2];
     xyz[2] = 0.019334 * rgb[0] + 0.119193 * rgb[1] + 0.950227 * rgb[2];
     return xyz;
 }
 
-XYZCoefficients SampledSpectrum::ToXYZ() const
+XyzCoefficients SampledSpectrum::ToXyz() const
 {
-    XYZCoefficients result;
+    XyzCoefficients result;
     for (int i = 0; i < numSpectralSamples; ++i)
     {
         result[0] += cieX.m_Coefficients[i] * m_Coefficients[i];
@@ -92,13 +92,13 @@ XYZCoefficients SampledSpectrum::ToXYZ() const
         result[2] += cieZ.m_Coefficients[i] * m_Coefficients[i];
     }
 
-    return result * GetXYZNormalizationConstant();
+    return result * GetXyzNormalizationConstant();
 }
 
-RGBCoefficients SampledSpectrum::ToRGB() const
+RgbCoefficients SampledSpectrum::ToRgb() const
 {
-    XYZCoefficients xyz = ToXYZ();
-    return XYZToRGB(xyz);
+    XyzCoefficients xyz = ToXyz();
+    return XyzToRgb(xyz);
 }
 
 bool SampledSpectrum::IsSamplesSorted(const SampleArray& samples) const
@@ -197,7 +197,7 @@ double SampledSpectrum::ComputeAverageInRange(const SampleArray& samples, double
     return sum / range;
 }
 
-double SampledSpectrum::GetXYZNormalizationConstant() const
+double SampledSpectrum::GetXyzNormalizationConstant() const
 {
     double scale = (MaxWavelength - MinWavelength + 1) / double(numSpectralSamples);
     return scale / cieIntegralY;

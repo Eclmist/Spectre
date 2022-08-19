@@ -25,13 +25,13 @@
 class ReflectantSpectrum : public SampledSpectrum
 {
 public:
-    ReflectantSpectrum(const RGBCoefficients& rgb);
+    ReflectantSpectrum(const RgbCoefficients& rgb);
 
 private:
-    void InitAscendingRGB(const RGBCoefficients& rgb);
-    void InitAscendingRBG(const RGBCoefficients& rgb);
-    void InitAscendingGRB(const RGBCoefficients& rgb);
-    void InitAscendingGBR(const RGBCoefficients& rgb);
-    void InitAscendingBRG(const RGBCoefficients& rgb);
-    void InitAscendingBGR(const RGBCoefficients& rgb);
+    void InitAscendingRgb(const RgbCoefficients& rgb);
+    void InitAscendingRbg(const RgbCoefficients& rgb);
+    void InitAscendingGrb(const RgbCoefficients& rgb);
+    void InitAscendingGbr(const RgbCoefficients& rgb);
+    void InitAscendingBrg(const RgbCoefficients& rgb);
+    void InitAscendingBgr(const RgbCoefficients& rgb);
 };

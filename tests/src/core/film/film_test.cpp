@@ -65,8 +65,8 @@ TEST(FilmTest, CanGetTileAfterResize)
 
 TEST(FilmTest, CanGetTotalTileCount)
 {
-    double tileSize = (double)TileSize;
 	Film film;
+    double tileSize = (double)film.GetTileSize();
 	film.SetResolution(Resolution640X360());
     ASSERT_EQ(film.GetNumTiles(), std::ceil(640 / tileSize) * std::ceil(360 / tileSize));
 

@@ -60,12 +60,12 @@ const Pixel& FilmTile::GetFilmSpacePixel(const Vector2i& filmSpacePos) const
     return GetTileSpacePixel(FilmToTileSpace(filmSpacePos));
 }
 
-void FilmTile::SetPixel(const Vector2i& tileSpacePoint, const XYZCoefficients& xyz)
+void FilmTile::SetPixel(const Vector2i& tileSpacePoint, const XyzCoefficients& xyz)
 {
-    m_Pixels[GetIndex(tileSpacePoint)].m_XYZ = xyz;
+    m_Pixels[GetIndex(tileSpacePoint)].m_Xyz = xyz;
 }
 
-void FilmTile::SplatPixel(const Vector2i& tileSpacePoint, const XYZCoefficients& xyz, double deltaArea)
+void FilmTile::SplatPixel(const Vector2i& tileSpacePoint, const XyzCoefficients& xyz, double deltaArea)
 {
     if (deltaArea > 1.0 || deltaArea <= 0.0)
         throw std::invalid_argument("A greater than 1 or smaller than 0 deltaArea is invalid ");
@@ -73,7 +73,7 @@ void FilmTile::SplatPixel(const Vector2i& tileSpacePoint, const XYZCoefficients&
     if (deltaArea + m_Pixels[GetIndex(tileSpacePoint)].m_TotalSplat > 1.0)
         throw std::invalid_argument("Total splat area for this pixel exceeds 1 given the current delta area");
 
-    m_Pixels[GetIndex(tileSpacePoint)].m_XYZ += xyz * deltaArea;
+    m_Pixels[GetIndex(tileSpacePoint)].m_Xyz += xyz * deltaArea;
     m_Pixels[GetIndex(tileSpacePoint)].m_TotalSplat += deltaArea;
 }
 

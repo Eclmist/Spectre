@@ -21,6 +21,7 @@
 #include "film.h"
 
 Film::Film()
+    : m_TileSize(128)
 {
     SetupTiles();
 }
@@ -45,12 +46,12 @@ void Film::SetupTiles()
 {
     m_Tiles.clear();
 
-    for (int y = 0; y < m_Resolution.GetHeight(); y += TileSize)
+    for (int y = 0; y < m_Resolution.GetHeight(); y += m_TileSize)
     {
-        for (int x = 0; x < m_Resolution.GetWidth(); x += TileSize)
+        for (int x = 0; x < m_Resolution.GetWidth(); x += m_TileSize)
         {
-            int sizeX = std::min(TileSize, m_Resolution.GetWidth() - x);
-            int sizeY = std::min(TileSize, m_Resolution.GetHeight() - y);
+            int sizeX = std::min(m_TileSize, m_Resolution.GetWidth() - x);
+            int sizeY = std::min(m_TileSize, m_Resolution.GetHeight() - y);
             m_Tiles.push_back(FilmTile({ x, y }, { sizeX, sizeY }));
         }
     }
@@ -61,16 +62,16 @@ int Film::GetTileIndex(const Vector2i& position) const
     if (!m_Resolution.IsWithinBounds(position))
         throw std::invalid_argument("Position is outside film bounds");
 
-    int x = position.x / TileSize;
-    int y = position.y / TileSize;
-    int numTilesX = m_Resolution.GetWidth() / TileSize + 1;
+    int x = position.x / m_TileSize;
+    int y = position.y / m_TileSize;
+    int numTilesX = m_Resolution.GetWidth() / m_TileSize + 1;
     return x + y * numTilesX;
 }
 
 int Film::GetNumTiles() const
 {
-    double numTilesX = m_Resolution.GetWidth() / (double)TileSize;
-    double numTilesY = m_Resolution.GetHeight() / (double)TileSize;
+    double numTilesX = m_Resolution.GetWidth() / (double)m_TileSize;
+    double numTilesY = m_Resolution.GetHeight() / (double)m_TileSize;
     return (int)std::ceil(numTilesX) * (int)std::ceil(numTilesY);
 }
 

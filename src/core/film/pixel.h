@@ -26,13 +26,13 @@ class Pixel
 {
 public:
     Pixel() = default;
-    Pixel(const XYZCoefficients& xyz)
+    Pixel(const XyzCoefficients& xyz)
     {
-        m_XYZ = xyz;
+        m_Xyz = xyz;
         m_TotalSplat = 0.0;
     }
 
-    XYZCoefficients m_XYZ;
+    XyzCoefficients m_Xyz;
     double m_TotalSplat;
 };
 

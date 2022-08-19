@@ -35,11 +35,11 @@ public:
     ~SampledSpectrum() = default;
 
     static SampledSpectrum FromSortedRawSamples(const double* lambda, const double* power, int numSamples);
-    static RGBCoefficients XYZToRGB(const XYZCoefficients& xyz);
-    static XYZCoefficients RGBToXYZ(const RGBCoefficients& rgb);
+    static RgbCoefficients XyzToRgb(const XyzCoefficients& xyz);
+    static XyzCoefficients RgbToXyz(const RgbCoefficients& rgb);
 
-    XYZCoefficients ToXYZ() const;
-    RGBCoefficients ToRGB() const;
+    XyzCoefficients ToXyz() const;
+    RgbCoefficients ToRgb() const;
 
 protected:
     bool IsSamplesSorted(const SampleArray& samples) const;
@@ -52,7 +52,7 @@ protected:
     double ComputeAreaSum(const SampleArray& samples, double leftBound, double rightBound) const;
     double ComputeAverageInRange(const SampleArray& samples, double leftBound, double rightBound) const;
 
-    virtual double GetXYZNormalizationConstant() const;
+    virtual double GetXyzNormalizationConstant() const;
 
 protected:
     friend class SampledSpectrumTest_CanComputeWavelengthRange_Test;

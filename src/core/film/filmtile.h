@@ -35,8 +35,8 @@ public:
     const Pixel& GetTileSpacePixel(const Vector2i& tileSpacePos) const;
     const Pixel& GetFilmSpacePixel(const Vector2i& filmSpacePos) const;
 
-    void SetPixel(const Vector2i& tileSpacePoint, const XYZCoefficients& xyz);
-    void SplatPixel(const Vector2i& tileSpacePoint, const XYZCoefficients& xyz, double deltaArea);
+    void SetPixel(const Vector2i& tileSpacePoint, const XyzCoefficients& xyz);
+    void SplatPixel(const Vector2i& tileSpacePoint, const XyzCoefficients& xyz, double deltaArea);
 
 private:
     friend class FilmTileTest_CanGetIndex_Test;
