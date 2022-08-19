@@ -117,8 +117,14 @@ TEST(FilmTileTest, CanSplatPixelValue)
     FilmTile filmTile({ 0, 0 }, { 100, 100 });
     ASSERT_THROW(filmTile.SplatPixel({ 50, 50 }, { 0.2, 0.3, 0.4 }, 1.0001), std::invalid_argument);
     ASSERT_THROW(filmTile.SplatPixel({ 50, 50 }, { 0.2, 0.3, 0.4 }, -0.0001), std::invalid_argument);
-    ASSERT_NO_THROW(filmTile.SplatPixel({ 50, 50 }, { 0.2, 0.3, 0.4 }, 1.0));
+    ASSERT_NO_THROW(filmTile.SplatPixel({ 50, 50 }, { 0.2, 0.3, 0.4 }, 0.5));
     Pixel p = filmTile.GetFilmSpacePixel({ 50, 50 });
+    EXPECT_DOUBLE_EQ(p.m_Xyz[0], 0.1);
+    EXPECT_DOUBLE_EQ(p.m_Xyz[1], 0.15);
+    EXPECT_DOUBLE_EQ(p.m_Xyz[2], 0.2);
+
+    ASSERT_NO_THROW(filmTile.SplatPixel({ 50, 50 }, { 0.2, 0.3, 0.4 }, 0.5));
+    p = filmTile.GetFilmSpacePixel({ 50, 50 });
     EXPECT_DOUBLE_EQ(p.m_Xyz[0], 0.2);
     EXPECT_DOUBLE_EQ(p.m_Xyz[1], 0.3);
     EXPECT_DOUBLE_EQ(p.m_Xyz[2], 0.4);

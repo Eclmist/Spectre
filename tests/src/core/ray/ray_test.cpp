@@ -28,15 +28,21 @@ TEST(RayTest, CanBeCreated)
 
 TEST(RayTest, DirectionIsNormalized)
 {
-    EXPECT_EQ(Ray({ 0.0 }, { 6.0, 0.0, 0.0 }).m_Direction, Vector3(1.0, 0.0, 0.0));
-    EXPECT_EQ(Ray({ 0.0 }, { 1.0, 2.0, 3.0 }).m_Direction, Vector3(1.0, 2.0, 3.0).Normalized());
+    EXPECT_EQ(Ray({ 0.0 }, { 6.0, 0.0, 0.0 }).GetDirection(), Vector3(1.0, 0.0, 0.0));
+    EXPECT_EQ(Ray({ 0.0 }, { 1.0, 2.0, 3.0 }).GetDirection(), Vector3(1.0, 2.0, 3.0).Normalized());
+
+    Ray r({ 0.0 }, { 0.0 });
+    r.SetDirection({ 1.0, 0.0, 0.0 });
+    EXPECT_EQ(r.GetDirection().Magnitude(), 1.0);
+    r.SetDirection({ 1.0, 2.0, 3.0 });
+    EXPECT_EQ(r.GetDirection().Magnitude(), 1.0);
 }
 
 TEST(RayTest, CanBeCopied)
 {
     Ray r({ 0.0 }, { 1.0, 2.0, 3.0 });
     Ray copy(r);
-    EXPECT_EQ(r.m_Direction, copy.m_Direction);
-    EXPECT_EQ(r.m_Origin, copy.m_Origin);
+    EXPECT_EQ(r.GetDirection(), copy.GetDirection());
+    EXPECT_EQ(r.GetOrigin(), copy.GetOrigin());
 }
 

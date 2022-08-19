@@ -26,9 +26,16 @@ public:
     Ray(const Vector3& origin, const Vector3& direction);
     ~Ray() = default;
 
+public:
     inline Vector3 operator()(double t) const { return m_Origin + m_Direction * t; }
 
-public:
+    inline Vector3 GetOrigin() const { return m_Origin; }
+    inline Vector3 GetDirection() const { return m_Direction; }
+
+    inline void SetOrigin(Vector3 origin) { m_Origin = origin; }
+    inline void SetDirection(Vector3 direction) { m_Direction = direction.Normalized(); }
+
+private:
     Vector3 m_Origin;
     Vector3 m_Direction;
 };
