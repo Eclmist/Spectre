@@ -20,7 +20,7 @@
 
 #include "film.h"
 
-static constexpr int TileSize = 128;
+const int TileSize = 128;
 
 Film::Film()
 {

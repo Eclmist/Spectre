@@ -20,7 +20,7 @@
 
 #pragma once
 
-static constexpr int numSpectralSamples = 64;
+const int numSpectralSamples = 64;
 
 class Spectrum
 {

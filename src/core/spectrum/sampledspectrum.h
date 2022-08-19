@@ -24,8 +24,8 @@
 #include "sample.h"
 #include "spectralcoefficients.h"
 
-static constexpr int MinWavelength = 360;
-static constexpr int MaxWavelength = 830;
+const int MinWavelength = 360;
+const int MaxWavelength = 830;
 
 class SampledSpectrum : public Spectrum
 {

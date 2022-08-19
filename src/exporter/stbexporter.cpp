@@ -25,9 +25,9 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb/stb_image_write.h"
 
-static constexpr const char* OutputFileName = "RTCore_Output";
-static constexpr const char* OutputFileType = ".png";
-static constexpr long NumColorChannels = 3L;
+const std::string OutputFileName = "RTCore_Output";
+const std::string OutputFileType = ".png";
+const long NumColorChannels = 3L;
 
 StbExporter::StbExporter()
     : m_OutputFileName(OutputFileName)

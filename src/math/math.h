@@ -28,7 +28,7 @@
 
 namespace Math
 {
-	static constexpr double E        = 2.71828182845904523536;       // e
-	static constexpr double PI       = 3.14159265358979323846;       // pi
+	const double E        = 2.71828182845904523536;       // e
+	const double PI       = 3.14159265358979323846;       // pi
 }
 

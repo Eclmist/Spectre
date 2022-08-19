@@ -20,10 +20,10 @@
 
 #include "resolution.h"
 
-static constexpr int DefaultWidth = 800;
-static constexpr int DefaultHeight = 480;
-static constexpr int MaxWidth = 3840;
-static constexpr int MaxHeight = 2160;
+const int DefaultWidth = 800;
+const int DefaultHeight = 480;
+const int MaxWidth = 3840;
+const int MaxHeight = 2160;
 
 Resolution::Resolution()
     : m_Width(DefaultWidth)

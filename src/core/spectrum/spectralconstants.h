@@ -20,15 +20,15 @@
 
 #pragma once
 
-static constexpr double cieIntegralY = 106.856895;
+const double cieIntegralY = 106.856895;
 
-static constexpr int numCieSamples = 471;
+const int numCieSamples = 471;
 extern const double cieLambda[numCieSamples];
 extern const double cieSamplesX[numCieSamples];
 extern const double cieSamplesY[numCieSamples];
 extern const double cieSamplesZ[numCieSamples];
 
-static constexpr int numStdSamples = 32;
+const int numStdSamples = 32;
 extern const double stdLambda[numStdSamples];
 extern const double stdReflSamplesW[numStdSamples];
 extern const double stdReflSamplesC[numStdSamples];
