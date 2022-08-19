@@ -20,8 +20,6 @@
 
 #include "film.h"
 
-const int TileSize = 128;
-
 Film::Film()
 {
     SetupTiles();
@@ -35,6 +33,12 @@ FilmTile& Film::GetTile(int index)
 FilmTile& Film::GetTile(const Vector2i& position)
 {
     return GetTile(GetTileIndex(position));
+}
+
+void Film::SetResolution(const Resolution& resolution)
+{
+	m_Resolution = resolution;
+	SetupTiles();
 }
 
 void Film::SetupTiles()
@@ -63,9 +67,10 @@ int Film::GetTileIndex(const Vector2i& position) const
     return x + y * numTilesX;
 }
 
-void Film::SetResolution(const Resolution& resolution)
+int Film::GetNumTiles() const
 {
-    m_Resolution = resolution;
-    SetupTiles();
+    double numTilesX = m_Resolution.GetWidth() / (double)TileSize;
+    double numTilesY = m_Resolution.GetHeight() / (double)TileSize;
+    return (int)std::ceil(numTilesX) * (int)std::ceil(numTilesY);
 }
 

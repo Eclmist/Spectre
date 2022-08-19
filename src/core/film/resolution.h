@@ -26,15 +26,19 @@ public:
     Resolution();
     ~Resolution() = default;
 
+public:
     bool operator==(const Resolution& resolution) const;
     bool operator!=(const Resolution& resolution) const;
 
+public:
     inline int GetWidth() const { return m_Width; }
     inline int GetHeight() const { return m_Height; }
-    bool IsWithinBounds(const Vector2i& point) const;
+    inline int GetArea() const { return m_Width * m_Height; }
 
+public:
     void SetWidth(int width);
     void SetHeight(int height);
+    bool IsWithinBounds(const Vector2i& point) const;
 
 protected:
     int m_Width;

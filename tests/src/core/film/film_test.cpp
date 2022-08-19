@@ -63,10 +63,38 @@ TEST(FilmTest, CanGetTileAfterResize)
     ASSERT_NO_THROW(film.GetTile({ 799, 599 }));
 }
 
-TEST(FilmTest, CanGetTotalPixelCount)
+TEST(FilmTest, CanGetTotalTileCount)
 {
-    Film film;
-    film.SetResolution(Resolution640X360());
-    ASSERT_EQ(film.GetNumPixels(), 640 * 360);
+    double tileSize = (double)TileSize;
+	Film film;
+	film.SetResolution(Resolution640X360());
+    ASSERT_EQ(film.GetNumTiles(), std::ceil(640 / tileSize) * std::ceil(360 / tileSize));
+
+	film.SetResolution(Resolution800X480());
+	ASSERT_EQ(film.GetNumTiles(), std::ceil(800 / tileSize) * std::ceil(480 / tileSize));
+
+	film.SetResolution(Resolution800X600());
+	ASSERT_EQ(film.GetNumTiles(), std::ceil(800 / tileSize) * std::ceil(600 / tileSize));
+
+	film.SetResolution(Resolution1024X768());
+	ASSERT_EQ(film.GetNumTiles(), std::ceil(1024 / tileSize) * std::ceil(768 / tileSize));
+
+	film.SetResolution(Resolution1280X720());
+	ASSERT_EQ(film.GetNumTiles(), std::ceil(1280 / tileSize) * std::ceil(720 / tileSize));
+
+	film.SetResolution(Resolution1366X768());
+	ASSERT_EQ(film.GetNumTiles(), std::ceil(1366 / tileSize) * std::ceil(768 / tileSize));
+
+	film.SetResolution(Resolution1600X900());
+	ASSERT_EQ(film.GetNumTiles(), std::ceil(1600 / tileSize) * std::ceil(900 / tileSize));
+
+	film.SetResolution(Resolution1920X1080());
+	ASSERT_EQ(film.GetNumTiles(), std::ceil(1920 / tileSize) * std::ceil(1080 / tileSize));
+
+	film.SetResolution(Resolution2560X1440());
+	ASSERT_EQ(film.GetNumTiles(), std::ceil(2560 / tileSize) * std::ceil(1440 / tileSize));
+
+	film.SetResolution(Resolution3840X2160());
+	ASSERT_EQ(film.GetNumTiles(), std::ceil(3840 / tileSize) * std::ceil(2160 / tileSize));
 }
 

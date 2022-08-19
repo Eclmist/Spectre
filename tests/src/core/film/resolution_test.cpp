@@ -136,3 +136,36 @@ TEST(ResolutionTest, CanCheckEquality)
     EXPECT_EQ(res, res2);
 }
 
+TEST(FilmTest, CanGetArea)
+{
+	Resolution640X360 res640X360;
+	EXPECT_EQ(res640X360.GetArea(), 640 * 360);
+
+	Resolution800X480 res800X480;
+	EXPECT_EQ(res800X480.GetArea(), 800 * 480);
+
+	Resolution800X600 res800X600;
+	EXPECT_EQ(res800X600.GetArea(), 800 * 600);
+
+	Resolution1024X768 res1024X768;
+	EXPECT_EQ(res1024X768.GetArea(), 1024 * 768);
+
+	Resolution1280X720 res1280X720;
+	EXPECT_EQ(res1280X720.GetArea(), 1280 * 720);
+
+	Resolution1366X768 res1366X768;
+	EXPECT_EQ(res1366X768.GetArea(), 1366 * 768);
+
+	Resolution1600X900 res1600X900;
+	EXPECT_EQ(res1600X900.GetArea(), 1600 * 900);
+
+	Resolution1920X1080 res1920X1080;
+	EXPECT_EQ(res1920X1080.GetArea(), 1920 * 1080);
+
+	Resolution2560X1440 res2560X1440;
+	EXPECT_EQ(res2560X1440.GetArea(), 2560 * 1440);
+
+	Resolution3840X2160 res3840X2160;
+	EXPECT_EQ(res3840X2160.GetArea(), 3840 * 2160);
+}
+

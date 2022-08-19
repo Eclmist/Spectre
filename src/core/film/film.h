@@ -24,19 +24,25 @@
 #include "filmtile.h"
 #include "core/spectrum/spectralcoefficients.h"
 
+const int TileSize = 128;
+constexpr int PixelsPerTile = TileSize * TileSize;
+
 class Film
 {
 public:
     Film();
     ~Film() = default;
 
+public:
     inline const Resolution& GetResolution() const { return m_Resolution; }
-    inline int GetNumPixels() const { return m_Resolution.GetWidth() * m_Resolution.GetHeight(); }
+    inline int GetNumPixels() const { return m_Resolution.GetArea(); }
+
+public:
+    void SetResolution(const Resolution& resolution);
 
     FilmTile& GetTile(int index);
     FilmTile& GetTile(const Vector2i& position);
-
-    void SetResolution(const Resolution& resolution);
+	int GetNumTiles() const;
 
 private:
     void SetupTiles();
