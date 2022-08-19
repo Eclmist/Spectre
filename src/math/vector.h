@@ -22,8 +22,6 @@
 
 #pragma once
 
-#include <type_traits>
-
 template <typename T, int N>
 class Vector;
 

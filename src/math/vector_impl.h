@@ -19,7 +19,6 @@
 
 #pragma once
 #include "vector.h"
-#include <algorithm>
 
 template<typename T, int N>
 Vector<T, N>::Vector(T v)

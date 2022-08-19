@@ -20,8 +20,6 @@
 
 #pragma once
 
-#include <vector>
-
 struct Sample
 {
     Sample(double wavelength = 0, double power = 0)

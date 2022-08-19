@@ -17,7 +17,6 @@
 */
 
 #include "filmtile.h"
-#include <stdexcept>
 
 FilmTile::FilmTile(const Vector2i& pos, const Vector2i& size)
     : m_Rect(pos.x, pos.y, size.x, size.y)

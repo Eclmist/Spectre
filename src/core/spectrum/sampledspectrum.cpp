@@ -19,11 +19,6 @@
 */
 
 #include "sampledspectrum.h"
-#include <algorithm>
-#include <assert.h>
-#include <cmath>
-#include <vector>
-
 #include "spectralconstants.h"
 
 const SampledSpectrum SampledSpectrum::cieX = SampledSpectrum::FromSortedRawSamples(cieLambda, cieSamplesX, numCieSamples);

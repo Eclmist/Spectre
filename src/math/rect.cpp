@@ -17,7 +17,6 @@
 */
 
 #include "rect.h"
-#include <stdexcept>
 
 Rect::Rect(int x, int y, int w, int h)
     : x(x)

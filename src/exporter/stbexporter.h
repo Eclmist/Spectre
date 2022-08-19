@@ -21,7 +21,6 @@
 #pragma once
 
 #include "exporter.h"
-#include <string>
 
 class StbExporter : public Exporter
 {

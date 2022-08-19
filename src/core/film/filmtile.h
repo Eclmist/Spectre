@@ -19,7 +19,6 @@
 #pragma once
 
 #include "pixel.h"
-#include <vector>
 
 class FilmTile
 {
