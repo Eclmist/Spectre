@@ -70,7 +70,7 @@ void FilmTile::SplatPixel(const Vector2i& tileSpacePoint, const XyzCoefficients&
     if (deltaArea > 1.0 || deltaArea <= 0.0)
         throw std::invalid_argument("A greater than 1 or smaller than 0 deltaArea is invalid");
 
-    if (deltaArea + m_Pixels[GetIndex(tileSpacePoint)].m_TotalSplat > 1.0)
+    if (deltaArea + m_Pixels[GetIndex(tileSpacePoint)].m_TotalSplat > 1.0 + Math::Epsilon)
         throw std::invalid_argument("Total splat area for this pixel exceeds 1 given the current delta area");
 
     m_Pixels[GetIndex(tileSpacePoint)].m_Xyz += xyz * deltaArea;

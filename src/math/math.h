@@ -22,14 +22,11 @@
 
 #include <cmath>
 
-#include "vector.h"
-#include "matrix.h"
-#include "rect.h"
-
 namespace Math
 {
 	const double E        = 2.71828182845904523536;       // e
 	const double PI       = 3.14159265358979323846;       // pi
+    const double Epsilon  = 0.000000000001;
 
 	inline double DegToRad(double deg)
     {
@@ -41,4 +38,8 @@ namespace Math
         return rad * (180.0 / PI);
 	}
 }
+
+#include "vector.h"
+#include "matrix.h"
+#include "rect.h"
 

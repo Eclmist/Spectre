@@ -89,7 +89,7 @@ template<typename T, int N>
 bool Matrix<T, N>::operator==(const Matrix& m2) const
 {
     for (int i = 0; i < N * N; ++i)
-        if (std::fabs(this->m_Data[i] - m2.m_Data[i]) > std::numeric_limits<T>::epsilon())
+        if (std::fabs(this->m_Data[i] - m2.m_Data[i]) > Math::Epsilon)
             return false;
 
     return true;
@@ -119,10 +119,10 @@ bool Matrix<T, N>::IsIdentity() const
     for (int i = 0; i < N; ++i)
         for (int j = 0; j < N; ++j)
         {
-            if (i == j && std::fabs(this->m_Data2D[i][j] - 1) > std::numeric_limits<T>::epsilon())
+            if (i == j && std::fabs(this->m_Data2D[i][j] - 1) > Math::Epsilon)
                 return false;
 
-            if (i != j && std::fabs(this->m_Data2D[i][j]) > std::numeric_limits<T>::epsilon())
+            if (i != j && std::fabs(this->m_Data2D[i][j]) > Math::Epsilon)
                 return false;
         }
 
