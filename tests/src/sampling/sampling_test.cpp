@@ -123,7 +123,7 @@ TEST(SamplingTest, CanSampleSphereUniformly)
 
 TEST(SamplingTest, CanSampleDiskUniformly_RejectionMethod)
 {
-	const int numSamples = 500000;
+	const int numSamples = 50000;
 	const int numAreasToTest = 500;
 	const double radiusToTest = 0.1;
 
@@ -143,7 +143,7 @@ TEST(SamplingTest, CanSampleDiskUniformly_RejectionMethod)
 
 TEST(SamplingTest, CanSampleDiskUniformly_ConcentricMethod)
 {
-	const int numSamples = 500000;
+	const int numSamples = 50000;
 	const int numAreasToTest = 500;
 	const double radiusToTest = 0.1;
 
