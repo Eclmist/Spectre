@@ -41,7 +41,7 @@ const SampledSpectrum SampledSpectrum::stdIllumR = SampledSpectrum::FromSortedRa
 const SampledSpectrum SampledSpectrum::stdIllumG = SampledSpectrum::FromSortedRawSamples(stdLambda, stdIllumSamplesG, numStdSamples);
 const SampledSpectrum SampledSpectrum::stdIllumB = SampledSpectrum::FromSortedRawSamples(stdLambda, stdIllumSamplesB, numStdSamples);
 
-SampledSpectrum::SampledSpectrum(const std::vector<Sample>& samples)
+SampledSpectrum::SampledSpectrum(const std::vector<SpectralSample>& samples)
 {
     if (IsSamplesSorted(samples))
     {
@@ -141,7 +141,7 @@ double SampledSpectrum::ComputeBoundaryArea(const SampleArray& samples, double l
     return leftBoundArea + rightBoundArea;
 }
 
-double SampledSpectrum::ComputeSegmentArea(const Sample& s1, const Sample& s2, double leftBound, double rightBound) const
+double SampledSpectrum::ComputeSegmentArea(const SpectralSample& s1, const SpectralSample& s2, double leftBound, double rightBound) const
 {
     double sampleRangeL = s1.m_Wavelength;
     double sampleRangeR = s2.m_Wavelength;

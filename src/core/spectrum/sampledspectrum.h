@@ -21,7 +21,7 @@
 #pragma once
 
 #include "spectrum.h"
-#include "sample.h"
+#include "spectralsample.h"
 #include "spectralcoefficients.h"
 
 const int MinWavelength = 360;
@@ -48,7 +48,7 @@ protected:
 
     void ComputeRangeAtIndex(int index, double& start, double& end) const;
     double ComputeBoundaryArea(const SampleArray& samples, double leftBound, double rightBound) const;
-    double ComputeSegmentArea(const Sample& s1, const Sample& s2, double leftBound, double rightBound) const;
+    double ComputeSegmentArea(const SpectralSample& s1, const SpectralSample& s2, double leftBound, double rightBound) const;
     double ComputeAreaSum(const SampleArray& samples, double leftBound, double rightBound) const;
     double ComputeAverageInRange(const SampleArray& samples, double leftBound, double rightBound) const;
 
