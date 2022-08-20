@@ -20,33 +20,30 @@
 
 #pragma once
 
-#include <cmath>
+#include <random>
 
-namespace Math
+namespace Random
 {
-	const double E        = 2.71828182845904523536;    // e
-	const double Pi       = 3.14159265358979323846;    // pi
-	const double PiOver2  = 1.57079632679489661923;    // pi/2
-	const double PiOver4  = 0.78539816339744830961;    // pi/4
-	const double InvPi    = 0.31830988618379067153;    // 1/pi
-	const double Inv2Pi   = 0.15915494309189533576;    // 1/2pi
-	const double Inv4Pi   = 0.07957747154594766788;    // 1/4pi
+	static std::mt19937 m_Rng;
 
-    const double Epsilon  = 0.00000000000001;
-
-	inline double DegToRad(double deg)
+    inline void Seed(int seed)
     {
-        return deg * (Pi / 180);
-	}
+        m_Rng = std::mt19937(seed); 
+    }
 
-	inline double RadToDeg(double rad)
+    inline int UniformInt()
+    { 
+        return m_Rng();
+    }
+    
+    inline int UniformInt(int b)
     {
-        return rad * (180.0 / Pi);
-	}
-}
+        return (std::uniform_int_distribution<int>(0, b))(m_Rng);
+    }
 
-#include "vector.h"
-#include "matrix.h"
-#include "rect.h"
-#include "random.h"
+    inline double UniformFloat()
+    {
+        return (std::uniform_real_distribution<double>(0, 1))(m_Rng);
+    }
+};
 
