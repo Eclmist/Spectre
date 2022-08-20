@@ -93,15 +93,15 @@ TEST(TransformTest, MatrixHasCorrectValues)
     temp = t.GetMatrix();
     EXPECT_EQ(t.GetMatrix(), Matrix4x4(1, 0, 0, 1, 0, 1, 0, 2, 0, 0, 4, 3, 0, 0, 0, 1));
 
-    ASSERT_NO_THROW(t2.SetRotation({ Math::PI / 2, 0, 0 }));
+    ASSERT_NO_THROW(t2.SetRotation({ Math::Pi / 2, 0, 0 }));
     temp = t2.GetMatrix();
     EXPECT_EQ(t2.GetMatrix(), Matrix4x4(1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 1));
 
-    ASSERT_NO_THROW(t2.SetRotation({ Math::PI / 2, Math::PI / 2, Math::PI / 2 }));
+    ASSERT_NO_THROW(t2.SetRotation({ Math::Pi / 2, Math::Pi / 2, Math::Pi / 2 }));
     temp = t2.GetMatrix();
     EXPECT_EQ(t2.GetMatrix(), Matrix4x4(0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 0, 1));
 
-    ASSERT_NO_THROW(t.SetRotation({ Math::PI / 2, Math::PI / 2, Math::PI / 2 }));
+    ASSERT_NO_THROW(t.SetRotation({ Math::Pi / 2, Math::Pi / 2, Math::Pi / 2 }));
     temp = t.GetMatrix();
     EXPECT_EQ(t.GetMatrix(), Matrix4x4(0, 0, 4, 1, 0, 1, 0, 2, -1, 0, 0, 3, 0, 0, 0, 1));
 }

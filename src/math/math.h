@@ -24,22 +24,28 @@
 
 namespace Math
 {
-	const double E        = 2.71828182845904523536;       // e
-	const double PI       = 3.14159265358979323846;       // pi
-    const double Epsilon  = 0.000000000001;
+	const double E        = 2.71828182845904523536;     // e
+	const double Pi       = 3.14159265358979323846;     // pi
+	const double PiOver2  = 1.57079632679489661923;     // pi/2
+	const double PiOver4  = 0.785398163397448309616;    // pi/4
+	const double InvPi    = 0.318309886183790671538;    // 1/pi
+	const double Inv2Pi   = 0.636619772367581343076;    // 2/pi
+
+    const double Epsilon  = 0.00000000000001;
 
 	inline double DegToRad(double deg)
     {
-        return deg * (PI / 180);
+        return deg * (Pi / 180);
 	}
 
 	inline double RadToDeg(double rad)
     {
-        return rad * (180.0 / PI);
+        return rad * (180.0 / Pi);
 	}
 }
 
 #include "vector.h"
 #include "matrix.h"
 #include "rect.h"
+#include "random.h"
 

@@ -131,3 +131,16 @@ TEST(FilmTileTest, CanSplatPixelValue)
     ASSERT_THROW(filmTile.SplatPixel({ 50, 50 }, { 0.2, 0.3, 0.4 }, 0.0001), std::invalid_argument);
 }
 
+TEST(FilmTileTest, SplatEpsilonValueSufficient)
+{
+	FilmTile filmTile({ 0, 0 }, { 100, 100 });
+
+    for (int i = 10; i < 50; ++i)
+    {
+        for (int j = 0; j < i; ++j)
+        {
+			ASSERT_NO_THROW(filmTile.SplatPixel({ i, 50 }, { 0.2, 0.3, 0.4 }, 1.0 / i));
+        }
+    }
+}
+
