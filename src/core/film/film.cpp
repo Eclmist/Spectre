@@ -21,7 +21,7 @@
 #include "film.h"
 
 Film::Film()
-    : m_TileSize(128)
+    : m_TileSize(64)
 {
     SetupTiles();
 }
@@ -64,7 +64,7 @@ int Film::GetTileIndex(const Vector2i& position) const
 
     int x = position.x / m_TileSize;
     int y = position.y / m_TileSize;
-    int numTilesX = m_Resolution.GetWidth() / m_TileSize + 1;
+    int numTilesX = (int)std::ceil(m_Resolution.GetWidth() / (double)m_TileSize);
     return x + y * numTilesX;
 }
 

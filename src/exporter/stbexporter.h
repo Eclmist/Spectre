@@ -39,4 +39,5 @@ private:
 
 private:
     std::string m_OutputFileName;
+    mutable std::mutex m_ExportMutex;
 };

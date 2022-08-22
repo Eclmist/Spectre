@@ -20,7 +20,7 @@
 
 #pragma once
 
-const int numSpectralSamples = 64;
+const int numSpectralSamples = 470;
 
 class Spectrum
 {
@@ -54,7 +54,7 @@ public:
     static Spectrum Min(const Spectrum& s1, const Spectrum& s2);
     static Spectrum Max(const Spectrum& s1, const Spectrum& s2);
 
-protected:
+public:
     double m_Coefficients[numSpectralSamples];
 };
 

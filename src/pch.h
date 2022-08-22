@@ -23,6 +23,7 @@
 #include <algorithm>
 #include <assert.h>
 #include <memory>
+#include <mutex>
 #include <stdexcept>
 #include <string>
 #include <stdexcept>

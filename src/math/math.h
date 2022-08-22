@@ -32,7 +32,7 @@ namespace Math
 	const double Inv2Pi   = 0.15915494309189533576;    // 1/2pi
 	const double Inv4Pi   = 0.07957747154594766788;    // 1/4pi
 
-    const double Epsilon  = 0.00000000000001;
+    const double Epsilon  = 0.0000000001;
 
 	inline double DegToRad(double deg)
     {

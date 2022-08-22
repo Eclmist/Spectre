@@ -36,6 +36,7 @@ StbExporter::StbExporter()
 
 void StbExporter::Export(const Film& film) const 
 {
+    std::lock_guard<std::mutex> lock(m_ExportMutex);
     stbi_write_png(
         (m_OutputFileName + OutputFileType).c_str(),
         film.GetResolution().GetWidth(),
@@ -55,7 +56,12 @@ std::vector<char> StbExporter::ExtractPixelData(const Film& film) const
         for (int x = 0; x < resolution.GetWidth(); ++x)
         {
             Pixel p = const_cast<Film&>(film).GetTile({ x, y }).GetFilmSpacePixel({ x, y });
-            RgbCoefficients rgb = SampledSpectrum::XyzToRgb(p.m_Xyz);
+            RgbCoefficients rgb = SampledSpectrum::XyzToRgb(p.m_Xyz / p.m_TotalSplat);
+
+            rgb[0] = std::sqrt(rgb[0]);
+            rgb[1] = std::sqrt(rgb[1]);
+            rgb[2] = std::sqrt(rgb[2]);
+
             data[iterator++] = (char)(std::clamp(rgb[0] * 255.0, 0.0, 255.0));
             data[iterator++] = (char)(std::clamp(rgb[1] * 255.0, 0.0, 255.0));
             data[iterator++] = (char)(std::clamp(rgb[2] * 255.0, 0.0, 255.0));

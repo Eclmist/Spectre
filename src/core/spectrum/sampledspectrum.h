@@ -32,6 +32,7 @@ class SampledSpectrum : public Spectrum
 public:
     SampledSpectrum(double v = 0.0) : Spectrum(v) {}
     SampledSpectrum(const SampleArray& samples);
+    SampledSpectrum(Spectrum& v) : Spectrum(v) {}
     ~SampledSpectrum() = default;
 
     static SampledSpectrum FromSortedRawSamples(const double* lambda, const double* power, int numSamples);
