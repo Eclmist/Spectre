@@ -19,6 +19,9 @@
 #include <iostream>
 #include <cstring>
 
+// Temp
+#include "playground.h"
+
 void PrintTitle()
 {
     using namespace std;
@@ -74,6 +77,11 @@ int main(int argc, char* argv[])
         //    filenames.push_back(argv[i]);
     }
 
+    // Make a test render
+    // TODO: Remove this when the rest of the system is built.
+
+    Playground playground;
+    playground.RenderThing();
 
     return 0;
 }
