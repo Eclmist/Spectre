@@ -3,7 +3,7 @@
     Spectre
   <br>
 </h1>
-<h4 align="center">A (WIP) physically based spectral raytracing renderer.</h4>
+<h4 align="center">A (WIP) physically based spectral raytracing library.</h4>
 
 <p align="center">
   <a href="https://github.com/Eclmist/Spectre/actions">
