@@ -6,7 +6,7 @@
 <h4 align="center">A (WIP) physically based spectral raytracing renderer.</h4>
 
 <p align="center">
-  <a href="https://travis-ci.com/Eclmist/Elixir">
+  <a href="https://travis-ci.com/Eclmist/Spectre">
     <img src="https://github.com/eclmist/Spectre/workflows/build/badge.svg" alt="Build Status">
   </a>
   <a href="#------">
@@ -18,7 +18,7 @@
 </p>
 
 # Introduction
-Spectre is the successor to [Elixir](github.com/Eclmist/Elixir), with emphasis on clean, highly tested code.
+Spectre is the successor to [Elixir](https://github.com/Eclmist/Elixir), with emphasis on clean, highly tested code.
 
 Written from the ground up in modern C++ (C++20), Spectre improves upon Elixir in the following areas:
   - Code quality improvements - adheres better to SE principles
