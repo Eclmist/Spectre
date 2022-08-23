@@ -11,15 +11,45 @@
 #include "system/threading/threadpool.h"
 #include <core/sampling/sampling.h>
 
-const int NumSamples = 30000;
+const int NumSamples = 1000;
 constexpr double DeltaArea = 1.0 / NumSamples;
 struct hit_record;
+
+class aabb {
+public:
+	aabb() {}
+	aabb(const Vector3& a, const Vector3& b) { minimum = a; maximum = b; }
+
+	Vector3 min() const { return minimum; }
+	Vector3 max() const { return maximum; }
+
+	bool hit(const Ray& r, double t_min, double t_max) const {
+		for (int a = 0; a < 3; a++) {
+			auto t0 = std::fmin((minimum[a] - r.GetOrigin()[a]) / r.GetDirection()[a],
+				(maximum[a] - r.GetOrigin()[a]) / r.GetDirection()[a]);
+			auto t1 = std::fmax((minimum[a] - r.GetOrigin()[a]) / r.GetDirection()[a],
+				(maximum[a] - r.GetOrigin()[a]) / r.GetDirection()[a]);
+			t_min = std::fmax(t0, t_min);
+			t_max = std::fmin(t1, t_max);
+			if (t_max <= t_min)
+				return false;
+		}
+		return true;
+	}
+
+	Vector3 minimum;
+	Vector3 maximum;
+};
 
 class material {
 public:
 	virtual bool scatter(
 		const Ray& r_in, const hit_record& rec, Spectrum* attenuation, Ray& scattered
 	) const = 0;
+
+	virtual Spectrum emitted() const {
+		return {};
+	}
 };
 
 Vector3 reflect(const Vector3& v, const Vector3& n) {
@@ -106,11 +136,30 @@ public:
 	Spectrum ir; // Index of Refraction
 };
 
+class diffuse_light : public material {
+public:
+	diffuse_light(Spectrum* a) : emit(a) {}
+
+	virtual bool scatter(
+		const Ray& r_in, const hit_record& rec, Spectrum* attenuation, Ray& scattered
+	) const override {
+		return false;
+	}
+
+	virtual Spectrum emitted() const override {
+		return *emit;
+	}
+
+public:
+	Spectrum* emit;
+};
 
 
 class hittable {
 public:
 	virtual bool hit(const Ray& r, double t_min, double t_max, hit_record& rec) const = 0;
+	virtual bool bounding_box(double time0, double time1, aabb& output_box) const = 0;
+
 };
 
 class sphere : public hittable {
@@ -120,6 +169,7 @@ public:
 
 	virtual bool hit(
 		const Ray& r, double t_min, double t_max, hit_record& rec) const override;
+	virtual bool bounding_box(double time0, double time1, aabb& output_box) const override;
 
 public:
 	Vector3 center;
@@ -155,6 +205,13 @@ bool sphere::hit(const Ray& r, double t_min, double t_max, hit_record& rec) cons
 	return true;
 }
 
+bool sphere::bounding_box(double time0, double time1, aabb& output_box) const {
+	output_box = aabb(
+		center - Vector3(radius, radius, radius),
+		center + Vector3(radius, radius, radius));
+	return true;
+}
+
 
 class hittable_list : public hittable {
 public:
@@ -166,6 +223,8 @@ public:
 
 	virtual bool hit(
 		const Ray& r, double t_min, double t_max, hit_record& rec) const override;
+	virtual bool bounding_box(
+		double time0, double time1, aabb& output_box) const override;
 
 public:
 	std::vector<std::shared_ptr<hittable>> objects;
@@ -186,36 +245,170 @@ bool hittable_list::hit(const Ray& r, double t_min, double t_max, hit_record& re
 
 	return hit_anything;
 }
+aabb surrounding_box(aabb box0, aabb box1) {
+	Vector3 small(std::fmin(box0.min().x, box1.min().x),
+		std::fmin(box0.min().y, box1.min().y),
+		std::fmin(box0.min().z, box1.min().z));
+
+	Vector3 big(std::fmax(box0.max().x, box1.max().x),
+		fmax(box0.max().y, box1.max().y),
+		fmax(box0.max().z, box1.max().z));
+
+	return aabb(small, big);
+}
+
+bool hittable_list::bounding_box(double time0, double time1, aabb& output_box) const {
+	if (objects.empty()) return false;
+
+	aabb temp_box;
+	bool first_box = true;
+
+	for (const auto& object : objects) {
+		if (!object->bounding_box(time0, time1, temp_box)) return false;
+		output_box = first_box ? temp_box : surrounding_box(output_box, temp_box);
+		first_box = false;
+	}
+
+	return true;
+}
 
 hittable_list world;
 
-void raytraceScene(const Ray& ray, int lambdaIdx, Spectrum* spectrum, int depth)
+Spectrum raytraceScene(const Ray& ray, int lambdaIdx, int depth)
 {
 	hit_record hit;
 	if (world.hit(ray, 0.001, 99999999, hit) && depth > 0)
 	{
 		Vector3 target = hit.p + hit.normal + Sampling::UniformSampleSphere();
 
-		Spectrum spec;
+		Spectrum attenuation;
 		Ray scattered(Vector3{}, Vector3{});
 		hit.lambdaIndex = lambdaIdx;
-		if (hit.mat_ptr->scatter(ray, hit, &spec, scattered))
-		{
-			*spectrum *= spec;// ReflectantSpectrum({ 0.5, 0.5, 0.5 });
-			raytraceScene(scattered, lambdaIdx, spectrum, depth - 1);
-		}
-		else
-		{
-			*spectrum *= 0;
-		}
+
+		Spectrum emitted = hit.mat_ptr->emitted();
+
+		if (!hit.mat_ptr->scatter(ray, hit, &attenuation, scattered))
+			return emitted;
+
+		return emitted + attenuation * raytraceScene(scattered, lambdaIdx, depth - 1);
 	}
 
 	Vector3 unit_direction = ray.GetDirection().Normalized();
 	auto t = 0.5 * (unit_direction.y + 1.0);
 	Vector3 skyColorVec = Vector3(1.0 - t) * Vector3(1.0, 1.0, 1.0) + Vector3(t) * Vector3(0.5, 0.7, 1.0);
 	RgbCoefficients skyColor(skyColorVec[0], skyColorVec[1], skyColorVec[2]);
-	*spectrum *= ReflectantSpectrum(skyColor);
+	return ReflectantSpectrum(skyColor);
 }
+
+inline int random_int(int min, int max) {
+	// Returns a random integer in [min,max].
+	return Random::UniformInt(min, max);
+}
+
+inline bool box_compare(const std::shared_ptr<hittable> a, const std::shared_ptr<hittable> b, int axis) {
+	aabb box_a;
+	aabb box_b;
+
+	if (!a->bounding_box(0, 0, box_a) || !b->bounding_box(0, 0, box_b))
+		std::cerr << "No bounding box in bvh_node constructor.\n";
+
+	return box_a.min()[axis] < box_b.min()[axis];
+}
+
+
+bool box_x_compare(const std::shared_ptr<hittable> a, const std::shared_ptr<hittable> b) {
+	return box_compare(a, b, 0);
+}
+
+bool box_y_compare(const std::shared_ptr<hittable> a, const std::shared_ptr<hittable> b) {
+	return box_compare(a, b, 1);
+}
+
+bool box_z_compare(const std::shared_ptr<hittable> a, const std::shared_ptr<hittable> b) {
+	return box_compare(a, b, 2);
+}
+
+
+class bvh_node : public hittable {
+public:
+	bvh_node();
+
+	bvh_node(const hittable_list& list, double time0, double time1)
+		: bvh_node(list.objects, 0, list.objects.size(), time0, time1)
+	{}
+
+	bvh_node(
+		const std::vector<std::shared_ptr<hittable>>& src_objects,
+		size_t start, size_t end, double time0, double time1)
+	{
+
+		auto objects = src_objects; // Create a modifiable array of the source scene objects
+
+		int axis = Random::UniformInt(0, 2);
+		auto comparator = (axis == 0) ? box_x_compare
+			: (axis == 1) ? box_y_compare
+			: box_z_compare;
+
+		size_t object_span = end - start;
+
+		if (object_span == 1) {
+			left = right = objects[start];
+		}
+		else if (object_span == 2) {
+			if (comparator(objects[start], objects[start + 1])) {
+				left = objects[start];
+				right = objects[start + 1];
+			}
+			else {
+				left = objects[start + 1];
+				right = objects[start];
+			}
+		}
+		else {
+			std::sort(objects.begin() + start, objects.begin() + end, comparator);
+
+			auto mid = start + object_span / 2;
+			left = make_shared<bvh_node>(objects, start, mid, time0, time1);
+			right = make_shared<bvh_node>(objects, mid, end, time0, time1);
+		}
+
+		aabb box_left, box_right;
+
+		if (!left->bounding_box(time0, time1, box_left)
+			|| !right->bounding_box(time0, time1, box_right)
+			)
+			std::cerr << "No bounding box in bvh_node constructor.\n";
+
+		box = surrounding_box(box_left, box_right);
+
+	}
+
+	virtual bool hit(
+		const Ray& r, double t_min, double t_max, hit_record& rec) const override;
+
+	virtual bool bounding_box(double time0, double time1, aabb& output_box) const override;
+
+public:
+	std::shared_ptr<hittable> left;
+	std::shared_ptr<hittable> right;
+	aabb box;
+};
+
+bool bvh_node::bounding_box(double time0, double time1, aabb& output_box) const {
+	output_box = box;
+	return true;
+}
+
+bool bvh_node::hit(const Ray& r, double t_min, double t_max, hit_record& rec) const {
+	if (!box.hit(r, t_min, t_max))
+		return false;
+
+	bool hit_left = left->hit(r, t_min, t_max, rec);
+	bool hit_right = right->hit(r, t_min, hit_left ? rec.t : t_max, rec);
+
+	return hit_left || hit_right;
+}
+
 void PerspectiveCamera::Render()
 {
 	Random::Seed(0);
@@ -238,11 +431,11 @@ void PerspectiveCamera::Render()
 	auto material_red = std::make_shared<lambertian>(&red);
 	auto material_black = std::make_shared<lambertian>(&black);
 	auto material_glass = std::make_shared<dielectric>(ir);
-	auto material_light = std::make_shared<lambertian>(&lightColor);
+	auto material_light = std::make_shared<diffuse_light>(&lightColor);
 
 	world.add(std::make_shared<sphere>(Vector3(0, 0.2, -1), 0.5, material_glass));
-	world.add(std::make_shared<sphere>(Vector3(-0.5, 1, -0.5), 0.2, material_light));
-	world.add(std::make_shared<sphere>(Vector3(0.9, -0.1, 4.5), 0.6, material_ground));
+	//world.add(std::make_shared<sphere>(Vector3(-0.5, 1, -0.5), 0.2, material_light));
+	world.add(std::make_shared<sphere>(Vector3(0.9, -0.1, 4.5), 0.5, material_ground));
 	world.add(std::make_shared<sphere>(Vector3(1.1, -0.1, 5.5), 0.9, material_black));
 	world.add(std::make_shared<sphere>(Vector3(0, -100.5, -1), 100, material_red));
 	world.add(std::make_shared<sphere>(Vector3(0, -100.65, 2), 100, material_black));
@@ -313,8 +506,9 @@ void PerspectiveCamera::Render()
 								SampledSpectrum singleColoredRay(0);
 								singleColoredRay.m_Coefficients[w - MinWavelength] = (MaxWavelength - MinWavelength);
 
-								raytraceScene(ray, w - MinWavelength, &singleColoredRay, 8);
-								currentTile->SplatPixel(tileSpacePos, singleColoredRay.ToXyz(), DeltaArea);
+								Spectrum L = singleColoredRay * raytraceScene(ray, w - MinWavelength, 8);
+								SampledSpectrum L2(L);
+								currentTile->SplatPixel(tileSpacePos, L2.ToXyz(), DeltaArea);
 							}
 
 							auto timeNow = duration_cast<std::chrono::milliseconds>(
