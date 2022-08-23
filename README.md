@@ -6,7 +6,7 @@
 <h4 align="center">A (WIP) physically based spectral raytracing renderer.</h4>
 
 <p align="center">
-  <a href="https://travis-ci.com/Eclmist/Spectre">
+  <a href="https://github.com/Eclmist/Spectre/actions">
     <img src="https://github.com/eclmist/Spectre/workflows/build/badge.svg" alt="Build Status">
   </a>
   <a href="#------">
