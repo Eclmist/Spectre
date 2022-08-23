@@ -1,13 +1,13 @@
 <h1 align="center">
   <br>
-    RTCore
+    Spectre
   <br>
 </h1>
 <h4 align="center">A (WIP) physically based spectral raytracing renderer.</h4>
 
 <p align="center">
   <a href="https://travis-ci.com/Eclmist/Elixir">
-    <img src="https://github.com/eclmist/RTCore/workflows/build/badge.svg" alt="Build Status">
+    <img src="https://github.com/eclmist/Spectre/workflows/build/badge.svg" alt="Build Status">
   </a>
   <a href="#------">
     <img src="https://img.shields.io/badge/stability-experimental-orange.svg">
@@ -18,16 +18,16 @@
 </p>
 
 # Introduction
-RTCore is the successor to [Elixir](github.com/Eclmist/Elixir), with emphasis on clean, highly tested code.
+Spectre is the successor to [Elixir](github.com/Eclmist/Elixir), with emphasis on clean, highly tested code.
 
-Written from the ground up in modern C++ (C++20), RTCore improves upon Elixir in the following areas:
+Written from the ground up in modern C++ (C++20), Spectre improves upon Elixir in the following areas:
   - Code quality improvements - adheres better to SE principles
   - Less over-enginnered - complexity only when it offers significant advantages
   - Test driven development - close to full unit-test coverage
   - SIMD acceleration with AVX2
   - Physically-based spectral rendering as a foundation
   
-RTCore continues to take inspiration from [SORT](http://sort-renderer.com/) and [PBRT](http://www.pbr-book.org/). 
+Spectre continues to take inspiration from [SORT](http://sort-renderer.com/) and [PBRT](http://www.pbr-book.org/). 
 
 # Requirements
 - Only CMake versions 3.8 and up is supported
