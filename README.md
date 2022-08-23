@@ -32,3 +32,9 @@ RTCore continues to take inspiration from [SORT](http://sort-renderer.com/) and 
 # Requirements
 - Only CMake versions 3.8 and up is supported
 - If compiling with GCC, use GCC10 and above
+
+# Screenshots
+<p align="center">
+  <img src="https://i.imgur.com/HoZBk07.png" width=700>
+</p>
+
