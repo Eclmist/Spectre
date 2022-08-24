@@ -36,9 +36,9 @@ namespace Random
         return m_Rng();
     }
     
-    inline int UniformInt(int b)
+    inline int UniformInt(int min, int max)
     {
-        return (std::uniform_int_distribution<int>(0, b))(m_Rng);
+        return (std::uniform_int_distribution<int>(min, max))(m_Rng);
     }
 
     inline double UniformFloat()
