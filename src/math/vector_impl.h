@@ -176,9 +176,8 @@ template<typename T, int N>
 T Vector<T, N>::Dot(const Vector& a, const Vector& b)
 {
     T dot = 0;
-    Vector<T, N> axb = a * b;
     for (int i = 0; i < N; ++i)
-        dot += axb[i];
+        dot += a[i] * b[i];
     return dot;
 }
 

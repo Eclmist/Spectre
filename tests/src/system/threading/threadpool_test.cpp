@@ -130,6 +130,7 @@ TEST(ThreadPoolTest, TaskCanHavePriority)
         pool.ScheduleTask(0, [&]()
 		{
 			mutex.lock();
+			mutex.unlock();
 		});
 
         for (int i = 0; i < 20; ++i)
