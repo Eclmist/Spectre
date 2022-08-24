@@ -26,6 +26,7 @@
 
 const int MinWavelength = 360;
 const int MaxWavelength = 830;
+const int WavelengthRange = MaxWavelength - MinWavelength;
 
 class SampledSpectrum : public Spectrum
 {

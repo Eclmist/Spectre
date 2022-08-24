@@ -45,7 +45,7 @@ SampledSpectrum::SampledSpectrum(const std::vector<SpectralSample>& samples)
 {
     if (IsSamplesSorted(samples))
     {
-        for (int i = 0; i < numSpectralSamples; ++i)
+        for (int i = 0; i < NumSpectralSamples; ++i)
         {
             double startLambda, endLambda;
             ComputeRangeAtIndex(i, startLambda, endLambda);
@@ -85,7 +85,7 @@ XyzCoefficients SampledSpectrum::RgbToXyz(const RgbCoefficients& rgb)
 XyzCoefficients SampledSpectrum::ToXyz() const
 {
     XyzCoefficients result;
-    for (int i = 0; i < numSpectralSamples; ++i)
+    for (int i = 0; i < NumSpectralSamples; ++i)
     {
         result[0] += cieX.m_Coefficients[i] * m_Coefficients[i];
         result[1] += cieY.m_Coefficients[i] * m_Coefficients[i];
@@ -125,7 +125,7 @@ bool SampledSpectrum::IsInputOutsideRightBoundary(const SampleArray& samples, do
 
 void SampledSpectrum::ComputeRangeAtIndex(int index, double& start, double& end) const
 {
-    double binWidth = (MaxWavelength - MinWavelength) / double(numSpectralSamples - 1);
+    double binWidth = (MaxWavelength - MinWavelength) / double(NumSpectralSamples - 1);
     double halfBinWidth = binWidth / 2.0;
     start = MinWavelength + (index * binWidth) - halfBinWidth;
     end = MinWavelength + (index * binWidth) + halfBinWidth;
@@ -174,7 +174,7 @@ double SampledSpectrum::ComputeAreaSum(const SampleArray& samples, double leftBo
         if (samples[i].m_Wavelength > rightBound)
             break;
 
-        sum +=  ComputeSegmentArea(samples[i], samples[i + 1], leftBound, rightBound);
+        sum += ComputeSegmentArea(samples[i], samples[i + 1], leftBound, rightBound);
     }
 
     sum += ComputeBoundaryArea(samples, leftBound, rightBound);
@@ -199,7 +199,7 @@ double SampledSpectrum::ComputeAverageInRange(const SampleArray& samples, double
 
 double SampledSpectrum::GetXyzNormalizationConstant() const
 {
-    double scale = (MaxWavelength - MinWavelength + 1) / double(numSpectralSamples);
+    double scale = (MaxWavelength - MinWavelength + 1) / double(NumSpectralSamples);
     return scale / cieIntegralY;
 }
 

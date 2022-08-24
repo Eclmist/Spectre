@@ -20,7 +20,8 @@
 
 #pragma once
 
-const int numSpectralSamples = 470;
+const int NumSpectralSamples = 60;
+static_assert(NumSpectralSamples % 4 == 0, "NumSpectralSamples should be 32byte (AVX2) aligned");
 
 class Spectrum
 {
@@ -55,6 +56,6 @@ public:
     static Spectrum Max(const Spectrum& s1, const Spectrum& s2);
 
 public:
-    double m_Coefficients[numSpectralSamples];
+    double m_Coefficients[NumSpectralSamples];
 };
 

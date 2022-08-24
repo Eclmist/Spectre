@@ -19,27 +19,47 @@
 */
 
 #include "spectrum.h"
-#include <cmath>
+#include <immintrin.h>
 
 Spectrum::Spectrum(double v)
 {
-    for (int i = 0; i < numSpectralSamples; ++i)
-        m_Coefficients[i] = v;
+    std::fill(std::begin(m_Coefficients), std::end(m_Coefficients), v);
 }
 
 Spectrum Spectrum::operator+(const Spectrum& c) const
 {
     Spectrum result;
-    for (int i = 0; i < numSpectralSamples; ++i)
-        result.m_Coefficients[i] = m_Coefficients[i] + c.m_Coefficients[i];
+
+#ifdef SPC_USE_AVX2
+	for (int i = 0; i < NumSpectralSamples; i += 4)
+	{
+		__m256d lhs = _mm256_load_pd(&m_Coefficients[i]);
+		__m256d rhs = _mm256_load_pd(&c.m_Coefficients[i]);
+		__m256d res = _mm256_add_pd(lhs, rhs);
+		_mm256_store_pd(&result.m_Coefficients[i], res);
+	}
+#else
+	for (int i = 0; i < NumSpectralSamples; ++i)
+		result.m_Coefficients[i] = m_Coefficients[i] + c.m_Coefficients[i];
+#endif
 
     return result;
 }
 
 Spectrum& Spectrum::operator+=(const Spectrum& c)
 {
-    for (int i = 0; i < numSpectralSamples; ++i)
-        m_Coefficients[i] += c.m_Coefficients[i];
+#ifdef SPC_USE_AVX2
+	for (int i = 0; i < NumSpectralSamples; i += 4)
+	{
+		__m256d lhs = _mm256_load_pd(&m_Coefficients[i]);
+		__m256d rhs = _mm256_load_pd(&c.m_Coefficients[i]);
+		__m256d res = _mm256_add_pd(lhs, rhs);
+		_mm256_store_pd(&m_Coefficients[i], res);
+	}
+#else
+	for (int i = 0; i < NumSpectralSamples; ++i)
+		m_Coefficients[i] += c.m_Coefficients[i];
+#endif
 
     return *this;
 }
@@ -47,16 +67,37 @@ Spectrum& Spectrum::operator+=(const Spectrum& c)
 Spectrum Spectrum::operator-(const Spectrum& c) const
 {
     Spectrum result;
-    for (int i = 0; i < numSpectralSamples; ++i)
-        result.m_Coefficients[i] = m_Coefficients[i] - c.m_Coefficients[i];
+
+#ifdef SPC_USE_AVX2
+	for (int i = 0; i < NumSpectralSamples; i += 4)
+	{
+		__m256d lhs = _mm256_load_pd(&m_Coefficients[i]);
+		__m256d rhs = _mm256_load_pd(&c.m_Coefficients[i]);
+		__m256d res = _mm256_sub_pd(lhs, rhs);
+		_mm256_store_pd(&result.m_Coefficients[i], res);
+	}
+#else
+	for (int i = 0; i < NumSpectralSamples; ++i)
+		result.m_Coefficients[i] = m_Coefficients[i] - c.m_Coefficients[i];
+#endif
 
     return result;
 }
 
 Spectrum& Spectrum::operator-=(const Spectrum& c)
 {
-    for (int i = 0; i < numSpectralSamples; ++i)
-        m_Coefficients[i] -= c.m_Coefficients[i];
+#ifdef SPC_USE_AVX2
+	for (int i = 0; i < NumSpectralSamples; i += 4)
+	{
+		__m256d lhs = _mm256_load_pd(&m_Coefficients[i]);
+		__m256d rhs = _mm256_load_pd(&c.m_Coefficients[i]);
+		__m256d res = _mm256_sub_pd(lhs, rhs);
+		_mm256_store_pd(&m_Coefficients[i], res);
+	}
+#else
+	for (int i = 0; i < NumSpectralSamples; ++i)
+		m_Coefficients[i] -= c.m_Coefficients[i];
+#endif
 
     return *this;
 }
@@ -64,16 +105,37 @@ Spectrum& Spectrum::operator-=(const Spectrum& c)
 Spectrum Spectrum::operator*(const Spectrum& c) const
 {
     Spectrum result;
-    for (int i = 0; i < numSpectralSamples; ++i)
+
+#ifdef SPC_USE_AVX2
+	for (int i = 0; i < NumSpectralSamples; i += 4)
+	{
+		__m256d lhs = _mm256_load_pd(&m_Coefficients[i]);
+		__m256d rhs = _mm256_load_pd(&c.m_Coefficients[i]);
+		__m256d res = _mm256_mul_pd(lhs, rhs);
+		_mm256_store_pd(&result.m_Coefficients[i], res);
+	}
+#else
+	for (int i = 0; i < NumSpectralSamples; ++i)
         result.m_Coefficients[i] = m_Coefficients[i] * c.m_Coefficients[i];
+#endif
 
     return result;
 }
 
 Spectrum& Spectrum::operator*=(const Spectrum& c)
 {
-    for (int i = 0; i < numSpectralSamples; ++i)
-        m_Coefficients[i] *= c.m_Coefficients[i];
+#ifdef SPC_USE_AVX2
+	for (int i = 0; i < NumSpectralSamples; i += 4)
+	{
+		__m256d lhs = _mm256_load_pd(&m_Coefficients[i]);
+		__m256d rhs = _mm256_load_pd(&c.m_Coefficients[i]);
+		__m256d res = _mm256_mul_pd(lhs, rhs);
+		_mm256_store_pd(&m_Coefficients[i], res);
+	}
+#else
+	for (int i = 0; i < NumSpectralSamples; ++i)
+		m_Coefficients[i] *= c.m_Coefficients[i];
+#endif
 
     return *this;
 }
@@ -81,23 +143,44 @@ Spectrum& Spectrum::operator*=(const Spectrum& c)
 Spectrum Spectrum::operator/(const Spectrum& c) const
 {
     Spectrum result;
-    for (int i = 0; i < numSpectralSamples; ++i)
-        result.m_Coefficients[i] = m_Coefficients[i] / c.m_Coefficients[i];
+
+#ifdef SPC_USE_AVX2
+	for (int i = 0; i < NumSpectralSamples; i += 4)
+	{
+		__m256d lhs = _mm256_load_pd(&m_Coefficients[i]);
+		__m256d rhs = _mm256_load_pd(&c.m_Coefficients[i]);
+		__m256d res = _mm256_div_pd(lhs, rhs);
+		_mm256_store_pd(&result.m_Coefficients[i], res);
+	}
+#else
+	for (int i = 0; i < NumSpectralSamples; ++i)
+		result.m_Coefficients[i] = m_Coefficients[i] / c.m_Coefficients[i];
+#endif
 
     return result;
 }
 
 Spectrum& Spectrum::operator/=(const Spectrum& c)
 {
-    for (int i = 0; i < numSpectralSamples; ++i)
-        m_Coefficients[i] /= c.m_Coefficients[i];
+#ifdef SPC_USE_AVX2
+	for (int i = 0; i < NumSpectralSamples; i += 4)
+	{
+		__m256d lhs = _mm256_load_pd(&m_Coefficients[i]);
+		__m256d rhs = _mm256_load_pd(&c.m_Coefficients[i]);
+		__m256d res = _mm256_div_pd(lhs, rhs);
+		_mm256_store_pd(&m_Coefficients[i], res);
+	}
+#else
+	for (int i = 0; i < NumSpectralSamples; ++i)
+		m_Coefficients[i] /= c.m_Coefficients[i];
+#endif
 
     return *this;
 }
 
 bool Spectrum::IsBlack() const
 {
-    for (int i = 0; i < numSpectralSamples; ++i)
+    for (int i = 0; i < NumSpectralSamples; ++i)
         if (m_Coefficients[i] != 0.0)
             return false;
 
@@ -106,7 +189,7 @@ bool Spectrum::IsBlack() const
 
 bool Spectrum::HasNans() const
 {
-    for (int i = 0; i < numSpectralSamples; ++i)
+    for (int i = 0; i < NumSpectralSamples; ++i)
         if (std::isnan(m_Coefficients[i]))
             return true;
 
@@ -115,7 +198,7 @@ bool Spectrum::HasNans() const
 
 bool Spectrum::IsEqual(const Spectrum& other) const
 {
-    for (int i = 0; i < numSpectralSamples; ++i)
+    for (int i = 0; i < NumSpectralSamples; ++i)
         if (m_Coefficients[i] != other.m_Coefficients[i])
             return false;
 
@@ -124,14 +207,14 @@ bool Spectrum::IsEqual(const Spectrum& other) const
 
 void Spectrum::ClampZero()
 {
-    for (int i = 0; i < numSpectralSamples; ++i)
+    for (int i = 0; i < NumSpectralSamples; ++i)
         m_Coefficients[i] = m_Coefficients[i] < 0 ? 0 : m_Coefficients[i];
 }
 
 Spectrum Spectrum::Sqrt(const Spectrum& s)
 {
     Spectrum result;
-    for (int i = 0; i < numSpectralSamples; ++i)
+    for (int i = 0; i < NumSpectralSamples; ++i)
         result.m_Coefficients[i] = sqrt(s.m_Coefficients[i]);
 
     return result;
@@ -140,7 +223,7 @@ Spectrum Spectrum::Sqrt(const Spectrum& s)
 Spectrum Spectrum::Pow(const Spectrum& s, double p)
 {
     Spectrum result;
-    for (int i = 0; i < numSpectralSamples; ++i)
+    for (int i = 0; i < NumSpectralSamples; ++i)
         result.m_Coefficients[i] = pow(s.m_Coefficients[i], p);
 
     return result;
@@ -154,7 +237,7 @@ Spectrum Spectrum::Lerp(const Spectrum& s1, const Spectrum& s2, double t)
 Spectrum Spectrum::Clamp(const Spectrum& s1, const Spectrum& l, const Spectrum& h)
 {
     Spectrum result;
-    for (int i = 0; i < numSpectralSamples; ++i)
+    for (int i = 0; i < NumSpectralSamples; ++i)
     {
         double val = s1.m_Coefficients[i];
         double lv = l.m_Coefficients[i];
@@ -168,7 +251,7 @@ Spectrum Spectrum::Clamp(const Spectrum& s1, const Spectrum& l, const Spectrum& 
 Spectrum Spectrum::Min(const Spectrum& s1, const Spectrum& s2)
 {
     Spectrum result;
-    for (int i = 0; i < numSpectralSamples; ++i)
+    for (int i = 0; i < NumSpectralSamples; ++i)
     {
         double v1 = s1.m_Coefficients[i];
         double v2 = s2.m_Coefficients[i];
@@ -181,7 +264,7 @@ Spectrum Spectrum::Min(const Spectrum& s1, const Spectrum& s2)
 Spectrum Spectrum::Max(const Spectrum& s1, const Spectrum& s2)
 {
     Spectrum result;
-    for (int i = 0; i < numSpectralSamples; ++i)
+    for (int i = 0; i < NumSpectralSamples; ++i)
     {
         double v1 = s1.m_Coefficients[i];
         double v2 = s2.m_Coefficients[i];

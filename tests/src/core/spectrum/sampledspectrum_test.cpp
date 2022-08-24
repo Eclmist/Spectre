@@ -47,7 +47,7 @@ TEST(SampledSpectrumTest, CanComputeWavelengthRange)
 
     double rangeStart;
     double rangeEnd;
-    double binSize = (MaxWavelength - MinWavelength) / double(numSpectralSamples - 1);
+    double binSize = (MaxWavelength - MinWavelength) / double(NumSpectralSamples - 1);
 
     s.ComputeRangeAtIndex(0, rangeStart, rangeEnd);
     EXPECT_DOUBLE_EQ(rangeStart, MinWavelength - (binSize / 2));
@@ -57,7 +57,7 @@ TEST(SampledSpectrumTest, CanComputeWavelengthRange)
     EXPECT_DOUBLE_EQ(rangeStart, MinWavelength + (binSize / 2));
     EXPECT_DOUBLE_EQ(rangeEnd, MinWavelength + (binSize / 2) + binSize);
 
-    s.ComputeRangeAtIndex(numSpectralSamples - 1, rangeStart, rangeEnd);
+    s.ComputeRangeAtIndex(NumSpectralSamples - 1, rangeStart, rangeEnd);
     EXPECT_DOUBLE_EQ(rangeStart, MaxWavelength - (binSize / 2));
     EXPECT_DOUBLE_EQ(rangeEnd, MaxWavelength + (binSize / 2));
 }

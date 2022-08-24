@@ -30,7 +30,7 @@ TEST(ReflectantSpectrumTest, HasCorrectValues)
 {
     ReflectantSpectrum white({ 1, 1, 1 });
     RgbCoefficients rgb = white.ToRgb();
-    static const double tolerance = 0.1;
+    static const double tolerance = 0.15;
     EXPECT_LT(abs(rgb[0] - 1.205), tolerance);
     EXPECT_LT(abs(rgb[1] - 0.94), tolerance);
     EXPECT_LT(abs(rgb[2] - 0.909), tolerance);
