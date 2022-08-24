@@ -30,7 +30,7 @@ Spectrum Spectrum::operator+(const Spectrum& c) const
 {
     Spectrum result;
 
-#ifdef SPC_USE_AVX2
+#ifdef SPC_USE_AVX_2
 	for (int i = 0; i < NumSpectralSamples; i += 4)
 	{
 		__m256d lhs = _mm256_load_pd(&m_Coefficients[i]);
@@ -48,7 +48,7 @@ Spectrum Spectrum::operator+(const Spectrum& c) const
 
 Spectrum& Spectrum::operator+=(const Spectrum& c)
 {
-#ifdef SPC_USE_AVX2
+#ifdef SPC_USE_AVX_2
 	for (int i = 0; i < NumSpectralSamples; i += 4)
 	{
 		__m256d lhs = _mm256_load_pd(&m_Coefficients[i]);
@@ -68,7 +68,7 @@ Spectrum Spectrum::operator-(const Spectrum& c) const
 {
     Spectrum result;
 
-#ifdef SPC_USE_AVX2
+#ifdef SPC_USE_AVX_2
 	for (int i = 0; i < NumSpectralSamples; i += 4)
 	{
 		__m256d lhs = _mm256_load_pd(&m_Coefficients[i]);
@@ -86,7 +86,7 @@ Spectrum Spectrum::operator-(const Spectrum& c) const
 
 Spectrum& Spectrum::operator-=(const Spectrum& c)
 {
-#ifdef SPC_USE_AVX2
+#ifdef SPC_USE_AVX_2
 	for (int i = 0; i < NumSpectralSamples; i += 4)
 	{
 		__m256d lhs = _mm256_load_pd(&m_Coefficients[i]);
@@ -106,7 +106,7 @@ Spectrum Spectrum::operator*(const Spectrum& c) const
 {
     Spectrum result;
 
-#ifdef SPC_USE_AVX2
+#ifdef SPC_USE_AVX_2
 	for (int i = 0; i < NumSpectralSamples; i += 4)
 	{
 		__m256d lhs = _mm256_load_pd(&m_Coefficients[i]);
@@ -124,7 +124,7 @@ Spectrum Spectrum::operator*(const Spectrum& c) const
 
 Spectrum& Spectrum::operator*=(const Spectrum& c)
 {
-#ifdef SPC_USE_AVX2
+#ifdef SPC_USE_AVX_2
 	for (int i = 0; i < NumSpectralSamples; i += 4)
 	{
 		__m256d lhs = _mm256_load_pd(&m_Coefficients[i]);
@@ -144,7 +144,7 @@ Spectrum Spectrum::operator/(const Spectrum& c) const
 {
     Spectrum result;
 
-#ifdef SPC_USE_AVX2
+#ifdef SPC_USE_AVX_2
 	for (int i = 0; i < NumSpectralSamples; i += 4)
 	{
 		__m256d lhs = _mm256_load_pd(&m_Coefficients[i]);
@@ -162,7 +162,7 @@ Spectrum Spectrum::operator/(const Spectrum& c) const
 
 Spectrum& Spectrum::operator/=(const Spectrum& c)
 {
-#ifdef SPC_USE_AVX2
+#ifdef SPC_USE_AVX_2
 	for (int i = 0; i < NumSpectralSamples; i += 4)
 	{
 		__m256d lhs = _mm256_load_pd(&m_Coefficients[i]);

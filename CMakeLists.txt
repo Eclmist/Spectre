@@ -35,6 +35,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 # =========================================================================== #
+#                         USER CONFIGURABLE OPTIONS                           #
+# =========================================================================== #
+
+option(USE_AVX_2 "Use AVX-2" OFF)
+
+
+# =========================================================================== #
 #                        ADD SOURCE FILES TO PROJECT                          #
 # =========================================================================== #
 
@@ -83,22 +90,26 @@ if(WIN32)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP${N}")
     # Ignore C26451 warnings because they are annoying
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd26451")
-    # Enable AVX2 SIMD Intrinsics
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /arch:AVX2" )
 elseif(APPLE)
     target_compile_definitions(${PROJECT_NAME} PUBLIC SPC_PLATFORM_MAC)
-
     set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -pthread")
-    # Enable AVX2 SIMD Intrinsics
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mavx2")
 elseif(UNIX)
     target_compile_definitions(${PROJECT_NAME} PUBLIC SPC_PLATFORM_LINUX)
     set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -pthread")
-    # Enable AVX2 SIMD Intrinsics
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mavx2")
 endif()
 
-target_compile_definitions(${PROJECT_NAME} PUBLIC SPC_USE_AVX2)
+if (USE_AVX_2)
+    target_compile_definitions(${PROJECT_NAME} PUBLIC SPC_USE_AVX_2)
+    if(WIN32)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /arch:AVX2")
+    elseif(APPLE)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mavx2")
+    elseif(UNIX)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mavx2")
+    endif()
+endif()
+
+
 
 
 # =========================================================================== #
