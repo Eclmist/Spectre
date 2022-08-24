@@ -1,10 +1,10 @@
 /*
-    This file is part of RTCore, an open-source physically based
-    renderer.
+    This file is part of Spectre, an open-source physically based
+    spectral raytracing library.
 
     Copyright (c) 2020-2023 Samuel Van Allen - All rights reserved.
 
-    RTCore is free software: you can redistribute it and/or modify
+    Spectre is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
@@ -25,7 +25,7 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb/stb_image_write.h"
 
-const std::string OutputFileName = "RTCore_Output";
+const std::string OutputFileName = "Spectre_Output";
 const std::string OutputFileType = ".png";
 const long NumColorChannels = 3L;
 

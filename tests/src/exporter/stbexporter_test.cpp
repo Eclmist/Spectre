@@ -1,10 +1,10 @@
 /*
-    This file is part of RTCore, an open-source physically based
-    renderer.
+    This file is part of Spectre, an open-source physically based
+    spectral raytracing library.
 
     Copyright (c) 2020-2023 Samuel Van Allen - All rights reserved.
 
-    RTCore is free software: you can redistribute it and/or modify
+    Spectre is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
@@ -30,7 +30,7 @@ TEST(StbExporterTest, CanBeCreated)
 TEST(ExporterTest, HasDefaultOutputName)
 {
     StbExporter exporter;
-    EXPECT_EQ(exporter.GetOutputName(), "RTCore_Output");
+    EXPECT_EQ(exporter.GetOutputName(), "Spectre_Output");
 }
 
 TEST(ExporterTest, CanSetOutputName)

@@ -1,6 +1,6 @@
 /*
-    This file is part of RTCore, an open-source physically based
-    renderer.
+    This file is part of Spectre, an open-source physically based
+    spectral raytracing library.
 
     Copyright (c) 2020-2023 Samuel Van Allen - All rights reserved.
     it under the terms of the GNU General Public License as published by
@@ -22,17 +22,17 @@
 void PrintTitle()
 {
     using namespace std;
-    cout << "RTCore Version 0.0.1";
+    cout << "Spectre Version 0.0.1";
     cout << ", Copyright (c) 2019-2023 Samuel Van Allen" << endl;
 }
 
 void PrintUsage(const char* msg = nullptr)
 {
     if (msg)
-        fprintf(stderr, "rtcore: %s\n\n", msg);
+        fprintf(stderr, "spectre: %s\n\n", msg);
 
     using namespace std;
-    cout << "Usage: rtcore [options] <One or more scene files>" << endl << endl;
+    cout << "Usage: spectre [options] <One or more scene files>" << endl << endl;
     cout << "Rendering Options: " << endl;
     cout << "   -h, --help              Display this help page" << endl;
     cout << "   -t, --numthreads        Specify the number of rendering threads to use" << endl;
@@ -44,7 +44,7 @@ void PrintUsage(const char* msg = nullptr)
     cout << "   --quiet                 Suppress all non-error messages" << endl;
     cout << "For documentations, please refer to <url>" << endl;
 
-    RTC_WIN32_ONLY(system("PAUSE"));
+    SPC_WIN32_ONLY(system("PAUSE"));
 }
 
 int main(int argc, char* argv[])

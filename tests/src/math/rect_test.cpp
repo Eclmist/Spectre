@@ -1,6 +1,6 @@
 /*
-    This file is part of RTCore, an open-source physically based
-    renderer.
+    This file is part of Spectre, an open-source physically based
+    spectral raytracing library.
 
     Copyright (c) 2020-2023 Samuel Van Allen - All rights reserved.
     it under the terms of the GNU General Public License as published by
