@@ -18,6 +18,7 @@
 
 #include "gtest.h"
 #include "core/entity/components/transform.h"
+
 TEST(TransformTest, CanBeCreated)
 {
     ASSERT_NO_THROW(Transform());

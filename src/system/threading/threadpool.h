@@ -24,82 +24,55 @@
 #include <future>
 #include <queue>
 
-struct ThreadTask
-{
-    template <typename Func, typename... Args>
-    ThreadTask(double priority, Func&& func, Args&&... args)
-    {
-        m_Task = [=]() { func(std::forward<Args>(args)...); };
-        m_Priority = priority;
-    };
-
-    inline bool operator<(const ThreadTask& t) const { return t.m_Priority < m_Priority; }
-
-    std::function<void()> m_Task;
-    double m_Priority;
-};
-
 class ThreadPool
 {
 public:
-    ThreadPool(int numThreads)
-        : m_Stop(false)
-    {
-        for (int i = 0; i < numThreads; ++i)
-        {
-            m_Threads.emplace_back([this, i]
-            {
-                while (true)
-                {
-                    std::function<void()> task;
-
-                    {
-                        std::unique_lock<std::mutex> lock(this->m_QueueMutex);
-                        this->m_Condition.wait(lock, [this] { return this->m_Stop || !this->m_Tasks.empty(); });
-
-                        if (this->m_Stop && this->m_Tasks.empty())
-                            break;
-
-                        task = std::move(this->m_Tasks.top().m_Task);
-                        this->m_Tasks.pop();
-                    }
-
-                    task();
-                }
-            });
-        }
-    }
-
-    ~ThreadPool()
-    {
-        {
-            std::unique_lock<std::mutex> lock(m_QueueMutex);
-            m_Stop = true;
-        }
-
-        m_Condition.notify_all();
-
-        for (std::thread& thread : m_Threads)
-            thread.join();
-    };
+    ThreadPool(int numThreads);
+    ~ThreadPool();
 
     template <typename Task, typename... Args>
-    void ScheduleTask(double priority, Task&& task, Args&&... args)
-    {
-        std::lock_guard<std::mutex> lock(m_QueueMutex);
+    void ScheduleTask(double priority, Task&& task, Args&&... args);
 
-        if (m_Stop)
-            throw std::runtime_error("Task enqueued on a stopped ThreadPool!");
-
-        m_Tasks.emplace(priority, std::forward<Task>(task), std::forward<Args>(args)...);
-        m_Condition.notify_one();
-    };
+public:
+    inline bool HasTasksLeft() const { return !m_Tasks.empty(); }
+    inline bool ShouldStop() const { return m_Stop; }
 
 private:
+    void ThreadMain(ThreadPool& pool);
+    std::function<void()> PopNextTask();
+
+private:
+	struct ThreadTask
+	{
+		ThreadTask(double priority, std::function<void()> task)
+			: m_Task(task)
+			, m_Priority(priority) {}
+
+		inline bool operator<(const ThreadTask& t) const { return t.m_Priority > m_Priority; }
+
+		std::function<void()> m_Task;
+		double m_Priority;
+	};
+
+private:
+    std::mutex m_Mutex;
+
     std::priority_queue<ThreadTask> m_Tasks;
-    std::mutex m_QueueMutex;
     std::condition_variable m_Condition;
     std::vector<std::thread> m_Threads;
-    bool m_Stop;
+    std::atomic_bool m_Stop;
 };
+
+template <typename Task, typename... Args>
+void ThreadPool::ScheduleTask(double priority, Task&& task, Args&&... args)
+{
+	std::unique_lock<std::mutex> lock(m_Mutex);
+
+	if (m_Stop)
+		throw std::runtime_error("Task enqueued on a stopped ThreadPool!");
+
+	auto taskFunc = [=]() { task(args...); };
+	m_Tasks.emplace(priority, taskFunc);
+	m_Condition.notify_one();
+}
 

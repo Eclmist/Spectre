@@ -20,8 +20,6 @@
 
 #pragma once
 
-#include "math/math.h"
-
 namespace Sampling
 {
 	inline Vector3 UniformSampleHemisphere()
