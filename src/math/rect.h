@@ -24,6 +24,7 @@ public:
     Rect(int x, int y, int w, int h);
     ~Rect() = default;
 
+public:
     bool IsWithinBounds(int x, int y) const;
 
 public:

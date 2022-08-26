@@ -28,10 +28,12 @@ public:
     StbExporter();
     ~StbExporter() = default;
 
-    void Export(const Film& film) const override;
-
+public:
     inline void SetOutputName(const std::string& name) { m_OutputFileName = name; }
     inline std::string GetOutputName() const { return m_OutputFileName; }
+
+public:
+    void Export(const Film& film) const override;
 
 private:
     std::vector<char> ExtractPixelData(const Film& film) const;

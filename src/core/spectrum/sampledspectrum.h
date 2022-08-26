@@ -36,10 +36,12 @@ public:
     SampledSpectrum(Spectrum& v) : Spectrum(v) {}
     ~SampledSpectrum() = default;
 
+public:
     static SampledSpectrum FromSortedRawSamples(const double* lambda, const double* power, int numSamples);
     static RgbCoefficients XyzToRgb(const XyzCoefficients& xyz);
     static XyzCoefficients RgbToXyz(const RgbCoefficients& rgb);
 
+public:
     XyzCoefficients ToXyz() const;
     RgbCoefficients ToRgb() const;
 

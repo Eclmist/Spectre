@@ -29,11 +29,9 @@ public:
     Camera() = default;
     ~Camera() = default;
 
+public:
     inline Transform& GetTransform() { return m_Transform; }
     inline Film& GetFilm() { return m_Film; }
-
-public:
-    virtual void Render() = 0;
 
 protected:
     Transform m_Transform;

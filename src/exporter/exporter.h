@@ -28,5 +28,6 @@ public:
     Exporter() = default;
     ~Exporter() = default;
 
+public:
     virtual void Export(const Film& film) const = 0;
 };

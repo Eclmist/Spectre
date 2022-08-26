@@ -24,6 +24,4 @@
 
 class PerspectiveCamera : public Camera
 {
-public:
-    void Render() override;
 };
