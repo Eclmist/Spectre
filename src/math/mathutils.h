@@ -20,11 +20,16 @@
 
 #pragma once
 
-#include <cmath>
+namespace Math
+{
+    inline double DegToRad(double deg)
+    {
+        return deg * (Pi / 180);
+    }
 
-#include "constants.h"
-#include "mathutils.h"
-#include "linalg.h"
-#include "rect.h"
-#include "random.h"
+    inline double RadToDeg(double rad)
+    {
+        return rad * (180.0 / Pi);
+    }
+}
 

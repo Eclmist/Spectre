@@ -20,11 +20,39 @@
 
 #pragma once
 
-#include <cmath>
+#include "vector.h"
+#include "matrix.h"
 
-#include "constants.h"
-#include "mathutils.h"
-#include "linalg.h"
-#include "rect.h"
-#include "random.h"
+typedef Vector<double, 2> Vector2;
+typedef Vector<double, 3> Vector3;
+typedef Vector<double, 4> Vector4;
+
+typedef Vector<int, 2> Vector2i;
+typedef Vector<int, 3> Vector3i;
+typedef Vector<int, 4> Vector4i;
+
+typedef Matrix<double, 2> Matrix2x2;
+typedef Matrix<double, 3> Matrix3x3;
+typedef Matrix<double, 4> Matrix4x4;
+
+typedef Matrix<int, 2> Matrix2x2i;
+typedef Matrix<int, 3> Matrix3x3i;
+typedef Matrix<int, 4> Matrix4x4i;
+
+template<typename T, int N>
+inline Vector<T, N> operator*(const Matrix<T, N>& mat, const Vector<T, N>& vec)
+{
+    Vector<T, N> result;
+    // TODO: SIMD this
+
+    for (int i = 0; i < N; ++i)
+    {
+        for (int j = 0; j < N; ++j)
+        {
+            result.m_Data[i] += mat.m_Data2D[i][j] * vec.m_Data[j];
+        }
+    }
+
+    return result;
+}
 

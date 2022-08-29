@@ -99,11 +99,5 @@ private:
     double Determinant() const;
 };
 
-typedef Matrix<double, 4> Matrix4x4;
-typedef Matrix<double, 3> Matrix3x3;
-
-typedef Matrix<int, 3> Matrix3x3i;
-typedef Matrix<int, 4> Matrix4x4i;
-
 #include "matrix_impl.h"
 
