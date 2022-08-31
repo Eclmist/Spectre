@@ -137,3 +137,11 @@ TEST(Point4Test, DoesNotChangeWithPveSign)
     EXPECT_DOUBLE_EQ(b.w, -1.0);
 }
 
+TEST(Point4Test, CanGetDistanceBetweenPoints)
+{
+	EXPECT_DOUBLE_EQ(Point4::Distance({ 0, 0, 0, 0 }, { 1.0, 0.0, 0.0, 0.0 }), 1.0);
+	EXPECT_DOUBLE_EQ(Point4::SquareDistance({ 0, 0, 0, 0 }, { 1.0, 0.0, 0.0, 0.0 }), 1.0);
+	EXPECT_DOUBLE_EQ(Point4::Distance({ 2.34, 5.32, -3.12, 1.23 }, { 4.52, -3.2, 1.5, 4.12 }), 10.345979895592297);
+	EXPECT_DOUBLE_EQ(Point4::SquareDistance({ 2.34, 5.32, -3.12, 1.23 }, { 4.52, -3.2, 1.5, 4.12 }), 107.0393);
+}
+

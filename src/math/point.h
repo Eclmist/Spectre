@@ -42,8 +42,11 @@ public:
 
     inline T operator[](int i) const { return this->m_Data[i]; }
     inline T& operator[](int i) { return this->m_Data[i]; }
+
+public:
+    static double Distance(const Point& a, const Point& b);
+    static double SquareDistance(const Point& a, const Point& b);
 };
 
 #include "point_impl.h" 
-
 

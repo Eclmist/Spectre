@@ -93,3 +93,20 @@ bool Point<T, N>::operator!=(const Point& b) const
     return !(*this == b);
 }
 
+template<typename T, int N>
+double Point<T, N>::Distance(const Point& a, const Point& b)
+{
+    return std::sqrt(SquareDistance(a, b));
+}
+
+template<typename T, int N>
+double Point<T, N>::SquareDistance(const Point& a, const Point& b)
+{
+    double sqrDist = 0;
+
+    for (int i = 0; i < N; ++i)
+        sqrDist += std::pow(b[i] - a[i], 2.0);
+
+    return sqrDist;
+}
+
