@@ -39,12 +39,12 @@ public:
     void SetResolution(const Resolution& resolution);
 
     FilmTile& GetTile(int index);
-    FilmTile& GetTile(const Vector2i& position);
+    FilmTile& GetTile(const Point2i& position);
 	int GetNumTiles() const;
 
 private:
     void SetupTiles();
-    int GetTileIndex(const Vector2i& position) const;
+    int GetTileIndex(const Point2i& position) const;
 
 private:
     Resolution m_Resolution;

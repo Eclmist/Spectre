@@ -33,7 +33,7 @@ TEST(FilmTileTest, CanBeCreated)
 TEST(FilmTileTest, CanGetPosition)
 {
     FilmTile filmTile({ 20, 30 }, { 100, 120 });
-    EXPECT_EQ(filmTile.GetPosition(), Vector2i(20, 30));
+    EXPECT_EQ(filmTile.GetPosition(), Point2i(20, 30));
 }
 
 TEST(FilmTileTest, CanGetSize)
@@ -45,13 +45,13 @@ TEST(FilmTileTest, CanGetSize)
 TEST(FilmTileTest, CanConvertBetweenFilmAndTileSpace)
 {
     FilmTile filmTile({ 50, 50 }, { 50, 50 });
-    EXPECT_EQ(filmTile.FilmToTileSpace({ 50, 50 }), Vector2i(0, 0));
-    EXPECT_EQ(filmTile.FilmToTileSpace({ 100, 100 }), Vector2i(50, 50));
-    EXPECT_EQ(filmTile.FilmToTileSpace({ 25, 25 }), Vector2i(-25, -25));
+    EXPECT_EQ(filmTile.FilmToTileSpace({ 50, 50 }), Point2i(0, 0));
+    EXPECT_EQ(filmTile.FilmToTileSpace({ 100, 100 }), Point2i(50, 50));
+    EXPECT_EQ(filmTile.FilmToTileSpace({ 25, 25 }), Point2i(-25, -25));
 
-    EXPECT_EQ(filmTile.TileToFilmSpace({ 0, 0 }), Vector2i(50, 50));
-    EXPECT_EQ(filmTile.TileToFilmSpace({ 50, 50 }), Vector2i(100, 100));
-    EXPECT_EQ(filmTile.TileToFilmSpace({ -25, -25 }), Vector2i(25, 25));
+    EXPECT_EQ(filmTile.TileToFilmSpace({ 0, 0 }), Point2i(50, 50));
+    EXPECT_EQ(filmTile.TileToFilmSpace({ 50, 50 }), Point2i(100, 100));
+    EXPECT_EQ(filmTile.TileToFilmSpace({ -25, -25 }), Point2i(25, 25));
 }
 
 TEST(FilmTileTest, CanGetIndex)

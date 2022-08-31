@@ -38,7 +38,7 @@ public:
 public:
     void SetWidth(int width);
     void SetHeight(int height);
-    bool IsWithinBounds(const Vector2i& point) const;
+    bool IsWithinBounds(const Point2i& point) const;
 
 protected:
     int m_Width;

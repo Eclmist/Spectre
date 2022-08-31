@@ -23,26 +23,26 @@
 class FilmTile
 {
 public:
-    FilmTile(const Vector2i& pos, const Vector2i& size);
+    FilmTile(const Point2i& pos, const Vector2i& size);
     ~FilmTile() = default;
 
 public:
-    inline Vector2i GetPosition() const { return { m_Rect.x, m_Rect.y }; }
+    inline Point2i GetPosition() const { return { m_Rect.x, m_Rect.y }; }
     inline Vector2i GetSize() const { return { m_Rect.w, m_Rect.h }; }
 
 public:
-    Vector2i TileToFilmSpace(const Vector2i& tileSpacePos) const;
-    Vector2i FilmToTileSpace(const Vector2i& filmSpacePos) const;
+    Point2i TileToFilmSpace(const Point2i& tileSpacePos) const;
+    Point2i FilmToTileSpace(const Point2i& filmSpacePos) const;
 
-    const Pixel& GetTileSpacePixel(const Vector2i& tileSpacePos) const;
-    const Pixel& GetFilmSpacePixel(const Vector2i& filmSpacePos) const;
+    const Pixel& GetTileSpacePixel(const Point2i& tileSpacePos) const;
+    const Pixel& GetFilmSpacePixel(const Point2i& filmSpacePos) const;
 
-    void SetPixel(const Vector2i& tileSpacePoint, const XyzCoefficients& xyz);
-    void SplatPixel(const Vector2i& tileSpacePoint, const XyzCoefficients& xyz, double deltaArea);
+    void SetPixel(const Point2i& tileSpacePoint, const XyzCoefficients& xyz);
+    void SplatPixel(const Point2i& tileSpacePoint, const XyzCoefficients& xyz, double deltaArea);
 
 private:
     friend class FilmTileTest_CanGetIndex_Test;
-    int GetIndex(const Vector2i& tileSpacePos) const;
+    int GetIndex(const Point2i& tileSpacePos) const;
 
 private:
     const Rect m_Rect;

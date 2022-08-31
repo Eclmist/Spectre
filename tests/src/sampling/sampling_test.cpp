@@ -22,7 +22,7 @@
 #include "core/sampling/sampling.h"
 
 template <int N>
-void CheckUniformity(std::vector<Vector<double, N>> samples, double totalArea)
+void CheckUniformity(std::vector<Point<double, N>> samples, double totalArea)
 {
 	const int numAreasToTest = 500;
 	const double radiusToTest = 0.1;
@@ -84,14 +84,14 @@ TEST(SamplingTest, CanSampleHemisphereUniformly)
 {
     const int numSamples = 50000;
 
-    std::vector<Vector3> samples(numSamples);
+    std::vector<Point3> samples(numSamples);
 
     for (int i = 0; i < numSamples; ++i)
     {
-        Vector3 sample = Sampling::UniformSampleHemisphere();
+        Point3 sample = Sampling::UniformSampleHemisphere();
 
         // Points must be on the surface of the sphere
-        EXPECT_LE(std::abs(sample.Magnitude() - 1.0), Math::Epsilon);
+        EXPECT_LE(std::abs(Point3::Distance(sample, {}) - 1.0), Math::Epsilon);
         // Points must be on upper hemisphere
         EXPECT_GE(sample.y, 0.0);
 
@@ -107,14 +107,14 @@ TEST(SamplingTest, CanSampleSphereUniformly)
     const int numAreasToTest = 500;
     const double radiusToTest = 0.1;
 
-    std::vector<Vector3> samples(numSamples);
+    std::vector<Point3> samples(numSamples);
 
     for (int i = 0; i < numSamples; ++i)
     {
-        Vector3 sample = Sampling::UniformSampleSphere();
+        Point3 sample = Sampling::UniformSampleSphere();
 
         // Points must be on the surface of the sphere
-        EXPECT_LE(std::abs(sample.Magnitude() - 1.0), Math::Epsilon);
+        EXPECT_LE(std::abs(Point3::Distance(sample, {}) - 1.0), Math::Epsilon);
         samples[i] = sample;
     }
 
@@ -127,14 +127,14 @@ TEST(SamplingTest, CanSampleDiskUniformly_RejectionMethod)
 	const int numAreasToTest = 500;
 	const double radiusToTest = 0.1;
 
-	std::vector<Vector2> samples(numSamples);
+	std::vector<Point2> samples(numSamples);
 
 	for (int i = 0; i < numSamples; ++i)
 	{
-		Vector2 sample = Sampling::RejectionSampleDisk();
+        Point2 sample = Sampling::RejectionSampleDisk();
 
 		// Points must be within the disk
-		EXPECT_LE(sample.Magnitude(), 1.0 + Math::Epsilon);
+		EXPECT_LE(Point2::Distance(sample, {}) - 1.0, 1.0 + Math::Epsilon);
 		samples[i] = sample;
 	}
 
@@ -147,14 +147,14 @@ TEST(SamplingTest, CanSampleDiskUniformly_ConcentricMethod)
 	const int numAreasToTest = 500;
 	const double radiusToTest = 0.1;
 
-	std::vector<Vector2> samples(numSamples);
+	std::vector<Point2> samples(numSamples);
 
 	for (int i = 0; i < numSamples; ++i)
 	{
-		Vector2 sample = Sampling::ConcentricSampleDisk();
+        Point2 sample = Sampling::ConcentricSampleDisk();
 
 		// Points must be within the disk
-		EXPECT_LE(sample.Magnitude(), 1.0 + Math::Epsilon);
+		EXPECT_LE(Point2::Distance(sample, {}) - 1.0, 1.0 + Math::Epsilon);
 		samples[i] = sample;
 	}
 

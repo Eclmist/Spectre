@@ -70,3 +70,40 @@ TEST(LinearAlgebraTest, CanMultiplyMatricesWithVectors4x4)
     EXPECT_EQ(m1 * e, e);
     EXPECT_EQ(m1 * f, Vector4(999991, -1200003, 2199979, 5869942.8));
 }
+
+TEST(LinearAlgebraTest, CanAddVectorToPoint)
+{
+	Point3 a(1.0, 2.0, 3.0);
+	Vector3 b(2.0, 3.0, 4.0);
+    Point3 c = a + b;
+	EXPECT_DOUBLE_EQ(c.x, 3.0);
+	EXPECT_DOUBLE_EQ(c.y, 5.0);
+	EXPECT_DOUBLE_EQ(c.z, 7.0);
+
+    Point4 a2(1.0, 2.0, 3.0, 4.0);
+	Vector4 b2(2.0, 3.0, 4.0, 5.0);
+    Point4 c2 = a2 + b2;
+	EXPECT_DOUBLE_EQ(c2.x, 3.0);
+	EXPECT_DOUBLE_EQ(c2.y, 5.0);
+	EXPECT_DOUBLE_EQ(c2.z, 7.0);
+	EXPECT_DOUBLE_EQ(c2.w, 9.0);
+}
+
+TEST(LinearAlgebraTest, CanGetVectorBetweenPoints)
+{
+	Point3 a(1.0, 2.0, 3.0);
+    Point3 b(2.0, 3.0, 4.0);
+    Vector3 c = a - b;
+	EXPECT_DOUBLE_EQ(c.x, -1.0);
+	EXPECT_DOUBLE_EQ(c.y, -1.0);
+	EXPECT_DOUBLE_EQ(c.z, -1.0);
+
+	Point4 a2(1.0, 2.0, 3.0, 4.0);
+    Point4 b2(2.0, 3.0, 4.0, 5.0);
+	Vector4 c2 = a2 - b2;
+	EXPECT_DOUBLE_EQ(c2.x, -1.0);
+	EXPECT_DOUBLE_EQ(c2.y, -1.0);
+	EXPECT_DOUBLE_EQ(c2.z, -1.0);
+	EXPECT_DOUBLE_EQ(c2.w, -1.0);
+}
+

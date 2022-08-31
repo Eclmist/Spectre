@@ -52,15 +52,10 @@ template<typename T, int N>
 inline Vector<T, N> operator*(const Matrix<T, N>& m, const Vector<T, N>& v)
 {
     Vector<T, N> result;
-    // TODO: SIMD this
 
     for (int i = 0; i < N; ++i)
-    {
         for (int j = 0; j < N; ++j)
-        {
             result.m_Data[i] += m.m_Data2D[i][j] * v.m_Data[j];
-        }
-    }
 
     return result;
 }
@@ -68,6 +63,22 @@ inline Vector<T, N> operator*(const Matrix<T, N>& m, const Vector<T, N>& v)
 template<typename T, int N>
 inline Point<T, N> operator+(const Point<T, N>& p, const Vector<T, N>& v)
 {
+    Point<T, N> res;
 
+    for (int i = 0; i < N; ++i)
+        res[i] = p[i] + v[i];
+    
+    return res;
+}
+
+template<typename T, int N>
+inline Vector<T, N> operator-(const Point<T, N>& a, const Point<T, N>& b)
+{
+    Vector<T, N> res;
+
+	for (int i = 0; i < N; ++i)
+		res[i] = a[i] - b[i];
+
+	return res;
 }
 

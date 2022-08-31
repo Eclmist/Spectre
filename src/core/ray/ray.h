@@ -23,19 +23,19 @@
 class Ray
 {
 public:
-    Ray(const Vector3& origin = { 0.0 }, const Vector3& direction = { 1.0 });
+    Ray(const Point3& origin = { 0.0 }, const Vector3& direction = { 1.0 });
     ~Ray() = default;
 
 public:
-    inline Vector3 operator()(double t) const { return m_Origin + m_Direction * t; }
+    inline Point3 operator()(double t) const { return m_Origin + m_Direction * t; }
 
-    inline Vector3 GetOrigin() const { return m_Origin; }
+    inline Point3 GetOrigin() const { return m_Origin; }
     inline Vector3 GetDirection() const { return m_Direction; }
 
-    inline void SetOrigin(Vector3 origin) { m_Origin = origin; }
+    inline void SetOrigin(Point3 origin) { m_Origin = origin; }
     inline void SetDirection(Vector3 direction) { m_Direction = direction.Normalized(); }
 
 private:
-    Vector3 m_Origin;
+    Point3 m_Origin;
     Vector3 m_Direction;
 };

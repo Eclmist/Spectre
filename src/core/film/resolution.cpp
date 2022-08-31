@@ -57,7 +57,7 @@ void Resolution::SetHeight(int height)
     m_Height = height;
 }
 
-bool Resolution::IsWithinBounds(const Vector2i& point) const
+bool Resolution::IsWithinBounds(const Point2i& point) const
 {
     return point.x >= 0 && point.x < m_Width && point.y >= 0 && point.y < m_Height;
 }

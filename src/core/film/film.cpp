@@ -31,7 +31,7 @@ FilmTile& Film::GetTile(int index)
     return m_Tiles[index];
 }
 
-FilmTile& Film::GetTile(const Vector2i& position)
+FilmTile& Film::GetTile(const Point2i& position)
 {
     return GetTile(GetTileIndex(position));
 }
@@ -57,7 +57,7 @@ void Film::SetupTiles()
     }
 }
 
-int Film::GetTileIndex(const Vector2i& position) const
+int Film::GetTileIndex(const Point2i& position) const
 {
     if (!m_Resolution.IsWithinBounds(position))
         throw std::invalid_argument("Position is outside film bounds");

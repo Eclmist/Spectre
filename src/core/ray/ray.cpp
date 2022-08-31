@@ -20,7 +20,7 @@
 
 #include "ray.h"
 
-Ray::Ray(const Vector3& origin, const Vector3& direction)
+Ray::Ray(const Point3& origin, const Vector3& direction)
     : m_Origin(origin)
     , m_Direction(direction)
 {

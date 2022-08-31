@@ -18,7 +18,7 @@
 
 #include "filmtile.h"
 
-FilmTile::FilmTile(const Vector2i& pos, const Vector2i& size)
+FilmTile::FilmTile(const Point2i& pos, const Vector2i& size)
     : m_Rect(pos.x, pos.y, size.x, size.y)
 {
     if (size.x <= 0 || size.y <= 0)
@@ -30,19 +30,19 @@ FilmTile::FilmTile(const Vector2i& pos, const Vector2i& size)
     m_Pixels.resize(size.x * size.y);
 }
 
-Vector2i FilmTile::TileToFilmSpace(const Vector2i& tileSpacePos) const
+Point2i FilmTile::TileToFilmSpace(const Point2i& tileSpacePos) const
 {
     return { tileSpacePos.x + m_Rect.x, tileSpacePos.y + m_Rect.y };
 }
 
-Vector2i FilmTile::FilmToTileSpace(const Vector2i& filmSpacePos) const
+Point2i FilmTile::FilmToTileSpace(const Point2i& filmSpacePos) const
 {
     return { filmSpacePos.x - m_Rect.x, filmSpacePos.y - m_Rect.y };
 }
 
-int FilmTile::GetIndex(const Vector2i& tileSpacePos) const
+int FilmTile::GetIndex(const Point2i& tileSpacePos) const
 {
-    Vector2i filmSpacePos = TileToFilmSpace(tileSpacePos);
+    Point2i filmSpacePos = TileToFilmSpace(tileSpacePos);
 
     if (!m_Rect.IsWithinBounds(filmSpacePos.x, filmSpacePos.y))
         throw std::invalid_argument("Point is outside of this film tile");
@@ -50,22 +50,22 @@ int FilmTile::GetIndex(const Vector2i& tileSpacePos) const
     return tileSpacePos.x + tileSpacePos.y * m_Rect.w;
 }
 
-const Pixel& FilmTile::GetTileSpacePixel(const Vector2i& tileSpacePos) const
+const Pixel& FilmTile::GetTileSpacePixel(const Point2i& tileSpacePos) const
 {
     return m_Pixels[GetIndex(tileSpacePos)];
 }
 
-const Pixel& FilmTile::GetFilmSpacePixel(const Vector2i& filmSpacePos) const
+const Pixel& FilmTile::GetFilmSpacePixel(const Point2i& filmSpacePos) const
 {
     return GetTileSpacePixel(FilmToTileSpace(filmSpacePos));
 }
 
-void FilmTile::SetPixel(const Vector2i& tileSpacePoint, const XyzCoefficients& xyz)
+void FilmTile::SetPixel(const Point2i& tileSpacePoint, const XyzCoefficients& xyz)
 {
     SplatPixel(tileSpacePoint, xyz, 1.0);
 }
 
-void FilmTile::SplatPixel(const Vector2i& tileSpacePoint, const XyzCoefficients& xyz, double deltaArea)
+void FilmTile::SplatPixel(const Point2i& tileSpacePoint, const XyzCoefficients& xyz, double deltaArea)
 {
     if (deltaArea > 1.0 || deltaArea <= 0.0)
         throw std::invalid_argument("A greater than 1 or smaller than 0 deltaArea is invalid");
