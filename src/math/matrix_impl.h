@@ -1,4 +1,3 @@
-#include "matrix.h"
 /*
     This file is part of Spectre, an open-source physically based
     spectral raytracing library.
@@ -18,6 +17,8 @@
     You should have received a copy of the GNU General Public License
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
+
+#include "matrix.h"
 
 template<typename T, int N>
 inline Matrix<T, N>::Matrix()

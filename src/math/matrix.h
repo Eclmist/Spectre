@@ -22,9 +22,6 @@
 #pragma once
 
 template <typename T, int N>
-class Matrix;
-
-template <typename T, int N>
 class MatrixData
 {
     static_assert(N >= 3 && N <= 4, "Only 3-4 dimensions are supported");

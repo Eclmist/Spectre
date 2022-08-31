@@ -21,9 +21,6 @@
 #pragma once
 
 template <typename T, int N>
-class Vector;
-
-template <typename T, int N>
 class VectorData
 {
     static_assert(N >= 2 && N <= 4, "Only 2-4 dimensions are supported");
