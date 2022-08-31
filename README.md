@@ -1,5 +1,7 @@
 <h1 align="center">
   <br>
+    <img src="https://raw.githubusercontent.com/eclmist/spectre/master/docs/img/spectre.png" alt="Spectre Logo" width="200"></a>
+  <br>
     Spectre
   <br>
 </h1>

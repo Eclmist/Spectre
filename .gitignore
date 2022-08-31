@@ -30,9 +30,8 @@ _deps
 *.DS_STORE
 Thumbs.db
 *.vscode
-test*.png
-*.png
-# User-specific files
+
+ User-specific files
 *.rsuser
 *.suo
 *.user
