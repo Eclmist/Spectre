@@ -23,7 +23,7 @@
 class Ray
 {
 public:
-    Ray(const Vector3& origin, const Vector3& direction);
+    Ray(const Vector3& origin = { 0.0 }, const Vector3& direction = { 1.0 });
     ~Ray() = default;
 
 public:
