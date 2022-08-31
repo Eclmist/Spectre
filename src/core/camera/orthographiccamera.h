@@ -20,32 +20,21 @@
 
 #pragma once
 
-#include "core/entity/components/transform.h"
-#include "core/film/film.h"
-#include "core/ray/ray.h"
+#include "camera.h"
 
-class Camera
+class OrthographicCamera : public Camera
 {
 public:
-    Camera() = default;
-    ~Camera() = default;
+    OrthographicCamera(double size = 1.0);
+    ~OrthographicCamera() = default;
 
 public:
-    inline Transform& GetTransform() { return m_Transform; }
-    inline Film& GetFilm() { return m_Film; }
+    inline double GetSize() const { return m_Size; }
+    inline void SetSize(double size) { m_Size = size; }
 
 public:
-    virtual Ray GenerateRay(const Point2& filmSpacePos) = 0;
+    Ray GenerateRay(const Point2& filmSpacePos) override;
 
 protected:
-    friend class CameraTest_CanTransformCameraToWorldSpacePoint_Test;
-    friend class CameraTest_CanTransformCameraToWorldSpaceVector_Test;
-
-	Vector3 TransformToWorldSpace(const Vector3& cameraSpaceVector);
-	Point3 TransformToWorldSpace(const Point3& cameraSpacePoint);
-
-protected:
-    Transform m_Transform;
-    Film m_Film;
+    double m_Size;
 };
-

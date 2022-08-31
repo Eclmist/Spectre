@@ -221,3 +221,4 @@ Vector<T, 3> Vector<T, N>::Cross(const Vector& a, const Vector& b)
     Vector<T, 3> tmp2 = tmp1 - tmp0;
     return { tmp2[1], tmp2[2], tmp2[0] };
 }
+

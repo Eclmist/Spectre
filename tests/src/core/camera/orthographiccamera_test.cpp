@@ -3,8 +3,6 @@
     spectral raytracing library.
 
     Copyright (c) 2020-2023 Samuel Van Allen - All rights reserved.
-
-    Spectre is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
@@ -18,15 +16,29 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "camera.h"
+#include "gtest.h"
+#include "core/camera/orthographiccamera.h"
 
-Vector3 Camera::TransformToWorldSpace(const Vector3& cameraSpaceVector)
+TEST(OrthographicCameraTest, CanBeCreated)
 {
-    return cameraSpaceVector;
+    ASSERT_NO_THROW(OrthographicCamera());
 }
 
-Point3 Camera::TransformToWorldSpace(const Point3& cameraSpacePoint)
+TEST(OrthographicCameraTest, CanSetSize)
 {
-    return cameraSpacePoint;
+    OrthographicCamera camera1;
+    EXPECT_DOUBLE_EQ(camera1.GetSize(), 1.0);
+
+    OrthographicCamera camera2(1.2);
+    EXPECT_DOUBLE_EQ(camera2.GetSize(), 1.2);
+    
+    ASSERT_NO_THROW(camera1.SetSize(1.4));
+    EXPECT_DOUBLE_EQ(camera1.GetSize(), 1.4);
+}
+
+TEST(OrthographicCameraTest, HasDefaultSize)
+{
+    OrthographicCamera camera;
+    EXPECT_DOUBLE_EQ(camera.GetSize(), 1.0);
 }
 

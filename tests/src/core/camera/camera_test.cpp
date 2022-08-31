@@ -22,6 +22,7 @@
 
 class CameraImplStub : public Camera
 {
+    Ray GenerateRay(const Point2& filmSpacePos) override { return {}; }
 };
 
 TEST(CameraTest, CanBeCreated)
@@ -47,5 +48,35 @@ TEST(CameraTest, CanGetFilm)
 
     film.SetResolution(Resolution1024X768());
     EXPECT_EQ(camera.GetFilm().GetResolution(), Resolution1024X768());
+}
+
+TEST(CameraTest, CanTransformCameraToWorldSpaceVector)
+{
+    CameraImplStub camera;
+    Transform transform = camera.GetTransform();
+
+    Vector3 cameraSpaceForward = { 0, 0, 1 };
+    Vector3 cameraSpaceUp = { 0, 1, 0 };
+    Vector3 cameraSpaceRight = { 1, 0, 0 };
+
+    // Camera at origin
+    EXPECT_EQ(camera.TransformToWorldSpace(cameraSpaceForward), cameraSpaceForward);
+    EXPECT_EQ(camera.TransformToWorldSpace(cameraSpaceUp), cameraSpaceUp);
+    EXPECT_EQ(camera.TransformToWorldSpace(cameraSpaceRight), cameraSpaceRight);
+
+    transform.SetTranslation({ 1, -2.30, 5.234 });
+    EXPECT_EQ(camera.TransformToWorldSpace(cameraSpaceForward), cameraSpaceForward);
+    EXPECT_EQ(camera.TransformToWorldSpace(cameraSpaceUp), cameraSpaceUp);
+    EXPECT_EQ(camera.TransformToWorldSpace(cameraSpaceRight), cameraSpaceRight);
+
+    //transform.SetScale({ 1234, -232.30, 5.234 });
+    //EXPECT_EQ(camera.TransformToWorldSpace(cameraSpaceForward), cameraSpaceForward);
+    //EXPECT_EQ(camera.TransformToWorldSpace(cameraSpaceUp), cameraSpaceUp);
+    //EXPECT_EQ(camera.TransformToWorldSpace(cameraSpaceRight), cameraSpaceRight);
+}
+
+TEST(CameraTest, CanTransformCameraToWorldSpacePoint)
+{
+
 }
 

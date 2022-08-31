@@ -24,4 +24,10 @@
 
 class PerspectiveCamera : public Camera
 {
+public:
+    PerspectiveCamera();
+	~PerspectiveCamera() = default;
+
+public:
+    Ray GenerateRay(const Point2& filmSpacePos) override;
 };

@@ -18,34 +18,14 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#pragma once
+#include "orthographiccamera.h"
 
-#include "core/entity/components/transform.h"
-#include "core/film/film.h"
-#include "core/ray/ray.h"
-
-class Camera
+OrthographicCamera::OrthographicCamera(double size)
+    : m_Size(size)
 {
-public:
-    Camera() = default;
-    ~Camera() = default;
+}
 
-public:
-    inline Transform& GetTransform() { return m_Transform; }
-    inline Film& GetFilm() { return m_Film; }
-
-public:
-    virtual Ray GenerateRay(const Point2& filmSpacePos) = 0;
-
-protected:
-    friend class CameraTest_CanTransformCameraToWorldSpacePoint_Test;
-    friend class CameraTest_CanTransformCameraToWorldSpaceVector_Test;
-
-	Vector3 TransformToWorldSpace(const Vector3& cameraSpaceVector);
-	Point3 TransformToWorldSpace(const Point3& cameraSpacePoint);
-
-protected:
-    Transform m_Transform;
-    Film m_Film;
-};
-
+Ray OrthographicCamera::GenerateRay(const Point2& filmSpacePos)
+{
+    return Ray();
+}

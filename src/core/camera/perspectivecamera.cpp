@@ -19,3 +19,12 @@
 */
 
 #include "perspectivecamera.h"
+
+PerspectiveCamera::PerspectiveCamera()
+{
+}
+
+Ray PerspectiveCamera::GenerateRay(const Point2& filmSpacePos)
+{
+    return Ray();
+}
