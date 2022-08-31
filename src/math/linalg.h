@@ -21,6 +21,7 @@
 #pragma once
 
 #include "vector.h"
+#include "point.h"
 #include "matrix.h"
 
 typedef Vector<double, 2> Vector2;
@@ -31,6 +32,14 @@ typedef Vector<int, 2> Vector2i;
 typedef Vector<int, 3> Vector3i;
 typedef Vector<int, 4> Vector4i;
 
+typedef Point<double, 2> Point2;
+typedef Point<double, 3> Point3;
+typedef Point<double, 4> Point4;
+
+typedef Point<int, 2> Point2i;
+typedef Point<int, 3> Point3i;
+typedef Point<int, 4> Point4i;
+
 typedef Matrix<double, 2> Matrix2x2;
 typedef Matrix<double, 3> Matrix3x3;
 typedef Matrix<double, 4> Matrix4x4;
@@ -40,7 +49,7 @@ typedef Matrix<int, 3> Matrix3x3i;
 typedef Matrix<int, 4> Matrix4x4i;
 
 template<typename T, int N>
-inline Vector<T, N> operator*(const Matrix<T, N>& mat, const Vector<T, N>& vec)
+inline Vector<T, N> operator*(const Matrix<T, N>& m, const Vector<T, N>& v)
 {
     Vector<T, N> result;
     // TODO: SIMD this
@@ -49,10 +58,16 @@ inline Vector<T, N> operator*(const Matrix<T, N>& mat, const Vector<T, N>& vec)
     {
         for (int j = 0; j < N; ++j)
         {
-            result.m_Data[i] += mat.m_Data2D[i][j] * vec.m_Data[j];
+            result.m_Data[i] += m.m_Data2D[i][j] * v.m_Data[j];
         }
     }
 
     return result;
+}
+
+template<typename T, int N>
+inline Point<T, N> operator+(const Point<T, N>& p, const Vector<T, N>& v)
+{
+
 }
 
