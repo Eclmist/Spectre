@@ -127,7 +127,7 @@ TEST(ThreadPoolTest, TaskCanHavePriority)
 		ThreadPool pool(NumThreads);
 
         // Lockup first thread to give time to adding other tasks
-        pool.ScheduleTask(0, [&]()
+        pool.ScheduleTask(99999, [&]()
 		{
 			mutex.lock();
 			mutex.unlock();

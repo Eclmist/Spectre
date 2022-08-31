@@ -29,6 +29,7 @@ public:
     Spectrum(double v = 0.0);
     ~Spectrum() = default;
 
+public:
     inline bool operator==(const Spectrum& other) const { return IsEqual(other); }
     inline bool operator!=(const Spectrum& other) const { return !IsEqual(other); }
 
@@ -41,6 +42,7 @@ public:
     Spectrum operator/(const Spectrum& c) const;
     Spectrum& operator/=(const Spectrum& c);
 
+public:
     bool IsBlack() const;
     bool HasNans() const;
     bool IsEqual(const Spectrum& other) const;

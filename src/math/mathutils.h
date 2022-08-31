@@ -3,6 +3,8 @@
     spectral raytracing library.
 
     Copyright (c) 2020-2023 Samuel Van Allen - All rights reserved.
+
+    Spectre is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
@@ -18,16 +20,16 @@
 
 #pragma once
 
-class Rect
+namespace Math
 {
-public:
-    Rect(int x, int y, int w, int h);
-    ~Rect() = default;
+    inline double DegToRad(double deg)
+    {
+        return deg * (Pi / 180);
+    }
 
-public:
-    bool IsWithinBounds(int x, int y) const;
+    inline double RadToDeg(double rad)
+    {
+        return rad * (180.0 / Pi);
+    }
+}
 
-public:
-    int x, y;
-    int w, h;
-};

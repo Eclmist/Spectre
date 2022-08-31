@@ -80,29 +80,24 @@ public:
         T _31, T _32, T _33, T _34,
         T _41, T _42, T _43, T _44);
 
+public:
     inline T operator[](int i) const { return this->m_Data[i]; }
     inline T& operator[](int i) { return this->m_Data[i]; }
-
     bool operator==(const Matrix& m2) const;
     Matrix operator*(const Matrix& m2) const;
-    bool IsIdentity() const;
 
 public:
+    bool IsIdentity() const;
     Matrix Transposed() const;
     Matrix<T, 4> Inversed() const;
-
     Matrix<T, 3> Upper3x3() const;
+    
+public:
     static Matrix<T, 4> From3x3(Matrix<T, 3> mat);
 
 private:
     double Determinant() const;
 };
-
-typedef Matrix<double, 4> Matrix4x4;
-typedef Matrix<double, 3> Matrix3x3;
-
-typedef Matrix<int, 3> Matrix3x3i;
-typedef Matrix<int, 4> Matrix4x4i;
 
 #include "matrix_impl.h"
 

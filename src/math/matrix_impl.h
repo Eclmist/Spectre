@@ -146,11 +146,11 @@ Matrix<T, 4> Matrix<T, N>::Inversed() const
 {
     double d = Determinant();
     if (std::fabs(d) < 0.001)
-        return Matrix4x4();
+        return Matrix<T, 4>();
 
     // use Cramer's rule
     d = 1.0f / d;
-    Matrix4x4 out;
+    Matrix<T, 4> out;
     out.m_Data[0] = d * (this->m_Data[5] * (this->m_Data[10] * this->m_Data[15] - this->m_Data[11] * this->m_Data[14]) + this->m_Data[6] * (this->m_Data[11] * this->m_Data[13] - this->m_Data[9] * this->m_Data[15]) + this->m_Data[7] * (this->m_Data[9] * this->m_Data[14] - this->m_Data[10] * this->m_Data[13]));
     out.m_Data[1] = d * (this->m_Data[9] * (this->m_Data[2] * this->m_Data[15] - this->m_Data[3] * this->m_Data[14]) + this->m_Data[10] * (this->m_Data[3] * this->m_Data[13] - this->m_Data[1] * this->m_Data[15]) + this->m_Data[11] * (this->m_Data[1] * this->m_Data[14] - this->m_Data[2] * this->m_Data[13]));
     out.m_Data[2] = d * (this->m_Data[13] * (this->m_Data[2] * this->m_Data[7] - this->m_Data[3] * this->m_Data[6]) + this->m_Data[14] * (this->m_Data[3] * this->m_Data[5] - this->m_Data[1] * this->m_Data[7]) + this->m_Data[15] * (this->m_Data[1] * this->m_Data[6] - this->m_Data[2] * this->m_Data[5]));

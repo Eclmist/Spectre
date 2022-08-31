@@ -28,10 +28,12 @@ public:
     Transform();
     ~Transform() = default;
 
+public:
     inline Vector3 GetTranslation() const { return m_Translation; }
     inline Vector3 GetRotation() const { return m_EulerRotation; }
     inline Vector3 GetScale() const { return m_Scale; }
 
+public:
     void SetTranslation(const Vector3& translation);
     void SetRotation(const Vector3& eulerRotation);
     void SetScale(const Vector3& scale);

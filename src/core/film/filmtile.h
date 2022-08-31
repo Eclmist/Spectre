@@ -26,9 +26,11 @@ public:
     FilmTile(const Vector2i& pos, const Vector2i& size);
     ~FilmTile() = default;
 
+public:
     inline Vector2i GetPosition() const { return { m_Rect.x, m_Rect.y }; }
     inline Vector2i GetSize() const { return { m_Rect.w, m_Rect.h }; }
 
+public:
     Vector2i TileToFilmSpace(const Vector2i& tileSpacePos) const;
     Vector2i FilmToTileSpace(const Vector2i& filmSpacePos) const;
 

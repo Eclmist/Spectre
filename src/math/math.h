@@ -22,31 +22,9 @@
 
 #include <cmath>
 
-namespace Math
-{
-	const double E        = 2.71828182845904523536;    // e
-	const double Pi       = 3.14159265358979323846;    // pi
-	const double PiOver2  = 1.57079632679489661923;    // pi/2
-	const double PiOver4  = 0.78539816339744830961;    // pi/4
-	const double InvPi    = 0.31830988618379067153;    // 1/pi
-	const double Inv2Pi   = 0.15915494309189533576;    // 1/2pi
-	const double Inv4Pi   = 0.07957747154594766788;    // 1/4pi
-
-    const double Epsilon  = 0.0000000001;
-
-	inline double DegToRad(double deg)
-    {
-        return deg * (Pi / 180);
-	}
-
-	inline double RadToDeg(double rad)
-    {
-        return rad * (180.0 / Pi);
-	}
-}
-
-#include "vector.h"
-#include "matrix.h"
+#include "constants.h"
+#include "mathutils.h"
+#include "linalg.h"
 #include "rect.h"
 #include "random.h"
 

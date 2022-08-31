@@ -20,8 +20,6 @@
 
 #pragma once
 
-#pragma once
-
 template <typename T, int N>
 class Vector;
 
@@ -108,14 +106,6 @@ public:
     static double CosAngle(const Vector& a, const Vector& b);
     static Vector<T, 3> Cross(const Vector& a, const Vector& b);
 };
-
-typedef Vector<double, 4> Vector4;
-typedef Vector<double, 3> Vector3;
-typedef Vector<double, 2> Vector2;
-
-typedef Vector<int, 2> Vector2i;
-typedef Vector<int, 3> Vector3i;
-typedef Vector<int, 4> Vector4i;
 
 #include "vector_impl.h" 
 
