@@ -271,8 +271,8 @@ TEST(TransformTest, CanTransformNormalsScaled)
 
 	// Scaling non-axis aligned normal must be done with inv transposed mat
 	t.SetScale({ 1.0, 0.5, 1.0 });
-	Normal3 rightDiag = Normal3({ 1.0, 1.0, 0.0 }).Normalized();
-	Vector3 rightDiagVec = Vector3({ 1.0, 1.0, 0.0 }).Normalized();
+	Normal3 rightDiag = Normal3(1.0, 1.0, 0.0).Normalized();
+	Vector3 rightDiagVec = Vector3(1.0, 1.0, 0.0).Normalized();
 
 	EXPECT_FALSE(t(rightDiag) == t(rightDiagVec));
 	EXPECT_EQ(t(rightDiag).Normalized(), Normal3(2, 4, 0).Normalized());
