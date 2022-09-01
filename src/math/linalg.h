@@ -21,30 +21,25 @@
 #pragma once
 
 #include "vector.h"
+#include "normal.h"
 #include "point.h"
 #include "matrix.h"
 
 typedef Vector<double, 2> Vector2;
 typedef Vector<double, 3> Vector3;
 typedef Vector<double, 4> Vector4;
-
 typedef Vector<int, 2> Vector2i;
 typedef Vector<int, 3> Vector3i;
-typedef Vector<int, 4> Vector4i;
 
 typedef Point<double, 2> Point2;
 typedef Point<double, 3> Point3;
-typedef Point<double, 4> Point4;
-
 typedef Point<int, 2> Point2i;
 typedef Point<int, 3> Point3i;
-typedef Point<int, 4> Point4i;
 
-typedef Matrix<double, 2> Matrix2x2;
+typedef Normal<double, 3> Normal3;
+
 typedef Matrix<double, 3> Matrix3x3;
 typedef Matrix<double, 4> Matrix4x4;
-
-typedef Matrix<int, 2> Matrix2x2i;
 typedef Matrix<int, 3> Matrix3x3i;
 typedef Matrix<int, 4> Matrix4x4i;
 
