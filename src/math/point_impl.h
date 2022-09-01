@@ -16,10 +16,6 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#pragma once
-
-#include "point.h"
-
 template<typename T, int N>
 Point<T, N>::Point(T v)
 {

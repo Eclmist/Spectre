@@ -69,7 +69,8 @@ public:
     Vector(T x, T y);
     Vector(T x, T y, T z);
     Vector(T x, T y, T z, T w);
-    Vector(const T* data);
+	Vector(const T* data);
+	Vector(const Vector& copy);
 
     Vector operator+() const;
     Vector operator-() const;
@@ -105,5 +106,4 @@ public:
 };
 
 #include "vector_impl.h" 
-
 

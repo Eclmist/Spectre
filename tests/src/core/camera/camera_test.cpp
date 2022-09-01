@@ -34,8 +34,6 @@ TEST(CameraTest, CanGetTransform)
 {
     CameraImplStub camera;
     Transform& transform = camera.GetTransform();
-    EXPECT_TRUE(transform.GetMatrix().IsIdentity());
-
     transform.SetTranslation({ 1.0, 0.0, 0.0 });
     EXPECT_EQ(camera.GetTransform().GetTranslation(), Vector3(1.0, 0.0, 0.0));
 }

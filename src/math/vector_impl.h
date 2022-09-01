@@ -1,3 +1,4 @@
+#include "vector.h"
 /*
     This file is part of Spectre, an open-source physically based
     spectral raytracing library.
@@ -15,10 +16,6 @@
     You should have received a copy of the GNU General Public License
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
-
-#pragma once
-
-#include "vector.h"
 
 template<typename T, int N>
 Vector<T, N>::Vector(T v)
@@ -59,6 +56,13 @@ Vector<T, N>::Vector(const T* data)
 {
     for (int i = 0; i < N; ++i)
         this->m_Data[i] = data[i];
+}
+
+template<typename T, int N>
+inline Vector<T, N>::Vector(const Vector& copy)
+{
+    for (int i = 0; i < N; ++i)
+        this->m_Data[i] = copy.m_Data[i];
 }
 
 template<typename T, int N>

@@ -24,20 +24,12 @@ TEST(TransformTest, CanBeCreated)
     ASSERT_NO_THROW(Transform());
 }
 
-TEST(TransformTest, CanGetMatrix)
-{
-    ASSERT_NO_THROW(Transform().GetMatrix());
-}
-
-TEST(TransformTest, CanGetInverseMatrix)
-{
-    ASSERT_NO_THROW(Transform().GetInverseMatrix());
-}
-
 TEST(TransformTest, DefaultsToIdentity)
 {
-    EXPECT_TRUE(Transform().GetMatrix().IsIdentity());
-    EXPECT_EQ(Transform().GetMatrix(), Transform().GetInverseMatrix());
+	EXPECT_TRUE(Transform().m_Matrix.IsIdentity());
+	EXPECT_TRUE(Transform().m_MatrixInverse.IsIdentity());
+	EXPECT_TRUE(Transform().m_MatrixTranspose.IsIdentity());
+	EXPECT_TRUE(Transform().m_MatrixInverseTranspose.IsIdentity());
 }
 
 TEST(TransformTest, CanGetTranslation)
@@ -87,24 +79,222 @@ TEST(TransformTest, MatrixHasCorrectValues)
     Transform t, t2;
 
     ASSERT_NO_THROW(t.SetTranslation({ 1, 2, 3 }));
-    Matrix4x4 temp = t.GetMatrix();
-    EXPECT_EQ(t.GetMatrix(), Matrix4x4(1, 0, 0, 1, 0, 1, 0, 2, 0, 0, 1, 3, 0, 0, 0, 1));
+	EXPECT_EQ(t.m_Matrix, Matrix4x4(1, 0, 0, 1, 0, 1, 0, 2, 0, 0, 1, 3, 0, 0, 0, 1));
+	EXPECT_EQ(t.m_MatrixInverse, Matrix4x4(1, 0, 0, 1, 0, 1, 0, 2, 0, 0, 1, 3, 0, 0, 0, 1).Inversed());
 
     ASSERT_NO_THROW(t.SetScale({ 1, 1, 4 }));
-    temp = t.GetMatrix();
-    EXPECT_EQ(t.GetMatrix(), Matrix4x4(1, 0, 0, 1, 0, 1, 0, 2, 0, 0, 4, 3, 0, 0, 0, 1));
+    EXPECT_EQ(t.m_Matrix, Matrix4x4(1, 0, 0, 1, 0, 1, 0, 2, 0, 0, 4, 3, 0, 0, 0, 1));
+	EXPECT_EQ(t.m_MatrixInverse, Matrix4x4(1, 0, 0, 1, 0, 1, 0, 2, 0, 0, 4, 3, 0, 0, 0, 1).Inversed());
 
     ASSERT_NO_THROW(t2.SetRotation({ Math::Pi / 2, 0, 0 }));
-    temp = t2.GetMatrix();
-    EXPECT_EQ(t2.GetMatrix(), Matrix4x4(1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 1));
+	EXPECT_EQ(t2.m_Matrix, Matrix4x4(1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 1));
+	EXPECT_EQ(t2.m_MatrixInverse, Matrix4x4(1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 1).Inversed());
 
     ASSERT_NO_THROW(t2.SetRotation({ Math::Pi / 2, Math::Pi / 2, Math::Pi / 2 }));
-    temp = t2.GetMatrix();
-    EXPECT_EQ(t2.GetMatrix(), Matrix4x4(0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 0, 1));
+	EXPECT_EQ(t2.m_Matrix, Matrix4x4(0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 0, 1));
+	EXPECT_EQ(t2.m_MatrixInverse, Matrix4x4(0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 0, 1).Inversed());
 
     ASSERT_NO_THROW(t.SetRotation({ Math::Pi / 2, Math::Pi / 2, Math::Pi / 2 }));
-    temp = t.GetMatrix();
-    EXPECT_EQ(t.GetMatrix(), Matrix4x4(0, 0, 4, 1, 0, 1, 0, 2, -1, 0, 0, 3, 0, 0, 0, 1));
+	EXPECT_EQ(t.m_Matrix, Matrix4x4(0, 0, 4, 1, 0, 1, 0, 2, -1, 0, 0, 3, 0, 0, 0, 1));
+	EXPECT_EQ(t.m_MatrixInverse, Matrix4x4(0, 0, 4, 1, 0, 1, 0, 2, -1, 0, 0, 3, 0, 0, 0, 1).Inversed());
+}
+
+TEST(TransformTest, CanTransformVectorsIdentity)
+{
+    Transform t;
+	Vector3 forward = { 0, 0, 1 };
+	Vector3 up = { 0, 1, 0 };
+	Vector3 right = { 1, 0, 0 };
+
+    // Indentity transform should not change vector
+	EXPECT_EQ(t(forward), forward);
+	EXPECT_EQ(t(up), up);
+	EXPECT_EQ(t(right), right);
+}
+
+TEST(TransformTest, CanTransformVectorsTranslated)
+{
+    Transform t;
+    t.SetTranslation({ 1.0, -1.0, 2.5 });
+
+	Vector3 forward = { 0, 0, 1 };
+	Vector3 up = { 0, 1, 0 };
+	Vector3 right = { 1, 0, 0 };
+
+    // Translation should not change vector
+	EXPECT_EQ(t(forward), forward);
+	EXPECT_EQ(t(up), up);
+	EXPECT_EQ(t(right), right);
+}
+
+TEST(TransformTest, CanTransformVectorsScaled)
+{
+    Transform t;
+    t.SetScale({ 2.0, 2.0, -2.0 });
+
+	Vector3 forward = { 0, 0, 1 };
+	Vector3 up = { 0, 1, 0 };
+	Vector3 right = { 1, 0, 0 };
+
+    // Scale should change vector
+    EXPECT_EQ(t(forward), Vector3(0, 0, -2));
+	EXPECT_EQ(t(up), Vector3(0, 2, 0));
+	EXPECT_EQ(t(right), Vector3(2, 0, 0));
+}
+
+TEST(TransformTest, CanTransformVectorsRotated)
+{
+	Transform t;
+	t.SetRotation({ 0, Math::DegToRad(90), 0 });
+
+	Vector3 forward = { 0, 0, 1 };
+	Vector3 up = { 0, 1, 0 };
+	Vector3 right = { 1, 0, 0 };
+
+	// Rotation should change vector
+	EXPECT_EQ(t(forward), right);
+	EXPECT_EQ(t(up), up);
+	EXPECT_EQ(t(right), -forward);
+
+	t.SetRotation({ Math::DegToRad(90), 0, 0});
+	EXPECT_EQ(t(forward), -up);
+	EXPECT_EQ(t(up), forward);
+	EXPECT_EQ(t(right), right);
+}
+
+TEST(TransformTest, CanTransformPointsIdentity)
+{
+	Transform t;
+	Point3 forward = { 0, 0, 1 };
+	Point3 up = { 0, 1, 0 };
+	Point3 right = { 1, 0, 0 };
+
+	// Indentity transform should not change point
+	EXPECT_EQ(t(forward), forward);
+	EXPECT_EQ(t(up), up);
+	EXPECT_EQ(t(right), right);
+}
+
+TEST(TransformTest, CanTransformPointsTranslated)
+{
+	Transform t;
+	Vector3 translation(1.0, 2.5, -1.0);
+	t.SetTranslation(translation);
+
+	Point3 forward = { 0, 0, 1 };
+	Point3 up = { 0, 1, 0 };
+	Point3 right = { 1, 0, 0 };
+
+	// Translation should change point
+	EXPECT_EQ(t(forward), forward + translation);
+	EXPECT_EQ(t(up), up + translation);
+	EXPECT_EQ(t(right), right + translation);
+}
+
+TEST(TransformTest, CanTransformPointsScaled)
+{
+	Transform t;
+	t.SetScale({ 2.0, 2.0, -2.0 });
+
+	Point3 forward = { 0, 0, 1 };
+	Point3 up = { 0, 1, 0 };
+	Point3 right = { 1, 0, 0 };
+
+	// Scale should change point
+	EXPECT_EQ(t(forward), Point3(0, 0, -2));
+	EXPECT_EQ(t(up), Point3(0, 2, 0));
+	EXPECT_EQ(t(right), Point3(2, 0, 0));
+}
+
+TEST(TransformTest, CanTransformPointsRotated)
+{
+	Transform t;
+	t.SetRotation({ 0, Math::DegToRad(90), 0 });
+
+	Point3 forward = { 0, 0, 1 };
+	Point3 up = { 0, 1, 0 };
+	Point3 right = { 1, 0, 0 };
+
+	// Rotation should change point
+	EXPECT_EQ(t(forward), right);
+	EXPECT_EQ(t(up), up);
+	EXPECT_EQ(t(right), -forward);
+
+	t.SetRotation({ Math::DegToRad(90), 0, 0 });
+	EXPECT_EQ(t(forward), -up);
+	EXPECT_EQ(t(up), forward);
+	EXPECT_EQ(t(right), right);
 }
 
 
+TEST(TransformTest, CanTransformNormalsIdentity)
+{
+	Transform t;
+	Normal3 forward = { 0, 0, 1 };
+	Normal3 up = { 0, 1, 0 };
+	Normal3 right = { 1, 0, 0 };
+
+	// Indentity transform should not change normal
+	EXPECT_EQ(t(forward), forward);
+	EXPECT_EQ(t(up), up);
+	EXPECT_EQ(t(right), right);
+}
+
+TEST(TransformTest, CanTransformNormalsTranslated)
+{
+	Transform t;
+	Vector3 translation(1.0, 2.5, -1.0);
+	t.SetTranslation(translation);
+
+	Normal3 forward = { 0, 0, 1 };
+	Normal3 up = { 0, 1, 0 };
+	Normal3 right = { 1, 0, 0 };
+
+	// Translation should not change normal
+	EXPECT_EQ(t(forward), forward);
+	EXPECT_EQ(t(up), up);
+	EXPECT_EQ(t(right), right);
+}
+
+TEST(TransformTest, CanTransformNormalsScaled)
+{
+	Transform t;
+	t.SetScale({ 0.5, 0.5, 0.5 });
+
+	Normal3 forward = { 0, 0, 1 };
+	Normal3 up = { 0, 1, 0 };
+	Normal3 right = { 1, 0, 0 };
+
+	// Scale should change normal
+	EXPECT_EQ(t(forward).Normalized(), Normal3(0, 0, 1.0));
+	EXPECT_EQ(t(up).Normalized(), Normal3(0, 1.0, 0));
+	EXPECT_EQ(t(right).Normalized(), Normal3(1.0, 0, 0));
+
+	// Scaling non-axis aligned normal must be done with inv transposed mat
+	t.SetScale({ 1.0, 0.5, 1.0 });
+	Normal3 rightDiag = Normal3({ 1.0, 1.0, 0.0 }).Normalized();
+	Vector3 rightDiagVec = Vector3({ 1.0, 1.0, 0.0 }).Normalized();
+
+	EXPECT_FALSE(t(rightDiag) == t(rightDiagVec));
+	EXPECT_EQ(t(rightDiag).Normalized(), Normal3(2, 4, 0).Normalized());
+}
+
+TEST(TransformTest, CanTransformNormalsRotated)
+{
+	Transform t;
+	t.SetRotation({ 0, Math::DegToRad(90), 0 });
+
+	Normal3 forward = { 0, 0, 1 };
+	Normal3 up = { 0, 1, 0 };
+	Normal3 right = { 1, 0, 0 };
+
+	// Rotation should change normal
+	EXPECT_EQ(t(forward), right);
+	EXPECT_EQ(t(up), up);
+	EXPECT_EQ(t(right), -forward);
+
+	t.SetRotation({ Math::DegToRad(90), 0, 0 });
+	EXPECT_EQ(t(forward), -up);
+	EXPECT_EQ(t(up), forward);
+	EXPECT_EQ(t(right), right);
+}

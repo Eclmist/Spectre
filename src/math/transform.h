@@ -36,8 +36,13 @@ public:
     void SetRotation(const Vector3& eulerRotation);
     void SetScale(const Vector3& scale);
 
-    Matrix4x4 GetMatrix() const;
-    Matrix4x4 GetInverseMatrix() const;
+public:
+	Vector3 operator()(const Vector3& v) const;
+	Normal3 operator()(const Normal3& n) const;
+	Point3 operator()(const Point3& p) const;
+
+private:
+    void UpdateMatrices();
 
 private:
     static Matrix4x4 GetTranslationMatrix(const Vector3& translation);
@@ -49,7 +54,16 @@ private:
     static Matrix4x4 GetRotationMatrixZ(double rotZ);
 
 private:
+    friend class TransformTest_DefaultsToIdentity_Test;
+    friend class TransformTest_MatrixHasCorrectValues_Test;
+
+
     Vector3 m_Translation;
     Vector3 m_EulerRotation;
     Vector3 m_Scale;
+
+    Matrix4x4 m_Matrix;
+    Matrix4x4 m_MatrixInverse;
+    Matrix4x4 m_MatrixTranspose;
+    Matrix4x4 m_MatrixInverseTranspose;
 };
