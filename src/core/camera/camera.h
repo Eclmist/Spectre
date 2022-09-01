@@ -20,9 +20,7 @@
 
 #pragma once
 
-#include "core/entity/components/transform.h"
 #include "core/film/film.h"
-#include "core/ray/ray.h"
 
 class Camera
 {

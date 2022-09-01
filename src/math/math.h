@@ -25,6 +25,8 @@
 #include "constants.h"
 #include "mathutils.h"
 #include "linalg.h"
+#include "transform.h"
+#include "ray.h"
 #include "rect.h"
 #include "random.h"
 

@@ -17,7 +17,7 @@
 */
 
 #include "gtest.h"
-#include "core/entity/components/transform.h"
+#include "math/transform.h"
 
 TEST(TransformTest, CanBeCreated)
 {

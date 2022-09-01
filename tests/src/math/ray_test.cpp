@@ -19,7 +19,7 @@
 */
 
 #include "gtest.h"
-#include "core/ray/ray.h"
+#include "math/ray.h"
 
 TEST(RayTest, CanBeCreated)
 {

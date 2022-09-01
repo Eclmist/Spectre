@@ -20,9 +20,7 @@
 
 #pragma once
 
-#include "component.h"
-
-class Transform : public Component
+class Transform
 {
 public:
     Transform();
