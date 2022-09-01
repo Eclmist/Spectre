@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include "math/ray.h"
+
 class Transform
 {
 public:
@@ -40,6 +42,7 @@ public:
 	Vector3 operator()(const Vector3& v) const;
 	Normal3 operator()(const Normal3& n) const;
 	Point3 operator()(const Point3& p) const;
+	Ray operator()(const Ray& r) const;
 
 private:
     void UpdateMatrices();

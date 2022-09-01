@@ -78,6 +78,13 @@ Point3 Transform::operator()(const Point3& p) const
 	return transformed.m_Data;
 }
 
+Ray Transform::operator()(const Ray& r) const
+{
+    Point3 origin = r.GetOrigin();
+    Vector3 direction = r.GetDirection();
+    return Ray((*this)(origin), (*this)(direction));
+}
+
 Matrix4x4 Transform::GetTranslationMatrix(const Vector3& translation)
 {
     return { 1.0, 0.0, 0.0, translation.x,
@@ -96,7 +103,6 @@ Matrix4x4 Transform::GetScaleMatrix(const Vector3& scale)
              0.0, scale.y, 0.0, 0.0,
              0.0, 0.0, scale.z, 0.0,
              0.0, 0.0, 0.0, 1.0 };
-
 }
 
 Matrix4x4 Transform::GetRotationMatrixX(double rotX)

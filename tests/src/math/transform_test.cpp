@@ -226,7 +226,6 @@ TEST(TransformTest, CanTransformPointsRotated)
 	EXPECT_EQ(t(right), right);
 }
 
-
 TEST(TransformTest, CanTransformNormalsIdentity)
 {
 	Transform t;
@@ -298,3 +297,69 @@ TEST(TransformTest, CanTransformNormalsRotated)
 	EXPECT_EQ(t(up), forward);
 	EXPECT_EQ(t(right), right);
 }
+
+TEST(TransformTest, CanTransformRaysIdentity)
+{
+	Transform t;
+	Ray r1({ 0,0,1 }, { 0,0,1 });
+	Ray r2({ 0,1,0 }, { 0,1,0 });
+	Ray r3({ 1,0,0 }, { 1,0,0 });
+
+	EXPECT_EQ(t(r1), r1);
+	EXPECT_EQ(t(r2), r2);
+	EXPECT_EQ(t(r3), r3);
+}
+
+TEST(TransformTest, CanTransformRaysTranslated)
+{
+	Transform t;
+	t.SetTranslation({ 1.0, -1.0, 2.5 });
+
+	Ray r1({ 0,0,1 }, { 0,0,1 });
+	Ray r2({ 0,1,0 }, { 0,1,0 });
+	Ray r3({ 1,0,0 }, { 1,0,0 });
+
+	EXPECT_EQ(t(r1).GetDirection(), r1.GetDirection());
+	EXPECT_EQ(t(r2).GetDirection(), r2.GetDirection());
+	EXPECT_EQ(t(r3).GetDirection(), r3.GetDirection());
+	EXPECT_EQ(t(r1).GetOrigin(), r1.GetOrigin() + Vector3(1.0, -1.0, 2.5));
+	EXPECT_EQ(t(r2).GetOrigin(), r2.GetOrigin() + Vector3(1.0, -1.0, 2.5));
+	EXPECT_EQ(t(r3).GetOrigin(), r3.GetOrigin() + Vector3(1.0, -1.0, 2.5));
+}
+
+TEST(TransformTest, CanTransformRaysScaled)
+{
+	Transform t;
+	t.SetScale({ 2.0, 2.0, -2.0 });
+
+	Ray r1({ 0,0,1 }, { 0,0,1 });
+	Ray r2({ 0,1,0 }, { 0,1,0 });
+	Ray r3({ 1,0,0 }, { 1,0,0 });
+
+	EXPECT_EQ(t(r1).GetDirection(), Vector3(0, 0, -2).Normalized());
+	EXPECT_EQ(t(r2).GetDirection(), Vector3(0, 2, 0).Normalized());
+	EXPECT_EQ(t(r3).GetDirection(), Vector3(2, 0, 0).Normalized());
+
+	EXPECT_EQ(t(r1).GetOrigin(), Point3(0, 0, -2));
+	EXPECT_EQ(t(r2).GetOrigin(), Point3(0, 2, 0));
+	EXPECT_EQ(t(r3).GetOrigin(), Point3(2, 0, 0));
+}
+
+TEST(TransformTest, CanTransformRaysRotated)
+{
+	Transform t;
+	t.SetRotation({ 0, Math::DegToRad(90), 0 });
+
+	Ray forward({ 0,0,1 }, { 0,0,1 });
+	Ray up({ 0,1,0 }, { 0,1,0 });
+	Ray right({ 1,0,0 }, { 1,0,0 });
+
+	EXPECT_EQ(t(forward).GetDirection(), right.GetDirection());
+	EXPECT_EQ(t(up).GetDirection(), up.GetDirection());
+	EXPECT_EQ(t(right).GetDirection(), -forward.GetDirection());
+
+	EXPECT_EQ(t(forward).GetOrigin(), right.GetOrigin());
+	EXPECT_EQ(t(up).GetOrigin(), up.GetOrigin());
+	EXPECT_EQ(t(right).GetOrigin(), -forward.GetOrigin());
+}
+
