@@ -46,3 +46,16 @@ TEST(RayTest, CanBeCopied)
     EXPECT_EQ(r.GetOrigin(), copy.GetOrigin());
 }
 
+TEST(RayTest, CanBeEvaluated)
+{
+    Ray r({ 0.0 }, { 1.0, 0.0, 0.0 });
+    EXPECT_EQ(r(1), Point3(1.0, 0.0, 0.0));
+    EXPECT_EQ(r(2), Point3(2.0, 0.0, 0.0));
+    EXPECT_EQ(r(-1), Point3(-1.0, 0.0, 0.0));
+
+    Ray r2({ 2.0, 1.0, 0.0 }, { 0.0, 1.0, 0.0 });
+    EXPECT_EQ(r2(0), Point3(2.0, 1.0, 0.0));
+    EXPECT_EQ(r2(1), Point3(2.0, 2.0, 0.0));
+    EXPECT_EQ(r2(-1), Point3(2.0, 0.0, 0.0));
+}
+
