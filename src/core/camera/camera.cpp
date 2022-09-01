@@ -20,13 +20,13 @@
 
 #include "camera.h"
 
-Vector3 Camera::TransformToWorldSpace(const Vector3& cameraSpaceVector)
+Vector3 Camera::CameraToWorldSpace(const Vector3& cameraSpaceVector)
 {
-    return cameraSpaceVector;
+    return m_Transform(cameraSpaceVector);
 }
 
-Point3 Camera::TransformToWorldSpace(const Point3& cameraSpacePoint)
+Point3 Camera::CameraToWorldSpace(const Point3& cameraSpacePoint)
 {
-    return cameraSpacePoint;
+    return m_Transform(cameraSpacePoint);
 }
 

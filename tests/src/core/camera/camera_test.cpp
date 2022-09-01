@@ -51,30 +51,42 @@ TEST(CameraTest, CanGetFilm)
 TEST(CameraTest, CanTransformCameraToWorldSpaceVector)
 {
     CameraImplStub camera;
-    Transform transform = camera.GetTransform();
+    Transform& transform = camera.GetTransform();
 
-    Vector3 cameraSpaceForward = { 0, 0, 1 };
-    Vector3 cameraSpaceUp = { 0, 1, 0 };
-    Vector3 cameraSpaceRight = { 1, 0, 0 };
+    Vector3 cameraSpaceForward(0, 0, 1);
+    Vector3 cameraSpaceUp(0, 1, 0);
+    Vector3 cameraSpaceRight(1, 0, 0);
 
     // Camera at origin
-    EXPECT_EQ(camera.TransformToWorldSpace(cameraSpaceForward), cameraSpaceForward);
-    EXPECT_EQ(camera.TransformToWorldSpace(cameraSpaceUp), cameraSpaceUp);
-    EXPECT_EQ(camera.TransformToWorldSpace(cameraSpaceRight), cameraSpaceRight);
+    EXPECT_EQ(camera.CameraToWorldSpace(cameraSpaceForward), cameraSpaceForward);
+    EXPECT_EQ(camera.CameraToWorldSpace(cameraSpaceUp), cameraSpaceUp);
+    EXPECT_EQ(camera.CameraToWorldSpace(cameraSpaceRight), cameraSpaceRight);
 
-    transform.SetTranslation({ 1, -2.30, 5.234 });
-    EXPECT_EQ(camera.TransformToWorldSpace(cameraSpaceForward), cameraSpaceForward);
-    EXPECT_EQ(camera.TransformToWorldSpace(cameraSpaceUp), cameraSpaceUp);
-    EXPECT_EQ(camera.TransformToWorldSpace(cameraSpaceRight), cameraSpaceRight);
-
-    //transform.SetScale({ 1234, -232.30, 5.234 });
-    //EXPECT_EQ(camera.TransformToWorldSpace(cameraSpaceForward), cameraSpaceForward);
-    //EXPECT_EQ(camera.TransformToWorldSpace(cameraSpaceUp), cameraSpaceUp);
-    //EXPECT_EQ(camera.TransformToWorldSpace(cameraSpaceRight), cameraSpaceRight);
+    Vector3 translation(1, -2.30, 5.234);
+    transform.SetTranslation(translation);
+    EXPECT_EQ(camera.CameraToWorldSpace(cameraSpaceForward), cameraSpaceForward);
+    EXPECT_EQ(camera.CameraToWorldSpace(cameraSpaceUp), cameraSpaceUp);
+    EXPECT_EQ(camera.CameraToWorldSpace(cameraSpaceRight), cameraSpaceRight);
 }
 
 TEST(CameraTest, CanTransformCameraToWorldSpacePoint)
 {
+    CameraImplStub camera;
+    Transform& transform = camera.GetTransform();
 
+	Point3 cameraSpaceForward(0, 0, 1);
+    Point3 cameraSpaceUp(0, 1, 0);
+    Point3 cameraSpaceRight(1, 0, 0);
+
+    // Camera at origin
+    EXPECT_EQ(camera.CameraToWorldSpace(cameraSpaceForward), cameraSpaceForward);
+    EXPECT_EQ(camera.CameraToWorldSpace(cameraSpaceUp), cameraSpaceUp);
+    EXPECT_EQ(camera.CameraToWorldSpace(cameraSpaceRight), cameraSpaceRight);
+
+    Vector3 translation(1, -2.30, 5.234);
+    transform.SetTranslation(translation);
+    EXPECT_EQ(camera.CameraToWorldSpace(cameraSpaceForward), cameraSpaceForward + translation);
+    EXPECT_EQ(camera.CameraToWorldSpace(cameraSpaceUp), cameraSpaceUp + translation);
+    EXPECT_EQ(camera.CameraToWorldSpace(cameraSpaceRight), cameraSpaceRight + translation);
 }
 
