@@ -19,7 +19,6 @@
 */
 
 #include "spectrum.h"
-#include <immintrin.h>
 
 Spectrum::Spectrum(double v)
 {
@@ -30,36 +29,16 @@ Spectrum Spectrum::operator+(const Spectrum& c) const
 {
     Spectrum result;
 
-#ifdef SPC_USE_AVX_2
-	for (int i = 0; i < NumSpectralSamples; i += 4)
-	{
-		__m256d lhs = _mm256_load_pd(&m_Coefficients[i]);
-		__m256d rhs = _mm256_load_pd(&c.m_Coefficients[i]);
-		__m256d res = _mm256_add_pd(lhs, rhs);
-		_mm256_store_pd(&result.m_Coefficients[i], res);
-	}
-#else
 	for (int i = 0; i < NumSpectralSamples; ++i)
 		result.m_Coefficients[i] = m_Coefficients[i] + c.m_Coefficients[i];
-#endif
 
     return result;
 }
 
 Spectrum& Spectrum::operator+=(const Spectrum& c)
 {
-#ifdef SPC_USE_AVX_2
-	for (int i = 0; i < NumSpectralSamples; i += 4)
-	{
-		__m256d lhs = _mm256_load_pd(&m_Coefficients[i]);
-		__m256d rhs = _mm256_load_pd(&c.m_Coefficients[i]);
-		__m256d res = _mm256_add_pd(lhs, rhs);
-		_mm256_store_pd(&m_Coefficients[i], res);
-	}
-#else
 	for (int i = 0; i < NumSpectralSamples; ++i)
 		m_Coefficients[i] += c.m_Coefficients[i];
-#endif
 
     return *this;
 }
@@ -68,36 +47,16 @@ Spectrum Spectrum::operator-(const Spectrum& c) const
 {
     Spectrum result;
 
-#ifdef SPC_USE_AVX_2
-	for (int i = 0; i < NumSpectralSamples; i += 4)
-	{
-		__m256d lhs = _mm256_load_pd(&m_Coefficients[i]);
-		__m256d rhs = _mm256_load_pd(&c.m_Coefficients[i]);
-		__m256d res = _mm256_sub_pd(lhs, rhs);
-		_mm256_store_pd(&result.m_Coefficients[i], res);
-	}
-#else
 	for (int i = 0; i < NumSpectralSamples; ++i)
 		result.m_Coefficients[i] = m_Coefficients[i] - c.m_Coefficients[i];
-#endif
 
     return result;
 }
 
 Spectrum& Spectrum::operator-=(const Spectrum& c)
 {
-#ifdef SPC_USE_AVX_2
-	for (int i = 0; i < NumSpectralSamples; i += 4)
-	{
-		__m256d lhs = _mm256_load_pd(&m_Coefficients[i]);
-		__m256d rhs = _mm256_load_pd(&c.m_Coefficients[i]);
-		__m256d res = _mm256_sub_pd(lhs, rhs);
-		_mm256_store_pd(&m_Coefficients[i], res);
-	}
-#else
 	for (int i = 0; i < NumSpectralSamples; ++i)
 		m_Coefficients[i] -= c.m_Coefficients[i];
-#endif
 
     return *this;
 }
@@ -106,36 +65,16 @@ Spectrum Spectrum::operator*(const Spectrum& c) const
 {
     Spectrum result;
 
-#ifdef SPC_USE_AVX_2
-	for (int i = 0; i < NumSpectralSamples; i += 4)
-	{
-		__m256d lhs = _mm256_load_pd(&m_Coefficients[i]);
-		__m256d rhs = _mm256_load_pd(&c.m_Coefficients[i]);
-		__m256d res = _mm256_mul_pd(lhs, rhs);
-		_mm256_store_pd(&result.m_Coefficients[i], res);
-	}
-#else
 	for (int i = 0; i < NumSpectralSamples; ++i)
         result.m_Coefficients[i] = m_Coefficients[i] * c.m_Coefficients[i];
-#endif
 
     return result;
 }
 
 Spectrum& Spectrum::operator*=(const Spectrum& c)
 {
-#ifdef SPC_USE_AVX_2
-	for (int i = 0; i < NumSpectralSamples; i += 4)
-	{
-		__m256d lhs = _mm256_load_pd(&m_Coefficients[i]);
-		__m256d rhs = _mm256_load_pd(&c.m_Coefficients[i]);
-		__m256d res = _mm256_mul_pd(lhs, rhs);
-		_mm256_store_pd(&m_Coefficients[i], res);
-	}
-#else
 	for (int i = 0; i < NumSpectralSamples; ++i)
 		m_Coefficients[i] *= c.m_Coefficients[i];
-#endif
 
     return *this;
 }
@@ -144,36 +83,16 @@ Spectrum Spectrum::operator/(const Spectrum& c) const
 {
     Spectrum result;
 
-#ifdef SPC_USE_AVX_2
-	for (int i = 0; i < NumSpectralSamples; i += 4)
-	{
-		__m256d lhs = _mm256_load_pd(&m_Coefficients[i]);
-		__m256d rhs = _mm256_load_pd(&c.m_Coefficients[i]);
-		__m256d res = _mm256_div_pd(lhs, rhs);
-		_mm256_store_pd(&result.m_Coefficients[i], res);
-	}
-#else
 	for (int i = 0; i < NumSpectralSamples; ++i)
 		result.m_Coefficients[i] = m_Coefficients[i] / c.m_Coefficients[i];
-#endif
 
     return result;
 }
 
 Spectrum& Spectrum::operator/=(const Spectrum& c)
 {
-#ifdef SPC_USE_AVX_2
-	for (int i = 0; i < NumSpectralSamples; i += 4)
-	{
-		__m256d lhs = _mm256_load_pd(&m_Coefficients[i]);
-		__m256d rhs = _mm256_load_pd(&c.m_Coefficients[i]);
-		__m256d res = _mm256_div_pd(lhs, rhs);
-		_mm256_store_pd(&m_Coefficients[i], res);
-	}
-#else
 	for (int i = 0; i < NumSpectralSamples; ++i)
 		m_Coefficients[i] /= c.m_Coefficients[i];
-#endif
 
     return *this;
 }
