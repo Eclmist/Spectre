@@ -59,3 +59,18 @@ TEST(RayTest, CanBeEvaluated)
     EXPECT_EQ(r2(-1), Point3(2.0, 0.0, 0.0));
 }
 
+TEST(RayTest, CanTestForEquality)
+{
+    Ray r({ 0.0 }, { 1.0, 0.0, 0.0 });
+    Ray r2({ 2.0, 1.0, 0.0 }, { 0.0, 1.0, 0.0 });
+    Ray r3({ 0.0 }, { 1.0, 2.0, 3.0 });
+
+    EXPECT_EQ(r, r);
+    EXPECT_EQ(r2, r2);
+    EXPECT_EQ(r3, r3);
+
+    EXPECT_NE(r, r2);
+    EXPECT_NE(r, r3);
+    EXPECT_NE(r2, r3);
+}
+

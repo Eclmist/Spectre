@@ -27,3 +27,13 @@ Ray::Ray(const Point3& origin, const Vector3& direction)
     m_Direction.Normalize();
 }
 
+bool Ray::operator==(const Ray& r) const
+{
+    return m_Origin == r.m_Origin && m_Direction == r.m_Direction;
+}
+
+bool Ray::operator!=(const Ray& r) const
+{
+    return !(*this == r);
+}
+
