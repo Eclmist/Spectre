@@ -24,7 +24,7 @@
 
 namespace Random
 {
-	static std::mt19937 m_Rng;
+    static std::mt19937 m_Rng;
 
     inline void Seed(int seed)
     {

@@ -29,16 +29,16 @@ Spectrum Spectrum::operator+(const Spectrum& c) const
 {
     Spectrum result;
 
-	for (int i = 0; i < NumSpectralSamples; ++i)
-		result.m_Coefficients[i] = m_Coefficients[i] + c.m_Coefficients[i];
+    for (int i = 0; i < NumSpectralSamples; ++i)
+        result.m_Coefficients[i] = m_Coefficients[i] + c.m_Coefficients[i];
 
     return result;
 }
 
 Spectrum& Spectrum::operator+=(const Spectrum& c)
 {
-	for (int i = 0; i < NumSpectralSamples; ++i)
-		m_Coefficients[i] += c.m_Coefficients[i];
+    for (int i = 0; i < NumSpectralSamples; ++i)
+        m_Coefficients[i] += c.m_Coefficients[i];
 
     return *this;
 }
@@ -47,16 +47,16 @@ Spectrum Spectrum::operator-(const Spectrum& c) const
 {
     Spectrum result;
 
-	for (int i = 0; i < NumSpectralSamples; ++i)
-		result.m_Coefficients[i] = m_Coefficients[i] - c.m_Coefficients[i];
+    for (int i = 0; i < NumSpectralSamples; ++i)
+        result.m_Coefficients[i] = m_Coefficients[i] - c.m_Coefficients[i];
 
     return result;
 }
 
 Spectrum& Spectrum::operator-=(const Spectrum& c)
 {
-	for (int i = 0; i < NumSpectralSamples; ++i)
-		m_Coefficients[i] -= c.m_Coefficients[i];
+    for (int i = 0; i < NumSpectralSamples; ++i)
+        m_Coefficients[i] -= c.m_Coefficients[i];
 
     return *this;
 }
@@ -65,7 +65,7 @@ Spectrum Spectrum::operator*(const Spectrum& c) const
 {
     Spectrum result;
 
-	for (int i = 0; i < NumSpectralSamples; ++i)
+    for (int i = 0; i < NumSpectralSamples; ++i)
         result.m_Coefficients[i] = m_Coefficients[i] * c.m_Coefficients[i];
 
     return result;
@@ -73,8 +73,8 @@ Spectrum Spectrum::operator*(const Spectrum& c) const
 
 Spectrum& Spectrum::operator*=(const Spectrum& c)
 {
-	for (int i = 0; i < NumSpectralSamples; ++i)
-		m_Coefficients[i] *= c.m_Coefficients[i];
+    for (int i = 0; i < NumSpectralSamples; ++i)
+        m_Coefficients[i] *= c.m_Coefficients[i];
 
     return *this;
 }
@@ -83,16 +83,16 @@ Spectrum Spectrum::operator/(const Spectrum& c) const
 {
     Spectrum result;
 
-	for (int i = 0; i < NumSpectralSamples; ++i)
-		result.m_Coefficients[i] = m_Coefficients[i] / c.m_Coefficients[i];
+    for (int i = 0; i < NumSpectralSamples; ++i)
+        result.m_Coefficients[i] = m_Coefficients[i] / c.m_Coefficients[i];
 
     return result;
 }
 
 Spectrum& Spectrum::operator/=(const Spectrum& c)
 {
-	for (int i = 0; i < NumSpectralSamples; ++i)
-		m_Coefficients[i] /= c.m_Coefficients[i];
+    for (int i = 0; i < NumSpectralSamples; ++i)
+        m_Coefficients[i] /= c.m_Coefficients[i];
 
     return *this;
 }

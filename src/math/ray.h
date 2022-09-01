@@ -36,8 +36,8 @@ public:
     inline void SetDirection(Vector3 direction) { m_Direction = direction.Normalized(); }
 
 public:
-	bool operator==(const Ray& r) const;
-	bool operator!=(const Ray& r) const;
+    bool operator==(const Ray& r) const;
+    bool operator!=(const Ray& r) const;
 
 private:
     Point3 m_Origin;

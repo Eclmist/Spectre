@@ -128,9 +128,9 @@ TEST(Point3Test, DoesNotChangeWithPpeSign)
 
 TEST(Point3Test, CanGetDistanceBetweenPoints)
 {
-	EXPECT_DOUBLE_EQ(Point3::Distance({ 0, 0, 0 }, { 1.0, 0.0, 0.0 }), 1.0);
-	EXPECT_DOUBLE_EQ(Point3::SquareDistance({ 0, 0, 0 }, { 1.0, 0.0, 0.0 }), 1.0);
-	EXPECT_DOUBLE_EQ(Point3::Distance({ 0.5, 0.13, -3.24 }, { 1.23, -4.04, 2.1 }), 6.8144992479271727);
-	EXPECT_DOUBLE_EQ(Point3::SquareDistance({ 0.5, 0.13, -3.24 }, { 1.23, -4.04, 2.1 }), 46.437399999999997);
+    EXPECT_DOUBLE_EQ(Point3::Distance({ 0, 0, 0 }, { 1.0, 0.0, 0.0 }), 1.0);
+    EXPECT_DOUBLE_EQ(Point3::SquareDistance({ 0, 0, 0 }, { 1.0, 0.0, 0.0 }), 1.0);
+    EXPECT_DOUBLE_EQ(Point3::Distance({ 0.5, 0.13, -3.24 }, { 1.23, -4.04, 2.1 }), 6.8144992479271727);
+    EXPECT_DOUBLE_EQ(Point3::SquareDistance({ 0.5, 0.13, -3.24 }, { 1.23, -4.04, 2.1 }), 46.437399999999997);
 }
 

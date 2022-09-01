@@ -21,43 +21,43 @@
 #include "threadpool.h"
 
 ThreadPool::ThreadPool(int numThreads)
-	: m_Stop(false)
+    : m_Stop(false)
 {
-	for (int i = 0; i < numThreads; ++i)
-	{
-		m_Threads.emplace_back([this] { ThreadMain(*this); });
-	}
+    for (int i = 0; i < numThreads; ++i)
+    {
+        m_Threads.emplace_back([this] { ThreadMain(*this); });
+    }
 }
 
 ThreadPool::~ThreadPool()
 {
-	m_Stop = true;
-	m_Condition.notify_all();
+    m_Stop = true;
+    m_Condition.notify_all();
 
-	for (std::thread& thread : m_Threads)
-		thread.join();
+    for (std::thread& thread : m_Threads)
+        thread.join();
 }
 
 void ThreadPool::ThreadMain(ThreadPool& pool)
 {
-	while (true)
-	{
-		std::unique_lock<std::mutex> lock(m_Mutex);
-		m_Condition.wait(lock, [&pool] { return pool.m_Stop || !pool.m_Tasks.empty(); });
+    while (true)
+    {
+        std::unique_lock<std::mutex> lock(m_Mutex);
+        m_Condition.wait(lock, [&pool] { return pool.m_Stop || !pool.m_Tasks.empty(); });
 
-		if (ShouldStop() && !HasTasksLeft())
-			return;
+        if (ShouldStop() && !HasTasksLeft())
+            return;
 
-		auto nextTask = pool.PopNextTask();
-		lock.unlock();
+        auto nextTask = pool.PopNextTask();
+        lock.unlock();
 
-		nextTask();
-	}
+        nextTask();
+    }
 }
 
 std::function<void()> ThreadPool::PopNextTask()
 {
-	auto nextTask = m_Tasks.top().m_Task;
-	m_Tasks.pop();
-	return nextTask;
+    auto nextTask = m_Tasks.top().m_Task;
+    m_Tasks.pop();
+    return nextTask;
 }

@@ -22,74 +22,74 @@
 
 namespace Sampling
 {
-	inline Point3 UniformSampleHemisphere()
-	{
-		double y = Random::UniformFloat();
-		double r = std::sqrt(std::max(0.0, 1.0 - y * y));
-		double phi = 2 * Math::Pi * Random::UniformFloat();
-		return Point3(r * cos(phi), y, r * sin(phi));
-	}
+    inline Point3 UniformSampleHemisphere()
+    {
+        double y = Random::UniformFloat();
+        double r = std::sqrt(std::max(0.0, 1.0 - y * y));
+        double phi = 2 * Math::Pi * Random::UniformFloat();
+        return Point3(r * cos(phi), y, r * sin(phi));
+    }
 
-	inline double UniformHemispherePdf() {
-		return Math::Inv2Pi;
-	}
+    inline double UniformHemispherePdf() {
+        return Math::Inv2Pi;
+    }
 
-	inline Point3 UniformSampleSphere()
-	{
-		double z = 1 - 2 * Random::UniformFloat();
-		double r = std::sqrt(std::max(0.0, 1.0 - z * z));
-		double phi = 2 * Math::Pi * Random::UniformFloat();
-		return Point3(r * cos(phi), r * sin(phi), z);
-	}
+    inline Point3 UniformSampleSphere()
+    {
+        double z = 1 - 2 * Random::UniformFloat();
+        double r = std::sqrt(std::max(0.0, 1.0 - z * z));
+        double phi = 2 * Math::Pi * Random::UniformFloat();
+        return Point3(r * cos(phi), r * sin(phi), z);
+    }
 
-	inline double UniformSpherePdf()
-	{
-		return Math::Inv4Pi;
-	}
+    inline double UniformSpherePdf()
+    {
+        return Math::Inv4Pi;
+    }
 
-	inline Point2 RejectionSampleDisk()
-	{
-		Point2 p;
-		do {
-			p.x = 1 - 2 * Random::UniformFloat();
-			p.y = 1 - 2 * Random::UniformFloat();
-		} while (p.x * p.x + p.y * p.y > 1);
-		return p;
-	}
+    inline Point2 RejectionSampleDisk()
+    {
+        Point2 p;
+        do {
+            p.x = 1 - 2 * Random::UniformFloat();
+            p.y = 1 - 2 * Random::UniformFloat();
+        } while (p.x * p.x + p.y * p.y > 1);
+        return p;
+    }
 
-	inline Point2 ConcentricSampleDisk()
-	{
-		Point2 uOffset = Point2(Random::UniformFloat() * 2.0 - 1.0, Random::UniformFloat() * 2.0 - 1.0);
+    inline Point2 ConcentricSampleDisk()
+    {
+        Point2 uOffset = Point2(Random::UniformFloat() * 2.0 - 1.0, Random::UniformFloat() * 2.0 - 1.0);
 
-		if (uOffset.x == 0 && uOffset.y == 0)
-			return {};
+        if (uOffset.x == 0 && uOffset.y == 0)
+            return {};
 
-		double theta, r;
+        double theta, r;
 
-		if (std::abs(uOffset.x) > std::abs(uOffset.y))
-		{
-			r = uOffset.x;
-			theta = Math::PiOver4 * (uOffset.y / uOffset.x);
-		}
-		else 
-		{
-			r = uOffset.y;
-			theta = Math::PiOver2 - Math::PiOver4 * (uOffset.x / uOffset.y);
-		}
+        if (std::abs(uOffset.x) > std::abs(uOffset.y))
+        {
+            r = uOffset.x;
+            theta = Math::PiOver4 * (uOffset.y / uOffset.x);
+        }
+        else 
+        {
+            r = uOffset.y;
+            theta = Math::PiOver2 - Math::PiOver4 * (uOffset.x / uOffset.y);
+        }
 
-		return Point2(cos(theta) * r, sin(theta) * r);
-	}
+        return Point2(cos(theta) * r, sin(theta) * r);
+    }
 
-	inline Point3 CosineSampleHemisphere()
-	{
-		Point2 d = ConcentricSampleDisk();
-		double z = std::sqrt(std::max(0.0, 1.0 - d.x * d.x - d.y * d.y));
-		return Point3(d.x, d.y, z);
-	}
+    inline Point3 CosineSampleHemisphere()
+    {
+        Point2 d = ConcentricSampleDisk();
+        double z = std::sqrt(std::max(0.0, 1.0 - d.x * d.x - d.y * d.y));
+        return Point3(d.x, d.y, z);
+    }
 
-	inline double CosineHemispherePdf(double cosTheta)
-	{
-		return cosTheta * Math::InvPi;
-	}
+    inline double CosineHemispherePdf(double cosTheta)
+    {
+        return cosTheta * Math::InvPi;
+    }
 }
 

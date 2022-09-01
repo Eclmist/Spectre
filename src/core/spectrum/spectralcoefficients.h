@@ -22,31 +22,31 @@
 
 struct SpectralCoefficients
 {
-	SpectralCoefficients(double v = 0)
-	{
-		m_Data[0] = v;
-		m_Data[1] = v;
-		m_Data[2] = v;
-	}
+    SpectralCoefficients(double v = 0)
+    {
+        m_Data[0] = v;
+        m_Data[1] = v;
+        m_Data[2] = v;
+    }
 
-	SpectralCoefficients(double r, double g, double b) {
+    SpectralCoefficients(double r, double g, double b) {
         m_Data[0] = r;
         m_Data[1] = g;
         m_Data[2] = b;
     }
 
-	inline double operator[](int i) const { return m_Data[i]; }
-	inline double& operator[](int i) { return m_Data[i]; }
+    inline double operator[](int i) const { return m_Data[i]; }
+    inline double& operator[](int i) { return m_Data[i]; }
 
-	inline SpectralCoefficients operator+(const SpectralCoefficients& v) const { return { m_Data[0] + v[0], m_Data[1] + v[1], m_Data[2] + v[2] }; }
-	inline SpectralCoefficients operator-(const SpectralCoefficients& v) const { return { m_Data[0] - v[0], m_Data[1] - v[1], m_Data[2] - v[2] }; }
-	inline SpectralCoefficients operator*(const SpectralCoefficients& v) const { return { m_Data[0] * v[0], m_Data[1] * v[1], m_Data[2] * v[2] }; }
-	inline SpectralCoefficients operator/(const SpectralCoefficients& v) const { return { m_Data[0] / v[0], m_Data[1] / v[1], m_Data[2] / v[2] }; }
+    inline SpectralCoefficients operator+(const SpectralCoefficients& v) const { return { m_Data[0] + v[0], m_Data[1] + v[1], m_Data[2] + v[2] }; }
+    inline SpectralCoefficients operator-(const SpectralCoefficients& v) const { return { m_Data[0] - v[0], m_Data[1] - v[1], m_Data[2] - v[2] }; }
+    inline SpectralCoefficients operator*(const SpectralCoefficients& v) const { return { m_Data[0] * v[0], m_Data[1] * v[1], m_Data[2] * v[2] }; }
+    inline SpectralCoefficients operator/(const SpectralCoefficients& v) const { return { m_Data[0] / v[0], m_Data[1] / v[1], m_Data[2] / v[2] }; }
 
-	inline void operator+=(const SpectralCoefficients& v) { m_Data[0] += v.m_Data[0]; m_Data[1] += v.m_Data[1]; m_Data[2] += v.m_Data[2]; }
-	inline void operator-=(const SpectralCoefficients& v) { m_Data[0] -= v.m_Data[0]; m_Data[1] -= v.m_Data[1]; m_Data[2] -= v.m_Data[2]; }
-	inline void operator*=(const SpectralCoefficients& v) { m_Data[0] *= v.m_Data[0]; m_Data[1] *= v.m_Data[1]; m_Data[2] *= v.m_Data[2]; }
-	inline void operator/=(const SpectralCoefficients& v) { m_Data[0] /= v.m_Data[0]; m_Data[1] /= v.m_Data[1]; m_Data[2] /= v.m_Data[2]; }
+    inline void operator+=(const SpectralCoefficients& v) { m_Data[0] += v.m_Data[0]; m_Data[1] += v.m_Data[1]; m_Data[2] += v.m_Data[2]; }
+    inline void operator-=(const SpectralCoefficients& v) { m_Data[0] -= v.m_Data[0]; m_Data[1] -= v.m_Data[1]; m_Data[2] -= v.m_Data[2]; }
+    inline void operator*=(const SpectralCoefficients& v) { m_Data[0] *= v.m_Data[0]; m_Data[1] *= v.m_Data[1]; m_Data[2] *= v.m_Data[2]; }
+    inline void operator/=(const SpectralCoefficients& v) { m_Data[0] /= v.m_Data[0]; m_Data[1] /= v.m_Data[1]; m_Data[2] /= v.m_Data[2]; }
 
     double m_Data[3];
 };

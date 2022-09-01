@@ -40,7 +40,7 @@ public:
 
     FilmTile& GetTile(int index);
     FilmTile& GetTile(const Point2i& position);
-	int GetNumTiles() const;
+    int GetNumTiles() const;
 
 private:
     void SetupTiles();

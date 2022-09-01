@@ -24,8 +24,8 @@
 template <int N>
 void CheckUniformity(std::vector<Point<double, N>> samples, double totalArea)
 {
-	const int numAreasToTest = 500;
-	const double radiusToTest = 0.1;
+    const int numAreasToTest = 500;
+    const double radiusToTest = 0.1;
 
     // Points must be uniformly distributed
     // For every point, it should roughly have the same number of neighbors
@@ -64,15 +64,15 @@ void CheckUniformity(std::vector<Point<double, N>> samples, double totalArea)
     double stdDeviation = std::sqrt(variance);
 
     
-	//std::cout << "samples: " << samples.size() << std::endl;
-	//std::cout << "variance " << variance << std::endl;
-	//std::cout << "standard deviation " << stdDeviation << std::endl;
-	//std::cout << "average neighbors per sample: " << meanNeighborCount << std::endl;
+    //std::cout << "samples: " << samples.size() << std::endl;
+    //std::cout << "variance " << variance << std::endl;
+    //std::cout << "standard deviation " << stdDeviation << std::endl;
+    //std::cout << "average neighbors per sample: " << meanNeighborCount << std::endl;
 
 
     // area = totalArea
     // area of sample = pi * r^2
-	// num areas = totalArea / (pi * r^2)
+    // num areas = totalArea / (pi * r^2)
     double numDeltaArea = totalArea / (Math::Pi * radiusToTest * radiusToTest);
     double expectedNeighborCount = samples.size() / numDeltaArea;
     //std::cout << "expectedNeighborCount: " << expectedNeighborCount << std::endl;
@@ -118,45 +118,45 @@ TEST(SamplingTest, CanSampleSphereUniformly)
         samples[i] = sample;
     }
 
-	CheckUniformity(samples, Math::Pi * 4);
+    CheckUniformity(samples, Math::Pi * 4);
 }
 
 TEST(SamplingTest, CanSampleDiskUniformly_RejectionMethod)
 {
-	const int numSamples = 50000;
-	const int numAreasToTest = 500;
-	const double radiusToTest = 0.1;
+    const int numSamples = 50000;
+    const int numAreasToTest = 500;
+    const double radiusToTest = 0.1;
 
-	std::vector<Point2> samples(numSamples);
+    std::vector<Point2> samples(numSamples);
 
-	for (int i = 0; i < numSamples; ++i)
-	{
+    for (int i = 0; i < numSamples; ++i)
+    {
         Point2 sample = Sampling::RejectionSampleDisk();
 
-		// Points must be within the disk
-		EXPECT_LE(Point2::Distance(sample, {}) - 1.0, 1.0 + Math::Epsilon);
-		samples[i] = sample;
-	}
+        // Points must be within the disk
+        EXPECT_LE(Point2::Distance(sample, {}) - 1.0, 1.0 + Math::Epsilon);
+        samples[i] = sample;
+    }
 
-	CheckUniformity(samples, Math::Pi);
+    CheckUniformity(samples, Math::Pi);
 }
 
 TEST(SamplingTest, CanSampleDiskUniformly_ConcentricMethod)
 {
-	const int numSamples = 50000;
-	const int numAreasToTest = 500;
-	const double radiusToTest = 0.1;
+    const int numSamples = 50000;
+    const int numAreasToTest = 500;
+    const double radiusToTest = 0.1;
 
-	std::vector<Point2> samples(numSamples);
+    std::vector<Point2> samples(numSamples);
 
-	for (int i = 0; i < numSamples; ++i)
-	{
+    for (int i = 0; i < numSamples; ++i)
+    {
         Point2 sample = Sampling::ConcentricSampleDisk();
 
-		// Points must be within the disk
-		EXPECT_LE(Point2::Distance(sample, {}) - 1.0, 1.0 + Math::Epsilon);
-		samples[i] = sample;
-	}
+        // Points must be within the disk
+        EXPECT_LE(Point2::Distance(sample, {}) - 1.0, 1.0 + Math::Epsilon);
+        samples[i] = sample;
+    }
 
-	CheckUniformity(samples, Math::Pi);
+    CheckUniformity(samples, Math::Pi);
 }

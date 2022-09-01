@@ -38,8 +38,8 @@ FilmTile& Film::GetTile(const Point2i& position)
 
 void Film::SetResolution(const Resolution& resolution)
 {
-	m_Resolution = resolution;
-	SetupTiles();
+    m_Resolution = resolution;
+    SetupTiles();
 }
 
 void Film::SetupTiles()

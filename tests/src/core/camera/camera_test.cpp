@@ -74,7 +74,7 @@ TEST(CameraTest, CanTransformCameraToWorldSpacePoint)
     CameraImplStub camera;
     Transform& transform = camera.GetTransform();
 
-	Point3 cameraSpaceForward(0, 0, 1);
+    Point3 cameraSpaceForward(0, 0, 1);
     Point3 cameraSpaceUp(0, 1, 0);
     Point3 cameraSpaceRight(1, 0, 0);
 

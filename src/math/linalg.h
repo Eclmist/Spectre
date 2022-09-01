@@ -71,9 +71,9 @@ inline Vector<T, N> operator-(const Point<T, N>& a, const Point<T, N>& b)
 {
     Vector<T, N> res;
 
-	for (int i = 0; i < N; ++i)
-		res[i] = a[i] - b[i];
+    for (int i = 0; i < N; ++i)
+        res[i] = a[i] - b[i];
 
-	return res;
+    return res;
 }
 

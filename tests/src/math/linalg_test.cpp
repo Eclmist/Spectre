@@ -73,21 +73,21 @@ TEST(LinearAlgebraTest, CanMultiplyMatricesWithVectors4x4)
 
 TEST(LinearAlgebraTest, CanAddVectorToPoint)
 {
-	Point3 a(1.0, 2.0, 3.0);
-	Vector3 b(2.0, 3.0, 4.0);
+    Point3 a(1.0, 2.0, 3.0);
+    Vector3 b(2.0, 3.0, 4.0);
     Point3 c = a + b;
-	EXPECT_DOUBLE_EQ(c.x, 3.0);
-	EXPECT_DOUBLE_EQ(c.y, 5.0);
-	EXPECT_DOUBLE_EQ(c.z, 7.0);
+    EXPECT_DOUBLE_EQ(c.x, 3.0);
+    EXPECT_DOUBLE_EQ(c.y, 5.0);
+    EXPECT_DOUBLE_EQ(c.z, 7.0);
 }
 
 TEST(LinearAlgebraTest, CanGetVectorBetweenPoints)
 {
-	Point3 a(1.0, 2.0, 3.0);
+    Point3 a(1.0, 2.0, 3.0);
     Point3 b(2.0, 3.0, 4.0);
     Vector3 c = a - b;
-	EXPECT_DOUBLE_EQ(c.x, -1.0);
-	EXPECT_DOUBLE_EQ(c.y, -1.0);
-	EXPECT_DOUBLE_EQ(c.z, -1.0);
+    EXPECT_DOUBLE_EQ(c.x, -1.0);
+    EXPECT_DOUBLE_EQ(c.y, -1.0);
+    EXPECT_DOUBLE_EQ(c.z, -1.0);
 }
 

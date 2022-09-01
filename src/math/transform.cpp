@@ -30,13 +30,13 @@ Transform::Transform()
 void Transform::SetTranslation(const Vector3& translation)
 {
     m_Translation = translation;
-	UpdateMatrices();
+    UpdateMatrices();
 }
 
 void Transform::SetRotation(const Vector3& eulerRotation)
 {
     m_EulerRotation = eulerRotation;
-	UpdateMatrices();
+    UpdateMatrices();
 }
 
 void Transform::SetScale(const Vector3& scale)
@@ -69,13 +69,13 @@ Normal3 Transform::operator()(const Normal3& n) const
 
 Point3 Transform::operator()(const Point3& p) const
 {
-	Vector4 homogeneousVec4(p.x, p.y, p.z, 1);
-	Vector4 transformed = m_Matrix * homogeneousVec4;
+    Vector4 homogeneousVec4(p.x, p.y, p.z, 1);
+    Vector4 transformed = m_Matrix * homogeneousVec4;
 
     if (transformed.w != 1.0)
-		transformed /= transformed.w;
+        transformed /= transformed.w;
 
-	return transformed.m_Data;
+    return transformed.m_Data;
 }
 
 Ray Transform::operator()(const Ray& r) const
