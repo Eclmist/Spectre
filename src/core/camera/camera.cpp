@@ -20,13 +20,25 @@
 
 #include "camera.h"
 
-Vector3 Camera::CameraToWorldSpace(const Vector3& cameraSpaceVector)
+Vector3 Camera::ToWorldSpace(const Vector3& cameraSpaceVector)
 {
     return m_Transform(cameraSpaceVector);
 }
 
-Point3 Camera::CameraToWorldSpace(const Point3& cameraSpacePoint)
+Point3 Camera::ToWorldSpace(const Point3& cameraSpacePoint)
 {
     return m_Transform(cameraSpacePoint);
+}
+
+Point3 Camera::ToCameraSpace(const Point2& filmSpacePoint)
+{
+    double halfFilmWidth = m_Film.GetResolution().GetWidth() / 2.0;
+    double halfFilmHeight = m_Film.GetResolution().GetHeight() / 2.0;
+    return { filmSpacePoint.x - halfFilmWidth, filmSpacePoint.y - halfFilmHeight, 1.0 };
+}
+
+Point3 Camera::ToCameraSpace(const Point3& worldSpacePoint)
+{
+    return Point3();
 }
 

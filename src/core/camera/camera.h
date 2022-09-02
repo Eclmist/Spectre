@@ -36,11 +36,14 @@ public:
     virtual Ray GenerateRay(const Point2& filmSpacePos) = 0;
 
 protected:
-    friend class CameraTest_CanTransformCameraToWorldSpacePoint_Test;
-    friend class CameraTest_CanTransformCameraToWorldSpaceVector_Test;
+    friend class CameraTest_CanTransformCameraPointToWorldSpace_Test;
+    friend class CameraTest_CanTransformCameraVectorToWorldSpace_Test;
+    friend class CameraTest_CanTranformFilmPointToCameraSpace_Test;
 
-    Vector3 CameraToWorldSpace(const Vector3& cameraSpaceVector);
-    Point3 CameraToWorldSpace(const Point3& cameraSpacePoint);
+    Vector3 ToWorldSpace(const Vector3& cameraSpaceVector);
+    Point3 ToWorldSpace(const Point3& cameraSpacePoint);
+    Point3 ToCameraSpace(const Point2& filmSpacePoint);
+    Point3 ToCameraSpace(const Point3& worldSpacePoint);
 
 protected:
     Transform m_Transform;

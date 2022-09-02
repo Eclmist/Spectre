@@ -34,8 +34,8 @@ TEST(CameraTest, CanGetTransform)
 {
     CameraImplStub camera;
     Transform& transform = camera.GetTransform();
-    transform.SetTranslation({ 1.0, 0.0, 0.0 });
-    EXPECT_EQ(camera.GetTransform().GetTranslation(), Vector3(1.0, 0.0, 0.0));
+	transform.SetTranslation({ 1, 2, 3 });
+	EXPECT_EQ(camera.GetTransform().GetMatrix(), Matrix4x4(1, 0, 0, 1, 0, 1, 0, 2, 0, 0, 1, 3, 0, 0, 0, 1));
 }
 
 TEST(CameraTest, CanGetFilm)
@@ -48,7 +48,7 @@ TEST(CameraTest, CanGetFilm)
     EXPECT_EQ(camera.GetFilm().GetResolution(), Resolution1024X768());
 }
 
-TEST(CameraTest, CanTransformCameraToWorldSpaceVector)
+TEST(CameraTest, CanTransformCameraVectorToWorldSpace)
 {
     CameraImplStub camera;
     Transform& transform = camera.GetTransform();
@@ -58,18 +58,30 @@ TEST(CameraTest, CanTransformCameraToWorldSpaceVector)
     Vector3 cameraSpaceRight(1, 0, 0);
 
     // Camera at origin
-    EXPECT_EQ(camera.CameraToWorldSpace(cameraSpaceForward), cameraSpaceForward);
-    EXPECT_EQ(camera.CameraToWorldSpace(cameraSpaceUp), cameraSpaceUp);
-    EXPECT_EQ(camera.CameraToWorldSpace(cameraSpaceRight), cameraSpaceRight);
+    EXPECT_EQ(camera.ToWorldSpace(cameraSpaceForward), cameraSpaceForward);
+    EXPECT_EQ(camera.ToWorldSpace(cameraSpaceUp), cameraSpaceUp);
+    EXPECT_EQ(camera.ToWorldSpace(cameraSpaceRight), cameraSpaceRight);
 
     Vector3 translation(1, -2.30, 5.234);
     transform.SetTranslation(translation);
-    EXPECT_EQ(camera.CameraToWorldSpace(cameraSpaceForward), cameraSpaceForward);
-    EXPECT_EQ(camera.CameraToWorldSpace(cameraSpaceUp), cameraSpaceUp);
-    EXPECT_EQ(camera.CameraToWorldSpace(cameraSpaceRight), cameraSpaceRight);
+    EXPECT_EQ(camera.ToWorldSpace(cameraSpaceForward), cameraSpaceForward);
+    EXPECT_EQ(camera.ToWorldSpace(cameraSpaceUp), cameraSpaceUp);
+    EXPECT_EQ(camera.ToWorldSpace(cameraSpaceRight), cameraSpaceRight);
+
+    transform.SetScale({ 2.0, 2.0, -2.0 });
+	EXPECT_EQ(camera.ToWorldSpace(cameraSpaceForward), Vector3(0, 0, -2));
+	EXPECT_EQ(camera.ToWorldSpace(cameraSpaceUp), Vector3(0, 2, 0));
+	EXPECT_EQ(camera.ToWorldSpace(cameraSpaceRight), Vector3(2, 0, 0));
+
+    transform.SetScale(Vector3(1.0));
+	transform.SetRotation({ Math::DegToRad(90), 0, 0 });
+
+	EXPECT_EQ(camera.ToWorldSpace(cameraSpaceForward),-cameraSpaceUp);
+	EXPECT_EQ(camera.ToWorldSpace(cameraSpaceUp), cameraSpaceForward);
+	EXPECT_EQ(camera.ToWorldSpace(cameraSpaceRight), cameraSpaceRight);
 }
 
-TEST(CameraTest, CanTransformCameraToWorldSpacePoint)
+TEST(CameraTest, CanTransformCameraPointToWorldSpace)
 {
     CameraImplStub camera;
     Transform& transform = camera.GetTransform();
@@ -79,14 +91,50 @@ TEST(CameraTest, CanTransformCameraToWorldSpacePoint)
     Point3 cameraSpaceRight(1, 0, 0);
 
     // Camera at origin
-    EXPECT_EQ(camera.CameraToWorldSpace(cameraSpaceForward), cameraSpaceForward);
-    EXPECT_EQ(camera.CameraToWorldSpace(cameraSpaceUp), cameraSpaceUp);
-    EXPECT_EQ(camera.CameraToWorldSpace(cameraSpaceRight), cameraSpaceRight);
+    EXPECT_EQ(camera.ToWorldSpace(cameraSpaceForward), cameraSpaceForward);
+    EXPECT_EQ(camera.ToWorldSpace(cameraSpaceUp), cameraSpaceUp);
+    EXPECT_EQ(camera.ToWorldSpace(cameraSpaceRight), cameraSpaceRight);
 
     Vector3 translation(1, -2.30, 5.234);
     transform.SetTranslation(translation);
-    EXPECT_EQ(camera.CameraToWorldSpace(cameraSpaceForward), cameraSpaceForward + translation);
-    EXPECT_EQ(camera.CameraToWorldSpace(cameraSpaceUp), cameraSpaceUp + translation);
-    EXPECT_EQ(camera.CameraToWorldSpace(cameraSpaceRight), cameraSpaceRight + translation);
+    EXPECT_EQ(camera.ToWorldSpace(cameraSpaceForward), cameraSpaceForward + translation);
+    EXPECT_EQ(camera.ToWorldSpace(cameraSpaceUp), cameraSpaceUp + translation);
+    EXPECT_EQ(camera.ToWorldSpace(cameraSpaceRight), cameraSpaceRight + translation);
+
+
+	transform.SetScale({ 2.0, 2.0, -2.0 });
+	EXPECT_EQ(camera.ToWorldSpace(cameraSpaceForward), Point3(0, 0, -2) + translation);
+	EXPECT_EQ(camera.ToWorldSpace(cameraSpaceUp), Point3(0, 2, 0) + translation);
+	EXPECT_EQ(camera.ToWorldSpace(cameraSpaceRight), Point3(2, 0, 0) + translation);
+
+	transform.SetTranslation(Vector3(0.0));
+	transform.SetScale(Vector3(1.0));
+	transform.SetRotation({ Math::DegToRad(90), 0, 0 });
+
+	EXPECT_EQ(camera.ToWorldSpace(cameraSpaceForward), -cameraSpaceUp);
+	EXPECT_EQ(camera.ToWorldSpace(cameraSpaceUp), cameraSpaceForward);
+	EXPECT_EQ(camera.ToWorldSpace(cameraSpaceRight), cameraSpaceRight);
+}
+
+TEST(CameraTest, CanTranformFilmPointToCameraSpace)
+{
+    CameraImplStub camera;
+    Transform& transform = camera.GetTransform();
+    Resolution resolution = camera.GetFilm().GetResolution();
+
+    Point2 filmPointA(0, 0);
+    Point2 filmPointB(10, 0);
+    Point2 filmPointC(0, 999);
+    Point2 filmPointD(-1, 0);
+
+    double halfWidth = resolution.GetWidth() / 2.0;
+    double halfHeight = resolution.GetHeight() / 2.0;
+
+    // Camera at origin
+    EXPECT_EQ(camera.ToCameraSpace(filmPointA), Point3(-halfWidth, -halfHeight, 1.0));
+    EXPECT_EQ(camera.ToCameraSpace(filmPointB), Point3(10 - halfWidth, -halfHeight, 1.0));
+    EXPECT_EQ(camera.ToCameraSpace(filmPointC), Point3(-halfWidth, 999 - halfHeight, 1.0));
+    EXPECT_EQ(camera.ToCameraSpace(filmPointD), Point3(-1 - halfWidth, -halfHeight, 1.0));
+
 }
 
