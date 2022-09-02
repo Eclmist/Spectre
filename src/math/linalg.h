@@ -67,6 +67,17 @@ inline Point<T, N> operator+(const Point<T, N>& p, const Vector<T, N>& v)
 }
 
 template<typename T, int N>
+inline Point<T, N> operator-(const Point<T, N>& p, const Vector<T, N>& v)
+{
+	Point<T, N> res;
+
+	for (int i = 0; i < N; ++i)
+		res[i] = p[i] - v[i];
+
+	return res;
+}
+
+template<typename T, int N>
 inline Vector<T, N> operator-(const Point<T, N>& a, const Point<T, N>& b)
 {
     Vector<T, N> res;
