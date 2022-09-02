@@ -39,11 +39,15 @@ protected:
     friend class CameraTest_CanTransformCameraPointToWorldSpace_Test;
     friend class CameraTest_CanTransformCameraVectorToWorldSpace_Test;
     friend class CameraTest_CanTranformFilmPointToCameraSpace_Test;
+	friend class CameraTest_CanTransformWorldVectorToCameraSpace_Test;
+	friend class CameraTest_CanTransformWorldPointToCameraSpace_Test;
 
     Vector3 ToWorldSpace(const Vector3& cameraSpaceVector);
     Point3 ToWorldSpace(const Point3& cameraSpacePoint);
-    Point3 ToCameraSpace(const Point2& filmSpacePoint);
+
+    Vector3 ToCameraSpace(const Vector3& worldSpaceVector);
     Point3 ToCameraSpace(const Point3& worldSpacePoint);
+    Point3 ToCameraSpace(const Point2& filmSpacePoint);
 
 protected:
     Transform m_Transform;
