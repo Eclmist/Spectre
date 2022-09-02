@@ -29,9 +29,8 @@ public:
     ~Transform() = default;
 
 public:
-    inline Vector3 GetTranslation() const { return m_Translation; }
-    inline Vector3 GetRotation() const { return m_EulerRotation; }
-    inline Vector3 GetScale() const { return m_Scale; }
+    inline Matrix4x4 GetMatrix() const { return m_Matrix; };
+    inline Matrix4x4 GetMatrixInverse() const { return m_MatrixInverse; };
 
 public:
     void SetTranslation(const Vector3& translation);
@@ -43,6 +42,9 @@ public:
     Normal3 operator()(const Normal3& n) const;
     Point3 operator()(const Point3& p) const;
     Ray operator()(const Ray& r) const;
+
+public:
+    Transform Inversed() const;
 
 private:
     void UpdateMatrices();
@@ -57,13 +59,9 @@ private:
     static Matrix4x4 GetRotationMatrixZ(double rotZ);
 
 private:
-    friend class TransformTest_DefaultsToIdentity_Test;
-    friend class TransformTest_MatrixHasCorrectValues_Test;
-
-
-    Vector3 m_Translation;
-    Vector3 m_EulerRotation;
-    Vector3 m_Scale;
+    Vector3 m_TransientTransform;
+    Vector3 m_TransientRotation;
+    Vector3 m_TransientScale;
 
     Matrix4x4 m_Matrix;
     Matrix4x4 m_MatrixInverse;

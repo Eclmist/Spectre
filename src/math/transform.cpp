@@ -21,33 +21,33 @@
 #include "transform.h"
 
 Transform::Transform()
-    : m_Translation(0.0)
-    , m_EulerRotation(0.0)
-    , m_Scale(1.0)
+    : m_TransientTransform(0.0)
+    , m_TransientRotation(0.0)
+    , m_TransientScale(1.0)
 {
 }
 
 void Transform::SetTranslation(const Vector3& translation)
 {
-    m_Translation = translation;
+    m_TransientTransform = translation;
     UpdateMatrices();
 }
 
 void Transform::SetRotation(const Vector3& eulerRotation)
 {
-    m_EulerRotation = eulerRotation;
+    m_TransientRotation = eulerRotation;
     UpdateMatrices();
 }
 
 void Transform::SetScale(const Vector3& scale)
 {
-    m_Scale = scale;
+    m_TransientScale = scale;
     UpdateMatrices();
 }
 
 void Transform::UpdateMatrices()
 {
-    m_Matrix = GetTranslationMatrix(m_Translation) * GetRotationMatrix(m_EulerRotation) * GetScaleMatrix(m_Scale);
+    m_Matrix = GetTranslationMatrix(m_TransientTransform) * GetRotationMatrix(m_TransientRotation) * GetScaleMatrix(m_TransientScale);
     m_MatrixInverse = m_Matrix.Inversed();
     m_MatrixTranspose = m_Matrix.Transposed();
     m_MatrixInverseTranspose = m_MatrixInverse.Transposed();
@@ -83,6 +83,16 @@ Ray Transform::operator()(const Ray& r) const
     Point3 origin = r.GetOrigin();
     Vector3 direction = r.GetDirection();
     return Ray((*this)(origin), (*this)(direction));
+}
+
+Transform Transform::Inversed() const
+{
+    Transform inv;
+    inv.m_MatrixInverse = m_Matrix;
+    inv.m_Matrix = m_MatrixInverse;
+    inv.m_MatrixInverseTranspose = m_MatrixTranspose;
+    inv.m_MatrixTranspose = m_MatrixInverseTranspose;
+    return inv;
 }
 
 Matrix4x4 Transform::GetTranslationMatrix(const Vector3& translation)

@@ -26,52 +26,31 @@ TEST(TransformTest, CanBeCreated)
 
 TEST(TransformTest, DefaultsToIdentity)
 {
-    EXPECT_TRUE(Transform().m_Matrix.IsIdentity());
-    EXPECT_TRUE(Transform().m_MatrixInverse.IsIdentity());
-    EXPECT_TRUE(Transform().m_MatrixTranspose.IsIdentity());
-    EXPECT_TRUE(Transform().m_MatrixInverseTranspose.IsIdentity());
-}
-
-TEST(TransformTest, CanGetTranslation)
-{
-    EXPECT_EQ(Transform().GetTranslation(), Vector3());
+    EXPECT_TRUE(Transform().GetMatrix().IsIdentity());
+    EXPECT_TRUE(Transform().GetMatrixInverse().IsIdentity());
 }
 
 TEST(TransformTest, CanSetTranlation)
 {
     Transform t;
-    ASSERT_NO_THROW(t.SetTranslation({ 1, 2, 3 }));
-    EXPECT_EQ(t.GetTranslation(), Vector3(1, 2, 3));
-    ASSERT_NO_THROW(t.SetTranslation({ 1, 2, 4 }));
-    EXPECT_EQ(t.GetTranslation(), Vector3(1, 2, 4));
-}
-
-TEST(TransformTest, CanGetRotation)
-{
-    EXPECT_EQ(Transform().GetRotation(), Vector3());
+	ASSERT_NO_THROW(t.SetTranslation({ 1, 2, 3 }));
+	EXPECT_EQ(t.GetMatrix(), Matrix4x4(1, 0, 0, 1, 0, 1, 0, 2, 0, 0, 1, 3, 0, 0, 0, 1));
+	ASSERT_NO_THROW(t.SetTranslation({ 1, 2, 4 }));
+	EXPECT_EQ(t.GetMatrix(), Matrix4x4(1, 0, 0, 1, 0, 1, 0, 2, 0, 0, 1, 4, 0, 0, 0, 1));
 }
 
 TEST(TransformTest, CanSetRotation)
 {
     Transform t;
-    ASSERT_NO_THROW(t.SetRotation({ 1, 2, 3 }));
-    EXPECT_EQ(t.GetRotation(), Vector3(1, 2, 3));
-    ASSERT_NO_THROW(t.SetRotation({ 1, 2, 4 }));
-    EXPECT_EQ(t.GetRotation(), Vector3(1, 2, 4));
-}
-
-TEST(TransformTest, CanGetScale)
-{
-    EXPECT_EQ(Transform().GetScale(), Vector3(1));
+	ASSERT_NO_THROW(t.SetRotation({ Math::Pi / 2, 0, 0 }));
+	EXPECT_EQ(t.GetMatrix(), Matrix4x4(1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 1));
 }
 
 TEST(TransformTest, CanSetScale)
 {
-    Transform t;
-    ASSERT_NO_THROW(t.SetScale({ 1, 2, 3 }));
-    EXPECT_EQ(t.GetScale(), Vector3(1, 2, 3));
-    ASSERT_NO_THROW(t.SetScale({ 1, 2, 4 }));
-    EXPECT_EQ(t.GetScale(), Vector3(1, 2, 4));
+	Transform t;
+	ASSERT_NO_THROW(t.SetScale({ 1, 2, 4}));
+	EXPECT_EQ(t.GetMatrix(), Matrix4x4(1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 4, 0, 0, 0, 0, 1));
 }
 
 TEST(TransformTest, MatrixHasCorrectValues)
@@ -79,24 +58,24 @@ TEST(TransformTest, MatrixHasCorrectValues)
     Transform t, t2;
 
     ASSERT_NO_THROW(t.SetTranslation({ 1, 2, 3 }));
-    EXPECT_EQ(t.m_Matrix, Matrix4x4(1, 0, 0, 1, 0, 1, 0, 2, 0, 0, 1, 3, 0, 0, 0, 1));
-    EXPECT_EQ(t.m_MatrixInverse, Matrix4x4(1, 0, 0, 1, 0, 1, 0, 2, 0, 0, 1, 3, 0, 0, 0, 1).Inversed());
+    EXPECT_EQ(t.GetMatrix(), Matrix4x4(1, 0, 0, 1, 0, 1, 0, 2, 0, 0, 1, 3, 0, 0, 0, 1));
+    EXPECT_EQ(t.GetMatrixInverse(), Matrix4x4(1, 0, 0, 1, 0, 1, 0, 2, 0, 0, 1, 3, 0, 0, 0, 1).Inversed());
 
     ASSERT_NO_THROW(t.SetScale({ 1, 1, 4 }));
-    EXPECT_EQ(t.m_Matrix, Matrix4x4(1, 0, 0, 1, 0, 1, 0, 2, 0, 0, 4, 3, 0, 0, 0, 1));
-    EXPECT_EQ(t.m_MatrixInverse, Matrix4x4(1, 0, 0, 1, 0, 1, 0, 2, 0, 0, 4, 3, 0, 0, 0, 1).Inversed());
+    EXPECT_EQ(t.GetMatrix(), Matrix4x4(1, 0, 0, 1, 0, 1, 0, 2, 0, 0, 4, 3, 0, 0, 0, 1));
+    EXPECT_EQ(t.GetMatrixInverse(), Matrix4x4(1, 0, 0, 1, 0, 1, 0, 2, 0, 0, 4, 3, 0, 0, 0, 1).Inversed());
 
     ASSERT_NO_THROW(t2.SetRotation({ Math::Pi / 2, 0, 0 }));
-    EXPECT_EQ(t2.m_Matrix, Matrix4x4(1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 1));
-    EXPECT_EQ(t2.m_MatrixInverse, Matrix4x4(1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 1).Inversed());
+    EXPECT_EQ(t2.GetMatrix(), Matrix4x4(1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 1));
+    EXPECT_EQ(t2.GetMatrixInverse(), Matrix4x4(1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 1).Inversed());
 
     ASSERT_NO_THROW(t2.SetRotation({ Math::Pi / 2, Math::Pi / 2, Math::Pi / 2 }));
-    EXPECT_EQ(t2.m_Matrix, Matrix4x4(0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 0, 1));
-    EXPECT_EQ(t2.m_MatrixInverse, Matrix4x4(0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 0, 1).Inversed());
+    EXPECT_EQ(t2.GetMatrix(), Matrix4x4(0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 0, 1));
+    EXPECT_EQ(t2.GetMatrixInverse(), Matrix4x4(0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 0, 1).Inversed());
 
     ASSERT_NO_THROW(t.SetRotation({ Math::Pi / 2, Math::Pi / 2, Math::Pi / 2 }));
-    EXPECT_EQ(t.m_Matrix, Matrix4x4(0, 0, 4, 1, 0, 1, 0, 2, -1, 0, 0, 3, 0, 0, 0, 1));
-    EXPECT_EQ(t.m_MatrixInverse, Matrix4x4(0, 0, 4, 1, 0, 1, 0, 2, -1, 0, 0, 3, 0, 0, 0, 1).Inversed());
+    EXPECT_EQ(t.GetMatrix(), Matrix4x4(0, 0, 4, 1, 0, 1, 0, 2, -1, 0, 0, 3, 0, 0, 0, 1));
+    EXPECT_EQ(t.GetMatrixInverse(), Matrix4x4(0, 0, 4, 1, 0, 1, 0, 2, -1, 0, 0, 3, 0, 0, 0, 1).Inversed());
 }
 
 TEST(TransformTest, CanTransformVectorsIdentity)
@@ -361,5 +340,25 @@ TEST(TransformTest, CanTransformRaysRotated)
     EXPECT_EQ(t(forward).GetOrigin(), right.GetOrigin());
     EXPECT_EQ(t(up).GetOrigin(), up.GetOrigin());
     EXPECT_EQ(t(right).GetOrigin(), -forward.GetOrigin());
+}
+
+TEST(TransformTest, CanGetInverse)
+{
+	Transform t, t2;
+
+	t.SetTranslation({ 1, 2, 3 });
+	t.SetScale({ 1, 1, 4 });
+	t.SetRotation({ Math::Pi / 2, Math::Pi / 2, Math::Pi / 2 });
+	t2.SetRotation({ Math::Pi / 2, 0, 0 });
+	t2.SetRotation({ Math::Pi / 2, Math::Pi / 2, Math::Pi / 2 });
+
+	Transform tInv = t.Inversed();
+	Transform tInv2 = t2.Inversed();
+
+    EXPECT_EQ(tInv.GetMatrix(), t.GetMatrixInverse());
+    EXPECT_EQ(tInv.GetMatrixInverse(), t.GetMatrix());
+
+	EXPECT_EQ(tInv2.GetMatrix(), t2.GetMatrixInverse());
+	EXPECT_EQ(tInv2.GetMatrixInverse(), t2.GetMatrix());
 }
 
