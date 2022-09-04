@@ -31,6 +31,7 @@ public:
     Normal(T x, T y, T z);
     Normal(T x, T y, T z, T w);
     Normal(const T* data);
+    Normal(const Normal& v);
     Normal(const Vector<T, N>& v);
 };
 

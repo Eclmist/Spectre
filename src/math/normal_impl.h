@@ -48,7 +48,14 @@ inline Normal<T, N>::Normal(const T* data)
 }
 
 template<typename T, int N>
+inline Normal<T, N>::Normal(const Normal& v)
+    : Vector<T, N>(v.m_Data)
+{
+}
+
+template<typename T, int N>
 inline Normal<T, N>::Normal(const Vector<T, N>& v)
     : Vector<T, N>(v)
 {
 }
+
