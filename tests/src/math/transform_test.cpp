@@ -362,3 +362,28 @@ TEST(TransformTest, CanGetInverse)
 	EXPECT_EQ(tInv2.GetMatrixInverse(), t2.GetMatrix());
 }
 
+TEST(TransformTest, CorrectOrderOfTransformations)
+{
+    // Should scale at origin, rotate at origin, then translate to position
+    Transform t;
+
+	Point3 forward = { 0, 0, 1 };
+	Point3 up = { 0, 1, 0 };
+	Point3 right = { 1, 0, 0 };
+
+    t.SetScale(2.0);
+    EXPECT_EQ(t(forward), Point3(0, 0, 2));
+    EXPECT_EQ(t(up), Point3(0, 2, 0));
+    EXPECT_EQ(t(right), Point3(2, 0, 0));
+
+    t.SetRotation(Vector3(Math::DegToRad(90), 0, 0));
+    EXPECT_EQ(t(forward), Point3(0, -2, 0));
+    EXPECT_EQ(t(up), Point3(0, 0, 2));
+    EXPECT_EQ(t(right), Point3(2, 0, 0));
+
+	t.SetTranslation(Vector3(20, 30, 40));
+	EXPECT_EQ(t(forward), Point3(20, 28, 40));
+	EXPECT_EQ(t(up), Point3(20, 30, 42));
+	EXPECT_EQ(t(right), Point3(22, 30, 40));
+}
+
