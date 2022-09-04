@@ -40,10 +40,10 @@ Point3 Camera::ToCameraSpace(const Point3& worldSpacePoint)
 	return m_Transform.Inversed()(worldSpacePoint);
 }
 
-Point3 Camera::ToCameraSpace(const Point2& filmSpacePoint)
+Point3 Camera::ToCameraSpace(const Point2i& filmSpacePoint)
 {
     double halfFilmWidth = m_Film.GetResolution().GetWidth() / 2.0;
     double halfFilmHeight = m_Film.GetResolution().GetHeight() / 2.0;
-    return { filmSpacePoint.x - halfFilmWidth, filmSpacePoint.y - halfFilmHeight, 1.0 };
+    return { filmSpacePoint.x - halfFilmWidth, halfFilmHeight - filmSpacePoint.y, 1.0 };
 }
 

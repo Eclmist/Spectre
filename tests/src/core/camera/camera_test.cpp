@@ -22,7 +22,7 @@
 
 class CameraImplStub : public Camera
 {
-    Ray GenerateRay(const Point2& filmSpacePos) override { return {}; }
+    Ray GenerateRay(const Point2i& filmSpacePos) override { return {}; }
 };
 
 TEST(CameraTest, CanBeCreated)
@@ -122,19 +122,19 @@ TEST(CameraTest, CanTranformFilmPointToCameraSpace)
     Transform& transform = camera.GetTransform();
     Resolution resolution = camera.GetFilm().GetResolution();
 
-    Point2 filmPointA(0, 0);
-    Point2 filmPointB(10, 0);
-    Point2 filmPointC(0, 999);
-    Point2 filmPointD(-1, 0);
+    Point2i filmPointA(0, 0);
+    Point2i filmPointB(10, 0);
+    Point2i filmPointC(0, 999);
+    Point2i filmPointD(-1, 0);
 
     double halfWidth = resolution.GetWidth() / 2.0;
     double halfHeight = resolution.GetHeight() / 2.0;
 
     // Camera at origin
-    EXPECT_EQ(camera.ToCameraSpace(filmPointA), Point3(-halfWidth, -halfHeight, 1.0));
-    EXPECT_EQ(camera.ToCameraSpace(filmPointB), Point3(10 - halfWidth, -halfHeight, 1.0));
-    EXPECT_EQ(camera.ToCameraSpace(filmPointC), Point3(-halfWidth, 999 - halfHeight, 1.0));
-    EXPECT_EQ(camera.ToCameraSpace(filmPointD), Point3(-1 - halfWidth, -halfHeight, 1.0));
+    EXPECT_EQ(camera.ToCameraSpace(filmPointA), Point3(-halfWidth, halfHeight, 1.0));
+    EXPECT_EQ(camera.ToCameraSpace(filmPointB), Point3(10 - halfWidth, halfHeight, 1.0));
+    EXPECT_EQ(camera.ToCameraSpace(filmPointC), Point3(-halfWidth, halfHeight - 999, 1.0));
+    EXPECT_EQ(camera.ToCameraSpace(filmPointD), Point3(-1 - halfWidth, halfHeight, 1.0));
 }
 
 TEST(CameraTest, CanTransformWorldVectorToCameraSpace)

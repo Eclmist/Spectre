@@ -33,8 +33,9 @@ public:
     inline void SetSize(double size) { m_Size = size; }
 
 public:
-    Ray GenerateRay(const Point2& filmSpacePos) override;
+    Ray GenerateRay(const Point2i& filmSpacePos) override;
 
 protected:
     double m_Size;
 };
+

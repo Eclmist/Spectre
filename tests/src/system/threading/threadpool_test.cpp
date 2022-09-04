@@ -129,8 +129,7 @@ TEST(ThreadPoolTest, TaskCanHavePriority)
         // Lockup first thread to give time to adding other tasks
         pool.ScheduleTask(99999, [&]()
         {
-            mutex.lock();
-            mutex.unlock();
+			std::lock_guard<std::mutex> lock(mutex);
         });
 
         for (int i = 0; i < 20; ++i)

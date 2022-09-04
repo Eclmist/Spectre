@@ -42,3 +42,8 @@ TEST(OrthographicCameraTest, HasDefaultSize)
     EXPECT_DOUBLE_EQ(camera.GetSize(), 1.0);
 }
 
+TEST(OrthographicCameraTest, CanGenerateRay)
+{
+    OrthographicCamera camera;
+}
+

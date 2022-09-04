@@ -25,7 +25,11 @@ OrthographicCamera::OrthographicCamera(double size)
 {
 }
 
-Ray OrthographicCamera::GenerateRay(const Point2& filmSpacePos)
+Ray OrthographicCamera::GenerateRay(const Point2i& filmSpacePos)
 {
-    return Ray();
+    Point3 cameraSpaceFilmPoint = ToCameraSpace(filmSpacePos);
+    Point3 rayOriginWs = ToWorldSpace(Point3(cameraSpaceFilmPoint.x, cameraSpaceFilmPoint.y, 0));
+    Vector3 rayDirectionWs = ToWorldSpace(Vector3(0, 0, 1));
+    return Ray(rayOriginWs, rayDirectionWs);
 }
+

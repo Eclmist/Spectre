@@ -33,7 +33,7 @@ public:
     inline Film& GetFilm() { return m_Film; }
 
 public:
-    virtual Ray GenerateRay(const Point2& filmSpacePos) = 0;
+    virtual Ray GenerateRay(const Point2i& filmSpacePos) = 0;
 
 protected:
     friend class CameraTest_CanTransformCameraPointToWorldSpace_Test;
@@ -47,7 +47,7 @@ protected:
 
     Vector3 ToCameraSpace(const Vector3& worldSpaceVector);
     Point3 ToCameraSpace(const Point3& worldSpacePoint);
-    Point3 ToCameraSpace(const Point2& filmSpacePoint);
+    Point3 ToCameraSpace(const Point2i& filmSpacePoint);
 
 protected:
     Transform m_Transform;

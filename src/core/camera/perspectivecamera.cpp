@@ -24,7 +24,7 @@ PerspectiveCamera::PerspectiveCamera()
 {
 }
 
-Ray PerspectiveCamera::GenerateRay(const Point2& filmSpacePos)
+Ray PerspectiveCamera::GenerateRay(const Point2i& filmSpacePos)
 {
     return Ray();
 }
