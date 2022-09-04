@@ -27,8 +27,11 @@ OrthographicCamera::OrthographicCamera(double size)
 
 Ray OrthographicCamera::GenerateRay(const Point2i& filmSpacePos)
 {
+    // Add an empirical scale such that size=1 is consistent with perspective camera
+    const double sizeScale = 0.005;
+    const double scaledSize = m_Size * sizeScale;
     Point3 cameraSpaceFilmPoint = ToCameraSpace(filmSpacePos);
-    Point3 rayOriginWs = ToWorldSpace(Point3(cameraSpaceFilmPoint.x, cameraSpaceFilmPoint.y, 0));
+    Point3 rayOriginWs = ToWorldSpace(Point3(cameraSpaceFilmPoint.x * scaledSize, cameraSpaceFilmPoint.y * scaledSize, 0));
     Vector3 rayDirectionWs = ToWorldSpace(Vector3(0, 0, 1));
     return Ray(rayOriginWs, rayDirectionWs);
 }

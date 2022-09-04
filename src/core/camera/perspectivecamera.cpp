@@ -20,11 +20,20 @@
 
 #include "perspectivecamera.h"
 
-PerspectiveCamera::PerspectiveCamera()
+PerspectiveCamera::PerspectiveCamera(double fovH)
+    : m_HorizontalFov(fovH)
 {
 }
 
 Ray PerspectiveCamera::GenerateRay(const Point2i& filmSpacePos)
 {
-    return Ray();
+	double halfFovH = m_HorizontalFov / 2.0;
+	double filmZPlane = (m_Film.GetResolution().GetWidth() / 2.0) / std::tan(Math::DegToRad(halfFovH));
+
+	Point3 cameraSpaceFilmPoint = ToCameraSpace(filmSpacePos);
+	cameraSpaceFilmPoint.z *= filmZPlane;
+	Point3 rayOriginWs = ToWorldSpace(Point3(0, 0, 0));
+	Vector3 rayDirectionWs = ToWorldSpace(cameraSpaceFilmPoint - Point3(0, 0, 0));
+	return Ray(rayOriginWs, rayDirectionWs);
 }
+
