@@ -367,23 +367,39 @@ TEST(TransformTest, CorrectOrderOfTransformations)
     // Should scale at origin, rotate at origin, then translate to position
     Transform t;
 
-	Point3 forward = { 0, 0, 1 };
+	Point3 front = { 0, 0, 1 };
 	Point3 up = { 0, 1, 0 };
 	Point3 right = { 1, 0, 0 };
 
     t.SetScale(2.0);
-    EXPECT_EQ(t(forward), Point3(0, 0, 2));
+    EXPECT_EQ(t(front), Point3(0, 0, 2));
     EXPECT_EQ(t(up), Point3(0, 2, 0));
     EXPECT_EQ(t(right), Point3(2, 0, 0));
 
     t.SetRotation(Vector3(Math::DegToRad(90), 0, 0));
-    EXPECT_EQ(t(forward), Point3(0, -2, 0));
+    EXPECT_EQ(t(front), Point3(0, -2, 0));
     EXPECT_EQ(t(up), Point3(0, 0, 2));
     EXPECT_EQ(t(right), Point3(2, 0, 0));
 
 	t.SetTranslation(Vector3(20, 30, 40));
-	EXPECT_EQ(t(forward), Point3(20, 28, 40));
+	EXPECT_EQ(t(front), Point3(20, 28, 40));
 	EXPECT_EQ(t(up), Point3(20, 30, 42));
 	EXPECT_EQ(t(right), Point3(22, 30, 40));
+
+	Transform t2;
+	Point3 origin = { 0, 0, 0 };
+    t2.SetTranslation({ 10, 100, 20 });
+    t2.SetRotation({ Math::DegToRad(90), 0, 0 });
+    EXPECT_EQ(t2(origin), Point3(10, 100, 20));
+    Vector3 forward = { 0, 0, 1 };
+    EXPECT_EQ(t2(forward), Vector3(0, -1, 0));
+    Ray forwardRay({ 0, 0, 0 }, { 0,0,1 });
+    EXPECT_EQ(t2(forwardRay), Ray({10, 100, 20}, {0, -1, 0}));
+
+	Transform t3;
+	t3.SetTranslation({ 0, 0.5, -10 });
+	t3.SetScale({ 0.005 });
+	t3.SetRotation({ Math::DegToRad(2), 0, 0 });
+    EXPECT_EQ(t3(forwardRay).GetOrigin(), Point3(0, 0.5, -10));
 }
 
