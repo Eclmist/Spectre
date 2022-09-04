@@ -22,7 +22,7 @@
 
 class CameraImplStub : public Camera
 {
-    Ray GenerateRay(const Point2i& filmSpacePos) override { return {}; }
+    Ray GenerateRay(const Point2i& filmSpacePos, const Vector2& offset) override { return {}; }
 };
 
 TEST(CameraTest, CanBeCreated)

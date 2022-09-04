@@ -33,7 +33,7 @@ public:
     inline Film& GetFilm() { return m_Film; }
 
 public:
-    virtual Ray GenerateRay(const Point2i& filmSpacePos) = 0;
+    virtual Ray GenerateRay(const Point2i& filmSpacePos, const Vector2& offset) = 0;
 
 protected:
     friend class CameraTest_CanTransformCameraPointToWorldSpace_Test;
