@@ -37,6 +37,6 @@ Spectre continues to take inspiration from [SORT](http://sort-renderer.com/) and
 
 # Screenshots
 <p align="center">
-  <img src="https://i.imgur.com/OBbM46z.png" width=700>
+  <img src="https://raw.githubusercontent.com/eclmist/spectre/master/docs/img/demo0.png" width=700>
 </p>
 
