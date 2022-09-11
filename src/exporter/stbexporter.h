@@ -22,10 +22,12 @@
 
 #include "exporter.h"
 
+class Tonemapper;
+
 class StbExporter : public Exporter
 {
 public:
-    StbExporter();
+    StbExporter(std::shared_ptr<Tonemapper> tonemapper = nullptr);
     ~StbExporter() = default;
 
 public:
@@ -42,4 +44,6 @@ private:
 private:
     std::string m_OutputFileName;
     mutable std::mutex m_ExportMutex;
+
+    std::shared_ptr<Tonemapper> m_Tonemapper;
 };
