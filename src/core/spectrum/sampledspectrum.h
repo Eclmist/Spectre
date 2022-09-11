@@ -22,7 +22,6 @@
 
 #include "spectrum.h"
 #include "spectralsample.h"
-#include "spectralcoefficients.h"
 
 const int MinWavelength = 360;
 const int MaxWavelength = 830;

@@ -20,8 +20,6 @@
 
 #pragma once
 
-#include "core/spectrum/spectralcoefficients.h"
-
 class Pixel
 {
 public:

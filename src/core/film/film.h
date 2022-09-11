@@ -22,7 +22,6 @@
 
 #include "resolution.h"
 #include "filmtile.h"
-#include "core/spectrum/spectralcoefficients.h"
 
 class Film
 {

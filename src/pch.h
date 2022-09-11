@@ -30,5 +30,18 @@
 #include <type_traits>
 #include <vector>
 
+#include "core/spectrum/spectralcoefficients.h"
+#include "core/spectrum/reflectantspectrum.h"
+#include "core/spectrum/illuminantspectrum.h"
+
+#include <cmath>
+#include "math/constants.h"
+#include "math/mathutils.h"
+#include "math/linalg.h"
+#include "math/transform.h"
+#include "math/ray.h"
+#include "math/rect.h"
+#include "math/random.h"
+
 #include "system/platform/platformutils.h"
-#include "math/math.h"
+
