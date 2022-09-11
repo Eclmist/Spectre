@@ -32,12 +32,12 @@ Point3 Camera::ToWorldSpace(const Point3& cameraSpacePoint)
 
 Vector3 Camera::ToCameraSpace(const Vector3& worldSpaceVector)
 {
-	return m_Transform.Inversed()(worldSpaceVector);
+    return m_Transform.Inversed()(worldSpaceVector);
 }
 
 Point3 Camera::ToCameraSpace(const Point3& worldSpacePoint)
 {
-	return m_Transform.Inversed()(worldSpacePoint);
+    return m_Transform.Inversed()(worldSpacePoint);
 }
 
 Point3 Camera::ToCameraSpace(const Point2i& filmSpacePoint)

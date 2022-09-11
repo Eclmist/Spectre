@@ -69,12 +69,12 @@ inline Point<T, N> operator+(const Point<T, N>& p, const Vector<T, N>& v)
 template<typename T, int N>
 inline Point<T, N> operator-(const Point<T, N>& p, const Vector<T, N>& v)
 {
-	Point<T, N> res;
+    Point<T, N> res;
 
-	for (int i = 0; i < N; ++i)
-		res[i] = p[i] - v[i];
+    for (int i = 0; i < N; ++i)
+        res[i] = p[i] - v[i];
 
-	return res;
+    return res;
 }
 
 template<typename T, int N>

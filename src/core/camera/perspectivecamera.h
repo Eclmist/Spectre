@@ -29,8 +29,8 @@ public:
     ~PerspectiveCamera() = default;
 
 public:
-	inline double GetHorizontalFov() const { return m_HorizontalFov; }
-	inline void SetHorizontalFov(double fovH) { m_HorizontalFov = fovH; }
+    inline double GetHorizontalFov() const { return m_HorizontalFov; }
+    inline void SetHorizontalFov(double fovH) { m_HorizontalFov = fovH; }
 
 public:
     Ray GenerateRay(const Point2i& filmSpacePos, const Vector2& offset = {}) override;

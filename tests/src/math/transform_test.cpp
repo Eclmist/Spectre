@@ -33,24 +33,24 @@ TEST(TransformTest, DefaultsToIdentity)
 TEST(TransformTest, CanSetTranlation)
 {
     Transform t;
-	ASSERT_NO_THROW(t.SetTranslation({ 1, 2, 3 }));
-	EXPECT_EQ(t.GetMatrix(), Matrix4x4(1, 0, 0, 1, 0, 1, 0, 2, 0, 0, 1, 3, 0, 0, 0, 1));
-	ASSERT_NO_THROW(t.SetTranslation({ 1, 2, 4 }));
-	EXPECT_EQ(t.GetMatrix(), Matrix4x4(1, 0, 0, 1, 0, 1, 0, 2, 0, 0, 1, 4, 0, 0, 0, 1));
+    ASSERT_NO_THROW(t.SetTranslation({ 1, 2, 3 }));
+    EXPECT_EQ(t.GetMatrix(), Matrix4x4(1, 0, 0, 1, 0, 1, 0, 2, 0, 0, 1, 3, 0, 0, 0, 1));
+    ASSERT_NO_THROW(t.SetTranslation({ 1, 2, 4 }));
+    EXPECT_EQ(t.GetMatrix(), Matrix4x4(1, 0, 0, 1, 0, 1, 0, 2, 0, 0, 1, 4, 0, 0, 0, 1));
 }
 
 TEST(TransformTest, CanSetRotation)
 {
     Transform t;
-	ASSERT_NO_THROW(t.SetRotation({ Math::Pi / 2, 0, 0 }));
-	EXPECT_EQ(t.GetMatrix(), Matrix4x4(1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 1));
+    ASSERT_NO_THROW(t.SetRotation({ Math::Pi / 2, 0, 0 }));
+    EXPECT_EQ(t.GetMatrix(), Matrix4x4(1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 1));
 }
 
 TEST(TransformTest, CanSetScale)
 {
-	Transform t;
-	ASSERT_NO_THROW(t.SetScale({ 1, 2, 4}));
-	EXPECT_EQ(t.GetMatrix(), Matrix4x4(1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 4, 0, 0, 0, 0, 1));
+    Transform t;
+    ASSERT_NO_THROW(t.SetScale({ 1, 2, 4}));
+    EXPECT_EQ(t.GetMatrix(), Matrix4x4(1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 4, 0, 0, 0, 0, 1));
 }
 
 TEST(TransformTest, MatrixHasCorrectValues)
@@ -344,22 +344,22 @@ TEST(TransformTest, CanTransformRaysRotated)
 
 TEST(TransformTest, CanGetInverse)
 {
-	Transform t, t2;
+    Transform t, t2;
 
-	t.SetTranslation({ 1, 2, 3 });
-	t.SetScale({ 1, 1, 4 });
-	t.SetRotation({ Math::Pi / 2, Math::Pi / 2, Math::Pi / 2 });
-	t2.SetRotation({ Math::Pi / 2, 0, 0 });
-	t2.SetRotation({ Math::Pi / 2, Math::Pi / 2, Math::Pi / 2 });
+    t.SetTranslation({ 1, 2, 3 });
+    t.SetScale({ 1, 1, 4 });
+    t.SetRotation({ Math::Pi / 2, Math::Pi / 2, Math::Pi / 2 });
+    t2.SetRotation({ Math::Pi / 2, 0, 0 });
+    t2.SetRotation({ Math::Pi / 2, Math::Pi / 2, Math::Pi / 2 });
 
-	Transform tInv = t.Inversed();
-	Transform tInv2 = t2.Inversed();
+    Transform tInv = t.Inversed();
+    Transform tInv2 = t2.Inversed();
 
     EXPECT_EQ(tInv.GetMatrix(), t.GetMatrixInverse());
     EXPECT_EQ(tInv.GetMatrixInverse(), t.GetMatrix());
 
-	EXPECT_EQ(tInv2.GetMatrix(), t2.GetMatrixInverse());
-	EXPECT_EQ(tInv2.GetMatrixInverse(), t2.GetMatrix());
+    EXPECT_EQ(tInv2.GetMatrix(), t2.GetMatrixInverse());
+    EXPECT_EQ(tInv2.GetMatrixInverse(), t2.GetMatrix());
 }
 
 TEST(TransformTest, CorrectOrderOfTransformations)
@@ -367,9 +367,9 @@ TEST(TransformTest, CorrectOrderOfTransformations)
     // Should scale at origin, rotate at origin, then translate to position
     Transform t;
 
-	Point3 front = { 0, 0, 1 };
-	Point3 up = { 0, 1, 0 };
-	Point3 right = { 1, 0, 0 };
+    Point3 front = { 0, 0, 1 };
+    Point3 up = { 0, 1, 0 };
+    Point3 right = { 1, 0, 0 };
 
     t.SetScale(2.0);
     EXPECT_EQ(t(front), Point3(0, 0, 2));
@@ -381,13 +381,13 @@ TEST(TransformTest, CorrectOrderOfTransformations)
     EXPECT_EQ(t(up), Point3(0, 0, 2));
     EXPECT_EQ(t(right), Point3(2, 0, 0));
 
-	t.SetTranslation(Vector3(20, 30, 40));
-	EXPECT_EQ(t(front), Point3(20, 28, 40));
-	EXPECT_EQ(t(up), Point3(20, 30, 42));
-	EXPECT_EQ(t(right), Point3(22, 30, 40));
+    t.SetTranslation(Vector3(20, 30, 40));
+    EXPECT_EQ(t(front), Point3(20, 28, 40));
+    EXPECT_EQ(t(up), Point3(20, 30, 42));
+    EXPECT_EQ(t(right), Point3(22, 30, 40));
 
-	Transform t2;
-	Point3 origin = { 0, 0, 0 };
+    Transform t2;
+    Point3 origin = { 0, 0, 0 };
     t2.SetTranslation({ 10, 100, 20 });
     t2.SetRotation({ Math::DegToRad(90), 0, 0 });
     EXPECT_EQ(t2(origin), Point3(10, 100, 20));
@@ -396,10 +396,10 @@ TEST(TransformTest, CorrectOrderOfTransformations)
     Ray forwardRay({ 0, 0, 0 }, { 0,0,1 });
     EXPECT_EQ(t2(forwardRay), Ray({10, 100, 20}, {0, -1, 0}));
 
-	Transform t3;
-	t3.SetTranslation({ 0, 0.5, -10 });
-	t3.SetScale({ 0.005 });
-	t3.SetRotation({ Math::DegToRad(2), 0, 0 });
+    Transform t3;
+    t3.SetTranslation({ 0, 0.5, -10 });
+    t3.SetScale({ 0.005 });
+    t3.SetRotation({ Math::DegToRad(2), 0, 0 });
     EXPECT_EQ(t3(forwardRay).GetOrigin(), Point3(0, 0.5, -10));
 }
 
