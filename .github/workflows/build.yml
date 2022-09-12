@@ -32,7 +32,7 @@ jobs:
         run: |
              ./bin/unittests/UnitTests
   Ubuntu:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout Latest
         uses: actions/checkout@v2.3.1
