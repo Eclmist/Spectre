@@ -1,6 +1,6 @@
 /*
-    This file is part of Spectre, an open-source physically based
-    spectral raytracing library.
+    This file is part of Spectre, an open-source math library for graphics
+    applications.
 
     Copyright (c) 2020-2023 Samuel Van Allen - All rights reserved.
     it under the terms of the GNU General Public License as published by
@@ -77,7 +77,7 @@ bool Point<T, N>::operator==(const Point& b) const
 {
 
     for (int i = 0; i < N; ++i)
-        if (std::fabs(this->m_Data[i] - b.m_Data[i]) > Math::Epsilon)
+        if (std::fabs(this->m_Data[i] - b.m_Data[i]) > SMath::Epsilon)
             return false;
 
     return true;

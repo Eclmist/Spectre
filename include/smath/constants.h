@@ -1,6 +1,6 @@
 /*
-    This file is part of Spectre, an open-source physically based
-    spectral raytracing library.
+    This file is part of Spectre, an open-source math library for graphics
+    applications.
 
     Copyright (c) 2020-2023 Samuel Van Allen - All rights reserved.
 
@@ -18,22 +18,18 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "ray.h"
+#pragma once
 
-Ray::Ray(const Point3& origin, const Vector3& direction)
-    : m_Origin(origin)
-    , m_Direction(direction)
+namespace SMath
 {
-    m_Direction.Normalize();
-}
+    const double E        = 2.71828182845904523536;    // e
+    const double Pi       = 3.14159265358979323846;    // pi
+    const double PiOver2  = 1.57079632679489661923;    // pi/2
+    const double PiOver4  = 0.78539816339744830961;    // pi/4
+    const double InvPi    = 0.31830988618379067153;    // 1/pi
+    const double Inv2Pi   = 0.15915494309189533576;    // 1/2pi
+    const double Inv4Pi   = 0.07957747154594766788;    // 1/4pi
 
-bool Ray::operator==(const Ray& r) const
-{
-    return m_Origin == r.m_Origin && m_Direction == r.m_Direction;
-}
-
-bool Ray::operator!=(const Ray& r) const
-{
-    return !(*this == r);
+    const double Epsilon  = 0.0000000001;
 }
 

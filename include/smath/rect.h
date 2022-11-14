@@ -1,6 +1,6 @@
 /*
-    This file is part of Spectre, an open-source physically based
-    spectral raytracing library.
+    This file is part of SMath, an open-source math library for graphics
+    applications.
 
     Copyright (c) 2020-2023 Samuel Van Allen - All rights reserved.
     it under the terms of the GNU General Public License as published by
@@ -18,16 +18,19 @@
 
 #pragma once
 
-class Rect
+namespace SMath
 {
-public:
-    Rect(int x, int y, int w, int h);
-    ~Rect() = default;
+    class Rect
+    {
+    public:
+        Rect(int x, int y, int w, int h);
+        ~Rect() = default;
 
-public:
-    bool IsWithinBounds(int x, int y) const;
+    public:
+        bool IsWithinBounds(int x, int y) const;
 
-public:
-    int x, y;
-    int w, h;
-};
+    public:
+        int x, y;
+        int w, h;
+    };
+}

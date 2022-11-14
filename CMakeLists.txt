@@ -45,23 +45,23 @@ option(USE_AVX_2 "Use AVX-2" OFF)
 #                        ADD SOURCE FILES TO PROJECT                          #
 # =========================================================================== #
 
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/src")
+include_directories("${CMAKE_SOURCE_DIR}/src")
+include_directories("${CMAKE_SOURCE_DIR}/include")
 
 file(GLOB_RECURSE project_headers src/*.h)
 file(GLOB_RECURSE project_cpps src/*.cpp)
 set(all_files ${project_headers} ${project_cpps})
-source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${all_files})
+source_group(TREE ${CMAKE_SOURCE_DIR} FILES ${all_files})
 
 # =========================================================================== #
 #                   SETUP THIRD PARTY/EXTERN DEPENDENCIES                     #
 # =========================================================================== #
 
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/include")
+include_directories("${CMAKE_SOURCE_DIR}/include")
 
-file(GLOB_RECURSE stb include/stb/*)
-file(GLOB_RECURSE tsimd include/tsimd/*)
-set(extern_files ${stb} ${tsimd})
-source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${extern_files})
+file(GLOB_RECURSE extern include/*)
+set(extern_files ${extern})
+source_group(TREE ${CMAKE_SOURCE_DIR} FILES ${extern_files})
 
 # =========================================================================== #
 #                          SET COMPILATION TARGETS                            #

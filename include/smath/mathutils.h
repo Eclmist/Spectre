@@ -1,8 +1,10 @@
 /*
-    This file is part of Spectre, an open-source physically based
-    spectral raytracing library.
+    This file is part of Spectre, an open-source math library for graphics
+    applications.
 
     Copyright (c) 2020-2023 Samuel Van Allen - All rights reserved.
+
+    Spectre is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
@@ -16,20 +18,18 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "rect.h"
+#pragma once
 
-Rect::Rect(int x, int y, int w, int h)
-    : x(x)
-    , y(y)
-    , w(w)
-    , h(h)
+namespace SMath
 {
-    if (w < 0 || h < 0)
-        throw std::invalid_argument("Rects cannot have negative size");
+    inline double DegToRad(double deg)
+    {
+        return deg * (Pi / 180);
+    }
+
+    inline double RadToDeg(double rad)
+    {
+        return rad * (180.0 / Pi);
+    }
 }
 
-bool Rect::IsWithinBounds(int _x, int _y) const
-{
-    return _x >= x && _x < (x + w) &&
-           _y >= y && _y < (y + h);
-}

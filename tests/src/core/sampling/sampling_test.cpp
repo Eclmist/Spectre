@@ -22,7 +22,7 @@
 #include "core/sampling/sampling.h"
 
 template <int N>
-void CheckUniformity(std::vector<Point<double, N>> samples, double totalArea)
+void CheckUniformity(std::vector<SMath::Point<double, N>> samples, double totalArea)
 {
     const int numAreasToTest = 500;
     const double radiusToTest = 0.1;
@@ -73,7 +73,7 @@ void CheckUniformity(std::vector<Point<double, N>> samples, double totalArea)
     // area = totalArea
     // area of sample = pi * r^2
     // num areas = totalArea / (pi * r^2)
-    double numDeltaArea = totalArea / (Math::Pi * radiusToTest * radiusToTest);
+    double numDeltaArea = totalArea / (SMath::Pi * radiusToTest * radiusToTest);
     double expectedNeighborCount = samples.size() / numDeltaArea;
     //std::cout << "expectedNeighborCount: " << expectedNeighborCount << std::endl;
 
@@ -91,14 +91,14 @@ TEST(SamplingTest, CanSampleHemisphereUniformly)
         Point3 sample = Sampling::UniformSampleHemisphere();
 
         // Points must be on the surface of the sphere
-        EXPECT_LE(std::abs(Point3::Distance(sample, {}) - 1.0), Math::Epsilon);
+        EXPECT_LE(std::abs(Point3::Distance(sample, {}) - 1.0), SMath::Epsilon);
         // Points must be on upper hemisphere
         EXPECT_GE(sample.y, 0.0);
 
         samples[i] = sample;
     }
 
-    CheckUniformity(samples, Math::Pi * 2);
+    CheckUniformity(samples, SMath::Pi * 2);
 }
 
 TEST(SamplingTest, CanSampleSphereUniformly)
@@ -114,11 +114,11 @@ TEST(SamplingTest, CanSampleSphereUniformly)
         Point3 sample = Sampling::UniformSampleSphere();
 
         // Points must be on the surface of the sphere
-        EXPECT_LE(std::abs(Point3::Distance(sample, {}) - 1.0), Math::Epsilon);
+        EXPECT_LE(std::abs(Point3::Distance(sample, {}) - 1.0), SMath::Epsilon);
         samples[i] = sample;
     }
 
-    CheckUniformity(samples, Math::Pi * 4);
+    CheckUniformity(samples, SMath::Pi * 4);
 }
 
 TEST(SamplingTest, CanSampleDiskUniformly_RejectionMethod)
@@ -134,11 +134,11 @@ TEST(SamplingTest, CanSampleDiskUniformly_RejectionMethod)
         Point2 sample = Sampling::RejectionSampleDisk();
 
         // Points must be within the disk
-        EXPECT_LE(Point2::Distance(sample, {}) - 1.0, 1.0 + Math::Epsilon);
+        EXPECT_LE(Point2::Distance(sample, {}) - 1.0, 1.0 + SMath::Epsilon);
         samples[i] = sample;
     }
 
-    CheckUniformity(samples, Math::Pi);
+    CheckUniformity(samples, SMath::Pi);
 }
 
 TEST(SamplingTest, CanSampleDiskUniformly_ConcentricMethod)
@@ -154,9 +154,9 @@ TEST(SamplingTest, CanSampleDiskUniformly_ConcentricMethod)
         Point2 sample = Sampling::ConcentricSampleDisk();
 
         // Points must be within the disk
-        EXPECT_LE(Point2::Distance(sample, {}) - 1.0, 1.0 + Math::Epsilon);
+        EXPECT_LE(Point2::Distance(sample, {}) - 1.0, 1.0 + SMath::Epsilon);
         samples[i] = sample;
     }
 
-    CheckUniformity(samples, Math::Pi);
+    CheckUniformity(samples, SMath::Pi);
 }

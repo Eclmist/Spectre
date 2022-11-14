@@ -24,42 +24,42 @@ namespace Sampling
 {
     inline Point3 UniformSampleHemisphere()
     {
-        double y = Random::UniformFloat();
+        double y = SMath::Random::UniformFloat();
         double r = std::sqrt(std::max(0.0, 1.0 - y * y));
-        double phi = 2 * Math::Pi * Random::UniformFloat();
+        double phi = 2 * SMath::Pi * SMath::Random::UniformFloat();
         return Point3(r * cos(phi), y, r * sin(phi));
     }
 
     inline double UniformHemispherePdf() {
-        return Math::Inv2Pi;
+        return SMath::Inv2Pi;
     }
 
     inline Point3 UniformSampleSphere()
     {
-        double z = 1 - 2 * Random::UniformFloat();
+        double z = 1 - 2 * SMath::Random::UniformFloat();
         double r = std::sqrt(std::max(0.0, 1.0 - z * z));
-        double phi = 2 * Math::Pi * Random::UniformFloat();
+        double phi = 2 * SMath::Pi * SMath::Random::UniformFloat();
         return Point3(r * cos(phi), r * sin(phi), z);
     }
 
     inline double UniformSpherePdf()
     {
-        return Math::Inv4Pi;
+        return SMath::Inv4Pi;
     }
 
     inline Point2 RejectionSampleDisk()
     {
         Point2 p;
         do {
-            p.x = 1 - 2 * Random::UniformFloat();
-            p.y = 1 - 2 * Random::UniformFloat();
+            p.x = 1 - 2 * SMath::Random::UniformFloat();
+            p.y = 1 - 2 * SMath::Random::UniformFloat();
         } while (p.x * p.x + p.y * p.y > 1);
         return p;
     }
 
     inline Point2 ConcentricSampleDisk()
     {
-        Point2 uOffset = Point2(Random::UniformFloat() * 2.0 - 1.0, Random::UniformFloat() * 2.0 - 1.0);
+        Point2 uOffset = Point2(SMath::Random::UniformFloat() * 2.0 - 1.0, SMath::Random::UniformFloat() * 2.0 - 1.0);
 
         if (uOffset.x == 0 && uOffset.y == 0)
             return {};
@@ -69,12 +69,12 @@ namespace Sampling
         if (std::abs(uOffset.x) > std::abs(uOffset.y))
         {
             r = uOffset.x;
-            theta = Math::PiOver4 * (uOffset.y / uOffset.x);
+            theta = SMath::PiOver4 * (uOffset.y / uOffset.x);
         }
         else 
         {
             r = uOffset.y;
-            theta = Math::PiOver2 - Math::PiOver4 * (uOffset.x / uOffset.y);
+            theta = SMath::PiOver2 - SMath::PiOver4 * (uOffset.x / uOffset.y);
         }
 
         return Point2(cos(theta) * r, sin(theta) * r);
@@ -89,7 +89,7 @@ namespace Sampling
 
     inline double CosineHemispherePdf(double cosTheta)
     {
-        return cosTheta * Math::InvPi;
+        return cosTheta * SMath::InvPi;
     }
 }
 

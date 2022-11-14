@@ -1,7 +1,7 @@
 #include "normal.h"
 /*
-    This file is part of Spectre, an open-source physically based
-    spectral raytracing library.
+    This file is part of Spectre, an open-source math library for graphics
+    applications.
 
     Copyright (c) 2020-2023 Samuel Van Allen - All rights reserved.
     it under the terms of the GNU General Public License as published by

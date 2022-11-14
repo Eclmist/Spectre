@@ -1,6 +1,6 @@
 /*
-    This file is part of Spectre, an open-source physically based
-    spectral raytracing library.
+    This file is part of SMath, an open-source math library for graphics
+    applications.
 
     Copyright (c) 2020-2023 Samuel Van Allen - All rights reserved.
 
@@ -88,7 +88,7 @@ template<typename T, int N>
 bool Matrix<T, N>::operator==(const Matrix& m2) const
 {
     for (int i = 0; i < N * N; ++i)
-        if (std::fabs(this->m_Data[i] - m2.m_Data[i]) > Math::Epsilon)
+        if (std::fabs(this->m_Data[i] - m2.m_Data[i]) > SMath::Epsilon)
             return false;
 
     return true;
@@ -118,10 +118,10 @@ bool Matrix<T, N>::IsIdentity() const
     for (int i = 0; i < N; ++i)
         for (int j = 0; j < N; ++j)
         {
-            if (i == j && std::fabs(this->m_Data2D[i][j] - 1) > Math::Epsilon)
+            if (i == j && std::fabs(this->m_Data2D[i][j] - 1) > SMath::Epsilon)
                 return false;
 
-            if (i != j && std::fabs(this->m_Data2D[i][j]) > Math::Epsilon)
+            if (i != j && std::fabs(this->m_Data2D[i][j]) > SMath::Epsilon)
                 return false;
         }
 

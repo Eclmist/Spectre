@@ -74,7 +74,7 @@ TEST(CameraTest, CanTransformCameraVectorToWorldSpace)
     EXPECT_EQ(camera.ToWorldSpace(cameraSpaceRight), Vector3(2, 0, 0));
 
     transform.SetScale(Vector3(1.0));
-    transform.SetRotation({ Math::DegToRad(90), 0, 0 });
+    transform.SetRotation({ SMath::DegToRad(90), 0, 0 });
 
     EXPECT_EQ(camera.ToWorldSpace(cameraSpaceForward),-cameraSpaceUp);
     EXPECT_EQ(camera.ToWorldSpace(cameraSpaceUp), cameraSpaceForward);
@@ -109,7 +109,7 @@ TEST(CameraTest, CanTransformCameraPointToWorldSpace)
 
     transform.SetTranslation(Vector3(0.0));
     transform.SetScale(Vector3(1.0));
-    transform.SetRotation({ Math::DegToRad(90), 0, 0 });
+    transform.SetRotation({ SMath::DegToRad(90), 0, 0 });
 
     EXPECT_EQ(camera.ToWorldSpace(cameraSpaceForward), -cameraSpaceUp);
     EXPECT_EQ(camera.ToWorldSpace(cameraSpaceUp), cameraSpaceForward);
@@ -165,7 +165,7 @@ TEST(CameraTest, CanTransformWorldVectorToCameraSpace)
 
     transform.SetTranslation(Vector3(0.0));
     transform.SetScale(Vector3(1.0));
-    transform.SetRotation({ Math::DegToRad(90), 0, 0 });
+    transform.SetRotation({ SMath::DegToRad(90), 0, 0 });
 
     EXPECT_EQ(camera.ToCameraSpace(worldSpaceForward), worldSpaceUp);
     EXPECT_EQ(camera.ToCameraSpace(worldSpaceUp), -worldSpaceForward);

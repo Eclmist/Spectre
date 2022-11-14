@@ -76,7 +76,7 @@ TEST(OrthographicCameraTest, CanGenerateRay)
     EXPECT_FALSE(bottomRightRay.GetOrigin() == Point3(1, 0, 0));
     EXPECT_FALSE(topLeftCornerRay.GetOrigin() == Point3(1, 0, 0));
 
-    camera.GetTransform().SetRotation({ 0, Math::DegToRad(90), 0 });
+    camera.GetTransform().SetRotation({ 0, SMath::DegToRad(90), 0 });
     topLeftCornerRay = camera.GenerateRay({ 0, 0 });
     centerRay = camera.GenerateRay({
         camera.GetFilm().GetResolution().GetWidth() / 2,

@@ -1,6 +1,6 @@
 /*
-    This file is part of Spectre, an open-source physically based
-    spectral raytracing library.
+    This file is part of SMath, an open-source math library for graphics
+    applications.
 
     Copyright (c) 2020-2023 Samuel Van Allen - All rights reserved.
 
@@ -20,26 +20,30 @@
 
 #pragma once
 
-class Ray
+#include <random>
+
+namespace SMath::Random
 {
-public:
-    Ray(const Point3& origin = { 0.0 }, const Vector3& direction = { 1.0 });
-    ~Ray() = default;
+    static std::mt19937 m_Rng;
 
-public:
-    inline Point3 operator()(double t) const { return m_Origin + m_Direction * t; }
+    inline void Seed(int seed)
+    {
+        m_Rng = std::mt19937(seed); 
+    }
 
-    inline Point3 GetOrigin() const { return m_Origin; }
-    inline Vector3 GetDirection() const { return m_Direction; }
+    inline int UniformInt()
+    { 
+        return m_Rng();
+    }
+    
+    inline int UniformInt(int min, int max)
+    {
+        return (std::uniform_int_distribution<int>(min, max))(m_Rng);
+    }
 
-    inline void SetOrigin(Point3 origin) { m_Origin = origin; }
-    inline void SetDirection(Vector3 direction) { m_Direction = direction.Normalized(); }
-
-public:
-    bool operator==(const Ray& r) const;
-    bool operator!=(const Ray& r) const;
-
-private:
-    Point3 m_Origin;
-    Vector3 m_Direction;
+    inline double UniformFloat()
+    {
+        return (std::uniform_real_distribution<double>(0, 1))(m_Rng);
+    }
 };
+

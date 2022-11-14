@@ -1,6 +1,6 @@
 /*
-    This file is part of Spectre, an open-source physically based
-    spectral raytracing library.
+    This file is part of SMath, an open-source math library for graphics
+    applications.
 
     Copyright (c) 2020-2023 Samuel Van Allen - All rights reserved.
 
@@ -20,16 +20,23 @@
 
 #pragma once
 
-namespace Math
-{
-    inline double DegToRad(double deg)
-    {
-        return deg * (Pi / 180);
-    }
+#include "vector.h"
 
-    inline double RadToDeg(double rad)
+namespace SMath
+{
+    template<typename T, int N>
+    class Normal : public Vector<T, N>
     {
-        return rad * (180.0 / Pi);
-    }
+    public:
+        Normal(T v = 0.0);
+        Normal(T x, T y);
+        Normal(T x, T y, T z);
+        Normal(T x, T y, T z, T w);
+        Normal(const T* data);
+        Normal(const Normal& v);
+        Normal(const Vector<T, N>& v);
+    };
+
+    #include "normal_impl.h" 
 }
 
