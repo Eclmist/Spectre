@@ -24,7 +24,7 @@ Spectre is the successor to [Elixir](https://github.com/Eclmist/Elixir), with em
 
 Written from the ground up in modern C++ (C++20), Spectre improves upon Elixir in the following areas:
   - Code quality improvements - adheres better to SE principles
-  - Less over-enginnered - complexity only when it offers significant advantages
+  - Less over-engineered - complexity only when it offers significant advantages
   - Test driven development - close to full unit-test coverage
   - SIMD acceleration with AVX2
   - Physically-based spectral rendering as a foundation

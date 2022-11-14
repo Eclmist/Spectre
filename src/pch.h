@@ -32,7 +32,7 @@
 
 #include "system/platform/platformutils.h"
 
-#include "../include/smath/smath.h"
+#include "smath/smath.h"
 
 #include "core/spectrum/spectralcoefficients.h"
 #include "core/spectrum/reflectantspectrum.h"
