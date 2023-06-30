@@ -18,6 +18,7 @@
 
 #include <iostream>
 #include <cstring>
+#include "playground.h"
 
 void PrintTitle()
 {
@@ -75,5 +76,7 @@ int main(int argc, char* argv[])
     }
 
 
+    Playground playground;
+    playground.RenderThing();
     return 0;
 }

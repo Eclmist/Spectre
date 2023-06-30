@@ -40,7 +40,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 option(USE_AVX_2 "Use AVX-2" OFF)
 
-
 # =========================================================================== #
 #                        ADD SOURCE FILES TO PROJECT                          #
 # =========================================================================== #
@@ -58,7 +57,6 @@ source_group(TREE ${CMAKE_SOURCE_DIR} FILES ${all_files})
 # =========================================================================== #
 
 include_directories("${CMAKE_SOURCE_DIR}/include")
-
 file(GLOB_RECURSE extern include/*)
 set(extern_files ${extern})
 source_group(TREE ${CMAKE_SOURCE_DIR} FILES ${extern_files})
@@ -75,7 +73,6 @@ set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY $<1:${
 # =========================================================================== #
 
 target_precompile_headers(${PROJECT_NAME} PUBLIC src/pch.h)
-
 
 # =========================================================================== #
 #                        PLATFORM SPECIFIC SETTIGNS                           #
@@ -108,8 +105,6 @@ if (USE_AVX_2)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mavx2")
     endif()
 endif()
-
-
 
 
 # =========================================================================== #

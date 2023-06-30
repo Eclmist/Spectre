@@ -25,6 +25,7 @@
 
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb/stb_image_write.h"
+#include <iostream>
 
 const std::string OutputFileName = "Spectre_Output";
 const std::string OutputFileType = ".png";
@@ -38,6 +39,8 @@ StbExporter::StbExporter(std::shared_ptr<Tonemapper> tonemapper)
 
 void StbExporter::Export(const Film& film) const 
 {
+    std::cout << "[StbExporter] Exporting output to file: " << m_OutputFileName << std::endl;
+
     std::lock_guard<std::mutex> lock(m_ExportMutex);
     stbi_write_png(
         (m_OutputFileName + OutputFileType).c_str(),
