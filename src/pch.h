@@ -58,3 +58,4 @@ typedef SMath::Matrix<int, 4>       Matrix4x4i;
 
 typedef SMath::Ray<double>          Ray;
 typedef SMath::Transform<double>    Transform;
+typedef SMath::Box<double>          BoundingBox;
