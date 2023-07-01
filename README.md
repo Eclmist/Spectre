@@ -35,6 +35,8 @@ Spectre continues to take inspiration from [SORT](http://sort-renderer.com/) and
 - Only CMake versions 3.8 and up is supported
 - If compiling with GCC, use GCC10 and above
 
+Spectre uses [SMath](https://github.com/Eclmist/SMath) as a submodule. As such, it is necessary to pull submodules when cloning Spectre.
+
 # Screenshots
 <p align="center">
   <img src="https://raw.githubusercontent.com/eclmist/spectre/master/docs/img/demo0.png" width=700>
