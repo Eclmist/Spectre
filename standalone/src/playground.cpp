@@ -531,9 +531,8 @@ void Playground::RenderThing()
     //OrthographicCamera camera(1.0);
 
     Film m_Film = camera.GetFilm();
-    Transform& transform = camera.GetTransform();
-    transform.SetTranslation({ 0, 0.2, -3.5 });
-    transform.SetRotation({ SMath::DegToRad(0), SMath::DegToRad(0), 0 });
+    Matrix4x4& transform = camera.GetTransform();
+    transform = Transform::GetTranslationMatrix({ 0, 0.2, -3.5 }) * Transform::GetRotationMatrix({ SMath::DegToRad(0.0), SMath::DegToRad(0.0), 0 });
 
     ReflectantSpectrum groundColor({ 0.8, 0.8, 0.8 });
     ReflectantSpectrum red({ 0.8, 0.2, 0.25 });
