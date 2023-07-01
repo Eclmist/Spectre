@@ -44,7 +44,7 @@ int FilmTile::GetIndex(const Point2i& tileSpacePos) const
 {
     Point2i filmSpacePos = TileToFilmSpace(tileSpacePos);
 
-    if (!m_Rect.IsWithinBounds(filmSpacePos.x, filmSpacePos.y))
+    if (!m_Rect.Contains(filmSpacePos.x, filmSpacePos.y))
         throw std::invalid_argument("Point is outside of this film tile");
 
     return tileSpacePos.x + tileSpacePos.y * m_Rect.w;
