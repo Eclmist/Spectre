@@ -6,7 +6,8 @@ jobs:
   Windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout Latest
+        uses: actions/checkout@v2
         with:
           submodules: true
       - name: Setup MSBuild.exe
@@ -24,7 +25,9 @@ jobs:
     runs-on: macOS-latest
     steps:
       - name: Checkout Latest
-        uses: actions/checkout@v2.3.1
+        uses: actions/checkout@v2
+        with:
+          submodules: true
       - name: Generate & Build Project
         run: |
              cmake -Bbuild .
@@ -36,7 +39,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Latest
-        uses: actions/checkout@v2.3.1
+        uses: actions/checkout@v2
+        with:
+          submodules: true
       - name: Generate & Build Project
         run: |
              cmake -Bbuild .
