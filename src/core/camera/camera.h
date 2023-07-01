@@ -29,7 +29,7 @@ public:
     ~Camera() = default;
 
 public:
-    inline Transform& GetTransform() { return m_Transform; }
+    inline Matrix4x4& GetTransform() { return m_Transform; }
     inline Film& GetFilm() { return m_Film; }
 
 public:
@@ -50,7 +50,7 @@ protected:
     Point3 ToCameraSpace(const Point2i& filmSpacePoint);
 
 protected:
-    Transform m_Transform;
+    Matrix4x4 m_Transform;
     Film m_Film;
 };
 

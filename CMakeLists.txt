@@ -54,20 +54,10 @@ set(all_files ${project_headers} ${project_cpps})
 source_group(TREE ${CMAKE_SOURCE_DIR} FILES ${all_files})
 
 # =========================================================================== #
-#                   SETUP THIRD PARTY/EXTERN DEPENDENCIES                     #
-# =========================================================================== #
-
-include_directories("${CMAKE_SOURCE_DIR}/include")
-
-file(GLOB_RECURSE extern include/*)
-set(extern_files ${extern})
-source_group(TREE ${CMAKE_SOURCE_DIR} FILES ${extern_files})
-
-# =========================================================================== #
 #                          SET COMPILATION TARGETS                            #
 # =========================================================================== #
 
-add_library(${PROJECT_NAME} STATIC ${all_files} ${extern_files})
+add_library(${PROJECT_NAME} STATIC ${all_files})
 set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY $<1:${CMAKE_CURRENT_SOURCE_DIR}/bin>)
 
 # =========================================================================== #
