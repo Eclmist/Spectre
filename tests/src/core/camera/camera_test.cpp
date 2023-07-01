@@ -33,9 +33,9 @@ TEST(CameraTest, CanBeCreated)
 TEST(CameraTest, CanGetTransform)
 {
     CameraImplStub camera;
-    Transform& transform = camera.GetTransform();
-    transform.SetTranslation({ 1, 2, 3 });
-    EXPECT_EQ(camera.GetTransform().GetMatrix(), Matrix4x4(1, 0, 0, 1, 0, 1, 0, 2, 0, 0, 1, 3, 0, 0, 0, 1));
+    Matrix4x4& transform = camera.GetTransform();
+    transform = Transform::GetTranslationMatrix({ 1, 2, 3 });
+    EXPECT_EQ(camera.GetTransform(), Matrix4x4(1, 0, 0, 1, 0, 1, 0, 2, 0, 0, 1, 3, 0, 0, 0, 1));
 }
 
 TEST(CameraTest, CanGetFilm)
@@ -51,31 +51,29 @@ TEST(CameraTest, CanGetFilm)
 TEST(CameraTest, CanTransformCameraVectorToWorldSpace)
 {
     CameraImplStub camera;
-    Transform& transform = camera.GetTransform();
+    Matrix4x4& transform = camera.GetTransform();
 
     Vector3 cameraSpaceForward(0, 0, 1);
     Vector3 cameraSpaceUp(0, 1, 0);
     Vector3 cameraSpaceRight(1, 0, 0);
 
     // Camera at origin
+    transform = Transform::GetTranslationMatrix({ 0.0 });
     EXPECT_EQ(camera.ToWorldSpace(cameraSpaceForward), cameraSpaceForward);
     EXPECT_EQ(camera.ToWorldSpace(cameraSpaceUp), cameraSpaceUp);
     EXPECT_EQ(camera.ToWorldSpace(cameraSpaceRight), cameraSpaceRight);
 
-    Vector3 translation(1, -2.30, 5.234);
-    transform.SetTranslation(translation);
+    transform = Transform::GetTranslationMatrix({ 1, -2.30, 5.234 });
     EXPECT_EQ(camera.ToWorldSpace(cameraSpaceForward), cameraSpaceForward);
     EXPECT_EQ(camera.ToWorldSpace(cameraSpaceUp), cameraSpaceUp);
     EXPECT_EQ(camera.ToWorldSpace(cameraSpaceRight), cameraSpaceRight);
 
-    transform.SetScale({ 2.0, 2.0, -2.0 });
+    transform = Transform::GetScaleMatrix({ 2.0, 2.0, -2.0 });
     EXPECT_EQ(camera.ToWorldSpace(cameraSpaceForward), Vector3(0, 0, -2));
     EXPECT_EQ(camera.ToWorldSpace(cameraSpaceUp), Vector3(0, 2, 0));
     EXPECT_EQ(camera.ToWorldSpace(cameraSpaceRight), Vector3(2, 0, 0));
 
-    transform.SetScale(Vector3(1.0));
-    transform.SetRotation({ SMath::DegToRad(90), 0, 0 });
-
+    transform = Transform::GetRotationMatrix({ SMath::DegToRad(90.0), 0, 0 });
     EXPECT_EQ(camera.ToWorldSpace(cameraSpaceForward),-cameraSpaceUp);
     EXPECT_EQ(camera.ToWorldSpace(cameraSpaceUp), cameraSpaceForward);
     EXPECT_EQ(camera.ToWorldSpace(cameraSpaceRight), cameraSpaceRight);
@@ -84,7 +82,7 @@ TEST(CameraTest, CanTransformCameraVectorToWorldSpace)
 TEST(CameraTest, CanTransformCameraPointToWorldSpace)
 {
     CameraImplStub camera;
-    Transform& transform = camera.GetTransform();
+    Matrix4x4& transform = camera.GetTransform();
 
     Point3 cameraSpaceForward(0, 0, 1);
     Point3 cameraSpaceUp(0, 1, 0);
@@ -96,21 +94,17 @@ TEST(CameraTest, CanTransformCameraPointToWorldSpace)
     EXPECT_EQ(camera.ToWorldSpace(cameraSpaceRight), cameraSpaceRight);
 
     Vector3 translation(1, -2.30, 5.234);
-    transform.SetTranslation(translation);
+    transform = Transform::GetTranslationMatrix(translation);
     EXPECT_EQ(camera.ToWorldSpace(cameraSpaceForward), cameraSpaceForward + translation);
     EXPECT_EQ(camera.ToWorldSpace(cameraSpaceUp), cameraSpaceUp + translation);
     EXPECT_EQ(camera.ToWorldSpace(cameraSpaceRight), cameraSpaceRight + translation);
 
+    transform = Transform::GetScaleMatrix({ 2.0, 2.0, -2.0 });
+    EXPECT_EQ(camera.ToWorldSpace(cameraSpaceForward), Point3(0, 0, -2));
+    EXPECT_EQ(camera.ToWorldSpace(cameraSpaceUp), Point3(0, 2, 0));
+    EXPECT_EQ(camera.ToWorldSpace(cameraSpaceRight), Point3(2, 0, 0));
 
-    transform.SetScale({ 2.0, 2.0, -2.0 });
-    EXPECT_EQ(camera.ToWorldSpace(cameraSpaceForward), Point3(0, 0, -2) + translation);
-    EXPECT_EQ(camera.ToWorldSpace(cameraSpaceUp), Point3(0, 2, 0) + translation);
-    EXPECT_EQ(camera.ToWorldSpace(cameraSpaceRight), Point3(2, 0, 0) + translation);
-
-    transform.SetTranslation(Vector3(0.0));
-    transform.SetScale(Vector3(1.0));
-    transform.SetRotation({ SMath::DegToRad(90), 0, 0 });
-
+    transform = Transform::GetRotationMatrix({ SMath::DegToRad(90.0), 0, 0 });
     EXPECT_EQ(camera.ToWorldSpace(cameraSpaceForward), -cameraSpaceUp);
     EXPECT_EQ(camera.ToWorldSpace(cameraSpaceUp), cameraSpaceForward);
     EXPECT_EQ(camera.ToWorldSpace(cameraSpaceRight), cameraSpaceRight);
@@ -119,7 +113,7 @@ TEST(CameraTest, CanTransformCameraPointToWorldSpace)
 TEST(CameraTest, CanTranformFilmPointToCameraSpace)
 {
     CameraImplStub camera;
-    Transform& transform = camera.GetTransform();
+    Matrix4x4& transform = camera.GetTransform();
     Resolution resolution = camera.GetFilm().GetResolution();
 
     Point2i filmPointA(0, 0);
@@ -140,7 +134,7 @@ TEST(CameraTest, CanTranformFilmPointToCameraSpace)
 TEST(CameraTest, CanTransformWorldVectorToCameraSpace)
 {
     CameraImplStub camera;
-    Transform& transform = camera.GetTransform();
+    Matrix4x4& transform = camera.GetTransform();
 
     Vector3 worldSpaceForward(0, 0, 1);
     Vector3 worldSpaceUp(0, 1, 0);
@@ -152,21 +146,17 @@ TEST(CameraTest, CanTransformWorldVectorToCameraSpace)
     EXPECT_EQ(camera.ToCameraSpace(worldSpaceRight), worldSpaceRight);
 
     Vector3 translation(1, -2.30, 5.234);
-    transform.SetTranslation(translation);
+    transform = Transform::GetTranslationMatrix(translation);
     EXPECT_EQ(camera.ToCameraSpace(worldSpaceForward), worldSpaceForward);
     EXPECT_EQ(camera.ToCameraSpace(worldSpaceUp), worldSpaceUp);
     EXPECT_EQ(camera.ToCameraSpace(worldSpaceRight), worldSpaceRight);
 
-
-    transform.SetScale({ 2.0, 2.0, -2.0 });
+    transform = Transform::GetTranslationMatrix(translation) * Transform::GetScaleMatrix({ 2.0, 2.0, -2.0 });
     EXPECT_EQ(camera.ToCameraSpace(worldSpaceForward), Vector3(0, 0, -.5));
     EXPECT_EQ(camera.ToCameraSpace(worldSpaceUp), Vector3(0, 0.5, 0));
     EXPECT_EQ(camera.ToCameraSpace(worldSpaceRight), Vector3(0.5, 0, 0));
 
-    transform.SetTranslation(Vector3(0.0));
-    transform.SetScale(Vector3(1.0));
-    transform.SetRotation({ SMath::DegToRad(90), 0, 0 });
-
+    transform = Transform::GetTranslationMatrix(translation) * Transform::GetRotationMatrix({ SMath::DegToRad(90.0), 0, 0 });
     EXPECT_EQ(camera.ToCameraSpace(worldSpaceForward), worldSpaceUp);
     EXPECT_EQ(camera.ToCameraSpace(worldSpaceUp), -worldSpaceForward);
     EXPECT_EQ(camera.ToCameraSpace(worldSpaceRight), worldSpaceRight);
@@ -175,7 +165,7 @@ TEST(CameraTest, CanTransformWorldVectorToCameraSpace)
 TEST(CameraTest, CanTransformWorldPointToCameraSpace)
 {
     CameraImplStub camera;
-    Transform& transform = camera.GetTransform();
+    Matrix4x4& transform = camera.GetTransform();
 
     Point3 cameraSpaceForward(0, 0, 1);
     Point3 cameraSpaceUp(0, 1, 0);
@@ -187,7 +177,7 @@ TEST(CameraTest, CanTransformWorldPointToCameraSpace)
     EXPECT_EQ(camera.ToCameraSpace(cameraSpaceRight), cameraSpaceRight);
 
     Vector3 translation(1, -2.30, 5.234);
-    transform.SetTranslation(translation);
+    transform = Transform::GetTranslationMatrix(translation);
     EXPECT_EQ(camera.ToCameraSpace(cameraSpaceForward), cameraSpaceForward - translation);
     EXPECT_EQ(camera.ToCameraSpace(cameraSpaceUp), cameraSpaceUp - translation);
     EXPECT_EQ(camera.ToCameraSpace(cameraSpaceRight), cameraSpaceRight - translation);

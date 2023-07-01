@@ -45,6 +45,6 @@ private:
     int GetIndex(const Point2i& tileSpacePos) const;
 
 private:
-    const Rect m_Rect;
+    const SMath::Rect<int> m_Rect;
     std::vector<Pixel> m_Pixels;
 };

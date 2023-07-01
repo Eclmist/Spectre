@@ -22,22 +22,27 @@
 
 Vector3 Camera::ToWorldSpace(const Vector3& cameraSpaceVector)
 {
-    return m_Transform(cameraSpaceVector);
+    return (m_Transform * cameraSpaceVector.Resize<4>()).Resize<3>();
 }
 
 Point3 Camera::ToWorldSpace(const Point3& cameraSpacePoint)
 {
-    return m_Transform(cameraSpacePoint);
+    Point4 resizedPoint = cameraSpacePoint.Resize<4>();
+    resizedPoint.w = 1.0;
+    return (m_Transform * resizedPoint).Resize<3>();
 }
 
 Vector3 Camera::ToCameraSpace(const Vector3& worldSpaceVector)
 {
-    return m_Transform.Inversed()(worldSpaceVector);
+    return (m_Transform.Inversed() * worldSpaceVector.Resize<4>()).Resize<3>();
 }
 
 Point3 Camera::ToCameraSpace(const Point3& worldSpacePoint)
 {
-    return m_Transform.Inversed()(worldSpacePoint);
+    Point4 resizedPoint = worldSpacePoint.Resize<4>();
+    resizedPoint.w = 1.0;
+
+    return (m_Transform.Inversed() * resizedPoint).Resize<3>();
 }
 
 Point3 Camera::ToCameraSpace(const Point2i& filmSpacePoint)
