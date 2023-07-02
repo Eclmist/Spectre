@@ -3,8 +3,6 @@
     spectral raytracing library.
 
     Copyright (c) 2020-2023 Samuel Van Allen - All rights reserved.
-
-    Spectre is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
@@ -18,17 +16,30 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#pragma once
+#include "gtest.h"
+#include "core/geometry/trianglemesh.h"
 
-class Geometry;
-
-class Accelerator
+TEST(TriangleMeshTest, CanBeCreated)
 {
-public:
-    Accelerator() = default;
-    virtual ~Accelerator() = default;
+    ASSERT_NO_THROW(TriangleMesh());
+}
 
-public:
-    virtual void Build(const std::vector<Geometry>& primitives) const = 0;
-    virtual void Intersect(const Ray& ray) const = 0;
-};
+TEST(TriangleMeshTest, CanTransform)
+{
+    TriangleMesh triangleMesh;
+    EXPECT_TRUE(triangleMesh.GetTransform().IsIdentity());
+
+    Matrix4x4 randomTransform = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6 };
+
+    triangleMesh.SetTransform(randomTransform);
+    EXPECT_EQ(triangleMesh.GetTransform(), randomTransform);
+    EXPECT_EQ(triangleMesh.GetTransformInv(), randomTransform.Inversed());
+}
+
+TEST(TriangleMeshTest, CanGetBottomLevelAccelerator)
+{
+    TriangleMesh triangleMesh;
+    Accelerator* bottomLevelBvh = triangleMesh.GetBottomLevelAccelerator();
+    EXPECT_NE(bottomLevelBvh, nullptr);
+}
+

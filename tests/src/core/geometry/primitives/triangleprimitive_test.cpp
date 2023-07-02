@@ -3,8 +3,6 @@
     spectral raytracing library.
 
     Copyright (c) 2020-2023 Samuel Van Allen - All rights reserved.
-
-    Spectre is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
@@ -18,17 +16,18 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#pragma once
+#include "gtest.h"
+#include "core/geometry/primitives/triangleprimitive.h"
 
-class Geometry;
-
-class Accelerator
+TEST(TrianglePrimitiveTest, CanBeCreated)
 {
-public:
-    Accelerator() = default;
-    virtual ~Accelerator() = default;
+    ASSERT_NO_THROW(TrianglePrimitive(nullptr, 0, 1, 2));
+}
 
-public:
-    virtual void Build(const std::vector<Geometry>& primitives) const = 0;
-    virtual void Intersect(const Ray& ray) const = 0;
-};
+TEST(TrianglePrimitiveTest, CanGetExtents)
+{
+    //PrimitiveImplStub primitive(nullptr);
+    //EXPECT_EQ(primitive.GetExtents().m_Min, Point3());
+    //EXPECT_EQ(primitive.GetExtents().m_Max, Point3());
+}
+

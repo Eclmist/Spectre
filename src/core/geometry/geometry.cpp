@@ -20,10 +20,6 @@
 
 #include "geometry.h"
 
-Geometry::~Geometry()
-{
-}
-
 void Geometry::SetTransform(const Matrix4x4& transform)
 {
     m_Transform = transform;

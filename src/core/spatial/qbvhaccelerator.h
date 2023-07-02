@@ -22,16 +22,6 @@
 
 #include "accelerator.h"
 
-constexpr uint32_t MaxTreeDepth = 8;
-constexpr uint32_t MaxNumNodes = 65536; // 4^MaxTreeDepth
-
-struct SimdQBvhNode
-{
-    BoundingBox m_ChildBoundingBoxes;
-    uint32_t m_ChildIndices[4];
-    uint32_t m_Axis0, m_Axis1, m_Axis2;
-};
-
 class QBvhAccelerator : public Accelerator
 {
 public:
@@ -39,10 +29,21 @@ public:
     ~QBvhAccelerator() override = default;
 
 public:
+    struct SimdQBvhNode
+    {
+        BoundingBox m_ChildBoundingBoxes;
+        uint32_t m_ChildIndices[4];
+        uint32_t m_Axis0, m_Axis1, m_Axis2;
+    };
+
+public:
     void Build(const std::vector<Geometry>& primitives) const override;
     void Intersect(const Ray& ray) const override;
 
 protected:
+    static constexpr uint32_t MaxTreeDepth = 8;
+    static constexpr uint32_t MaxNumNodes = 65536; // 4^MaxTreeDepth
+
     SimdQBvhNode m_RootNode[MaxNumNodes];
 };
 

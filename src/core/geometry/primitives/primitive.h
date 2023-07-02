@@ -20,15 +20,41 @@
 
 #pragma once
 
-class Geometry;
+#include "core/geometry/geometry.h"
 
-class Accelerator
+// TODO: Implement these stubs in the correct files
+struct Interaction {
+
+};
+
+struct SurfaceInteraction : public Interaction {
+
+};
+
+struct MediumInteraction : public Interaction {
+
+};
+
+class Primitive
 {
 public:
-    Accelerator() = default;
-    virtual ~Accelerator() = default;
+    Primitive(Geometry* parentGeometry);
+    virtual ~Primitive() = 0;
 
 public:
-    virtual void Build(const std::vector<Geometry>& primitives) const = 0;
-    virtual void Intersect(const Ray& ray) const = 0;
+    inline BoundingBox GetExtents() const { return m_BoundingBox; }
+
+public:
+    virtual Matrix4x4 GetTransform() const;
+
+public:
+    virtual bool Intersect(const Ray& ray) const = 0;
+    virtual bool Intersect(const Ray& ray, double* tHit, SurfaceInteraction* surface) const = 0;
+
+    virtual bool Sample(const Point2& uv, Interaction* interaction) const = 0;
+    
+protected:
+    Geometry* m_ParentGeometry;
+    BoundingBox m_BoundingBox;
 };
+

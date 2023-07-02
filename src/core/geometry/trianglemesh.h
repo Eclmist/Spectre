@@ -20,15 +20,37 @@
 
 #pragma once
 
-class Geometry;
+#include "geometry.h"
 
-class Accelerator
+class TriangleMesh : public Geometry
 {
 public:
-    Accelerator() = default;
-    virtual ~Accelerator() = default;
+    TriangleMesh();
+    ~TriangleMesh() override = default;
 
-public:
-    virtual void Build(const std::vector<Geometry>& primitives) const = 0;
-    virtual void Intersect(const Ray& ray) const = 0;
+private:
+    struct TriangleMeshVertex
+    {
+        Point3 m_Position;
+        Normal3 m_Normal;
+        Vector3 m_Tangent;
+        Vector3 m_Bitangent;
+        Vector2 m_TexCoord;
+    };
+
+    struct TriangleMeshFace
+    {
+        uint32_t m_VertexIndex0;
+        uint32_t m_VertexIndex1;
+        uint32_t m_VertexIndex2;
+    };
+
+    using TriangleMeshVertexIndex = uint32_t;
+
+private:
+    friend class AssetImporter;
+    std::vector<TriangleMeshVertex> m_Vertices;
+    std::vector<TriangleMeshFace> m_Faces;
+
 };
+

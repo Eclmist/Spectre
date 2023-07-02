@@ -19,20 +19,14 @@
 #include "gtest.h"
 #include "core/geometry/geometry.h"
 
-class GeometryImplStub : public Geometry
-{
-public:
-    ~GeometryImplStub() override = default;
-};
-
 TEST(GeometryTest, CanBeCreated)
 {
-    ASSERT_NO_THROW(GeometryImplStub());
+    ASSERT_NO_THROW(Geometry());
 }
 
 TEST(GeometryTest, CanTransform)
 {
-    GeometryImplStub geometry;
+    Geometry geometry;
     EXPECT_TRUE(geometry.GetTransform().IsIdentity());
 
     Matrix4x4 randomTransform = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6 };
@@ -40,5 +34,12 @@ TEST(GeometryTest, CanTransform)
     geometry.SetTransform(randomTransform);
     EXPECT_EQ(geometry.GetTransform(), randomTransform);
     EXPECT_EQ(geometry.GetTransformInv(), randomTransform.Inversed());
+}
+
+TEST(GeometryTest, CanGetBottomLevelAccelerator)
+{
+    Geometry geometry;
+    Accelerator* bottomLevelBvh = geometry.GetBottomLevelAccelerator();
+    EXPECT_EQ(bottomLevelBvh, nullptr);
 }
 

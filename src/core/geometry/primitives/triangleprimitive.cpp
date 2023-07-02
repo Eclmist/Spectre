@@ -18,17 +18,28 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#pragma once
+#include "triangleprimitive.h"
 
-class Geometry;
-
-class Accelerator
+TrianglePrimitive::TrianglePrimitive(TriangleMesh* parentMesh, uint32_t v0, uint32_t v1, uint32_t v2)
+    : Primitive(parentMesh)
 {
-public:
-    Accelerator() = default;
-    virtual ~Accelerator() = default;
+    m_VertexIndices[0] = v0;
+    m_VertexIndices[1] = v1;
+    m_VertexIndices[2] = v2;
+}
 
-public:
-    virtual void Build(const std::vector<Geometry>& primitives) const = 0;
-    virtual void Intersect(const Ray& ray) const = 0;
-};
+bool TrianglePrimitive::Intersect(const Ray& ray) const
+{
+    return false;
+}
+
+bool TrianglePrimitive::Intersect(const Ray& ray, double* tHit, SurfaceInteraction* surface) const
+{
+    return false;
+}
+
+bool TrianglePrimitive::Sample(const Point2& uv, Interaction* interaction) const
+{
+    return false;
+}
+

@@ -18,17 +18,22 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#pragma once
+#include "primitive.h"
 
-class Geometry;
-
-class Accelerator
+Primitive::Primitive(Geometry* parentGeometry)
+    : m_ParentGeometry(parentGeometry)
 {
-public:
-    Accelerator() = default;
-    virtual ~Accelerator() = default;
+}
 
-public:
-    virtual void Build(const std::vector<Geometry>& primitives) const = 0;
-    virtual void Intersect(const Ray& ray) const = 0;
-};
+Primitive::~Primitive()
+{
+}
+
+Matrix4x4 Primitive::GetTransform() const
+{
+    if (m_ParentGeometry == nullptr)
+        return {};
+
+    return m_ParentGeometry->GetTransform();
+}
+

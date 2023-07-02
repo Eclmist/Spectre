@@ -20,15 +20,22 @@
 
 #pragma once
 
-class Geometry;
+#include "primitive.h"
+#include "core/geometry/trianglemesh.h"
 
-class Accelerator
+class TrianglePrimitive : public Primitive
 {
 public:
-    Accelerator() = default;
-    virtual ~Accelerator() = default;
+    TrianglePrimitive(TriangleMesh* parentMesh, uint32_t v0, uint32_t v1, uint32_t v2);
+    virtual ~TrianglePrimitive() override = default;
 
 public:
-    virtual void Build(const std::vector<Geometry>& primitives) const = 0;
-    virtual void Intersect(const Ray& ray) const = 0;
+    bool Intersect(const Ray& ray) const override;
+    bool Intersect(const Ray& ray, double* tHit, SurfaceInteraction* surface) const override;
+
+    bool Sample(const Point2& uv, Interaction* interaction) const override;
+
+private:
+    uint32_t m_VertexIndices[3];
 };
+

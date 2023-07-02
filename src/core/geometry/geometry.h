@@ -20,15 +20,18 @@
 
 #pragma once
 
+#include "core/spatial/accelerator.h"
+
 class Geometry
 {
 public:
     Geometry() = default;
-    virtual ~Geometry() = 0;
+    virtual ~Geometry() = default;
 
 public:
     inline Matrix4x4 GetTransform() const { return m_Transform; }
     inline Matrix4x4 GetTransformInv() const { return m_TransformInv; }
+    inline Accelerator* GetBottomLevelAccelerator() const { return m_BottomLevelAccelerator.get(); }
 
 public:
     virtual void SetTransform(const Matrix4x4& transform);
@@ -36,5 +39,7 @@ public:
 protected:
     Matrix4x4 m_Transform;
     Matrix4x4 m_TransformInv;
+
+    std::unique_ptr<Accelerator> m_BottomLevelAccelerator;
 };
 
