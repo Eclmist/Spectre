@@ -39,7 +39,7 @@ public:
     ~QBvhAccelerator() override = default;
 
 public:
-    void Build(const std::vector<Primitive>& primitives) const override;
+    void Build(const std::vector<Geometry>& primitives) const override;
     void Intersect(const Ray& ray) const override;
 
 protected:

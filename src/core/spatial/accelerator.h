@@ -20,7 +20,7 @@
 
 #pragma once
 
-class Primitive;
+class Geometry;
 
 class Accelerator
 {
@@ -29,7 +29,7 @@ public:
     virtual ~Accelerator() = 0;
 
 public:
-    virtual void Build(const std::vector<Primitive>& primitives) const = 0;
+    virtual void Build(const std::vector<Geometry>& primitives) const = 0;
     virtual void Intersect(const Ray& ray) const = 0;
 };
 

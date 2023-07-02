@@ -20,7 +20,7 @@
 
 #include "qbvhaccelerator.h"
 
-void QBvhAccelerator::Build(const std::vector<Primitive>& primitives) const
+void QBvhAccelerator::Build(const std::vector<Geometry>& primitives) const
 {
 
 }
