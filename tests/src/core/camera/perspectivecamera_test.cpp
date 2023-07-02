@@ -94,3 +94,20 @@ TEST(PerspectiveCameraTest, CanGenerateRay)
     EXPECT_EQ(topLeftCornerRay.m_Origin, Point3(1, 0, 0));
 }
 
+TEST(PerspectiveCameraTest, GeneratedRayIsNormalized)
+{
+    PerspectiveCamera camera;
+    Ray topLeftCornerRay = camera.GenerateRay({ 0, 0 });
+    Ray centerRay = camera.GenerateRay({
+        camera.GetFilm().GetResolution().GetWidth() / 2,
+        camera.GetFilm().GetResolution().GetHeight() / 2 });
+    Ray bottomRightRay = camera.GenerateRay({
+        camera.GetFilm().GetResolution().GetWidth(),
+        camera.GetFilm().GetResolution().GetHeight() });
+
+    EXPECT_EQ(topLeftCornerRay.m_Direction, topLeftCornerRay.m_Direction.Normalized());
+    EXPECT_EQ(centerRay.m_Direction, centerRay.m_Direction.Normalized());
+    EXPECT_EQ(bottomRightRay.m_Direction, bottomRightRay.m_Direction.Normalized());
+}
+
+
