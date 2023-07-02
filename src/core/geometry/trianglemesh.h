@@ -40,6 +40,7 @@ public:
     };
 
 public:
+    inline const Vertex* GetVertex(uint32_t index) const { return &m_Vertices[index]; }
     inline const std::vector<Vertex>& GetVertices() const { return m_Vertices; }
     inline const std::vector<TrianglePrimitive>& GetFaces() const { return m_Faces; }
 

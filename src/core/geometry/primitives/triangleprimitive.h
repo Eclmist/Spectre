@@ -37,6 +37,9 @@ public:
     bool Sample(const Point2& uv, Interaction* interaction) const override;
 
 private:
+    void CalculateBoundingBox();
+
+private:
     uint32_t m_VertexIndices[3];
 };
 

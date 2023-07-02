@@ -66,9 +66,9 @@ TEST(TriangleMeshTest, CanSetVertices)
     triangleMesh.SetVertices(vertices, 3);
 
     ASSERT_EQ(triangleMesh.GetVertices().size(), 3);
-    EXPECT_EQ(triangleMesh.GetVertices()[0].m_Position, Point3(0, 0, 0));
-    EXPECT_EQ(triangleMesh.GetVertices()[1].m_Position, Point3(1, 0, 0));
-    EXPECT_EQ(triangleMesh.GetVertices()[2].m_Position, Point3(1, 1, 0));
+    EXPECT_EQ(triangleMesh.GetVertex(0)->m_Position, Point3(0, 0, 0));
+    EXPECT_EQ(triangleMesh.GetVertex(1)->m_Position, Point3(1, 0, 0));
+    EXPECT_EQ(triangleMesh.GetVertex(2)->m_Position, Point3(1, 1, 0));
 }
 
 TEST(TriangleMeshTest, VerticesAreCopied)
@@ -89,9 +89,9 @@ TEST(TriangleMeshTest, VerticesAreCopied)
     }
 
     ASSERT_EQ(triangleMesh.GetVertices().size(), 3);
-    EXPECT_EQ(triangleMesh.GetVertices()[0].m_Position, Point3(0, 0, 0));
-    EXPECT_EQ(triangleMesh.GetVertices()[1].m_Position, Point3(1, 0, 0));
-    EXPECT_EQ(triangleMesh.GetVertices()[2].m_Position, Point3(1, 1, 0));
+    EXPECT_EQ(triangleMesh.GetVertex(0)->m_Position, Point3(0, 0, 0));
+    EXPECT_EQ(triangleMesh.GetVertex(1)->m_Position, Point3(1, 0, 0));
+    EXPECT_EQ(triangleMesh.GetVertex(2)->m_Position, Point3(1, 1, 0));
 }
 
 TEST(TriangleMeshTest, CanSetFaces)

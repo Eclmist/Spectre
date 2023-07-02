@@ -53,12 +53,12 @@ TEST(PerspectiveCameraTest, CanGenerateRay)
         camera.GetFilm().GetResolution().GetWidth(),
         camera.GetFilm().GetResolution().GetHeight() });
 
-    EXPECT_FALSE(topLeftCornerRay.GetDirection() == Vector3(0, 0, 1));
-    EXPECT_EQ(centerRay.GetDirection(), Vector3(0, 0, 1));
-    EXPECT_FALSE(bottomRightRay.GetDirection() == Vector3(0, 0, 1));
-    EXPECT_EQ(centerRay.GetOrigin(), Point3(0, 0, 0));
-    EXPECT_EQ(bottomRightRay.GetOrigin(), Point3(0, 0, 0));
-    EXPECT_EQ(topLeftCornerRay.GetOrigin(), Point3(0, 0, 0));
+    EXPECT_FALSE(topLeftCornerRay.m_Direction == Vector3(0, 0, 1));
+    EXPECT_EQ(centerRay.m_Direction, Vector3(0, 0, 1));
+    EXPECT_FALSE(bottomRightRay.m_Direction == Vector3(0, 0, 1));
+    EXPECT_EQ(centerRay.m_Origin, Point3(0, 0, 0));
+    EXPECT_EQ(bottomRightRay.m_Origin, Point3(0, 0, 0));
+    EXPECT_EQ(topLeftCornerRay.m_Origin, Point3(0, 0, 0));
 
     Matrix4x4& transform = camera.GetTransform();
     transform = Transform::GetTranslationMatrix({ 1, 0, 0 });
@@ -70,12 +70,12 @@ TEST(PerspectiveCameraTest, CanGenerateRay)
         camera.GetFilm().GetResolution().GetWidth(),
         camera.GetFilm().GetResolution().GetHeight() });
 
-    EXPECT_FALSE(topLeftCornerRay.GetDirection() == Vector3(0, 0, 1));
-    EXPECT_EQ(centerRay.GetDirection(), Vector3(0, 0, 1));
-    EXPECT_FALSE(bottomRightRay.GetDirection() == Vector3(0, 0, 1));
-    EXPECT_EQ(centerRay.GetOrigin(), Point3(1, 0, 0));
-    EXPECT_EQ(bottomRightRay.GetOrigin(), Point3(1, 0, 0));
-    EXPECT_EQ(topLeftCornerRay.GetOrigin(), Point3(1, 0, 0));
+    EXPECT_FALSE(topLeftCornerRay.m_Direction == Vector3(0, 0, 1));
+    EXPECT_EQ(centerRay.m_Direction, Vector3(0, 0, 1));
+    EXPECT_FALSE(bottomRightRay.m_Direction == Vector3(0, 0, 1));
+    EXPECT_EQ(centerRay.m_Origin, Point3(1, 0, 0));
+    EXPECT_EQ(bottomRightRay.m_Origin, Point3(1, 0, 0));
+    EXPECT_EQ(topLeftCornerRay.m_Origin, Point3(1, 0, 0));
 
     transform = transform * Transform::GetRotationMatrix({ 0, SMath::DegToRad(90.0), 0 });
     topLeftCornerRay = camera.GenerateRay({ 0, 0 });
@@ -86,11 +86,11 @@ TEST(PerspectiveCameraTest, CanGenerateRay)
         camera.GetFilm().GetResolution().GetWidth(),
         camera.GetFilm().GetResolution().GetHeight() });
 
-    EXPECT_FALSE(topLeftCornerRay.GetDirection() == Vector3(1, 0, 0));
-    EXPECT_EQ(centerRay.GetDirection(), Vector3(1, 0, 0));
-    EXPECT_FALSE(bottomRightRay.GetDirection() == Vector3(1, 0, 0));
-    EXPECT_EQ(centerRay.GetOrigin(), Point3(1, 0, 0));
-    EXPECT_EQ(bottomRightRay.GetOrigin(), Point3(1, 0, 0));
-    EXPECT_EQ(topLeftCornerRay.GetOrigin(), Point3(1, 0, 0));
+    EXPECT_FALSE(topLeftCornerRay.m_Direction == Vector3(1, 0, 0));
+    EXPECT_EQ(centerRay.m_Direction, Vector3(1, 0, 0));
+    EXPECT_FALSE(bottomRightRay.m_Direction == Vector3(1, 0, 0));
+    EXPECT_EQ(centerRay.m_Origin, Point3(1, 0, 0));
+    EXPECT_EQ(bottomRightRay.m_Origin, Point3(1, 0, 0));
+    EXPECT_EQ(topLeftCornerRay.m_Origin, Point3(1, 0, 0));
 }
 

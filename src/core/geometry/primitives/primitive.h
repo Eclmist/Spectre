@@ -24,11 +24,21 @@
 
 // TODO: Implement these stubs in the correct files
 struct Interaction {
+    //surface->m_Point = ray(*tHit);
+    //surface->m_Normal = normal.Normalized();
+    //surface->m_Wo = -ray.GetDirection();
+    //surface->m_Primitive = this;
 
+    Point3 m_Point;
+    Vector3 m_Wo;
 };
+
+class Primitive;
 
 struct SurfaceInteraction : public Interaction {
 
+    Primitive* m_Primitive;
+    Normal3 m_Normal;
 };
 
 struct MediumInteraction : public Interaction {
