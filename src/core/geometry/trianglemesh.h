@@ -21,6 +21,7 @@
 #pragma once
 
 #include "geometry.h"
+#include "core/geometry/primitives/triangleprimitive.h"
 
 class TriangleMesh : public Geometry
 {
@@ -28,8 +29,8 @@ public:
     TriangleMesh();
     ~TriangleMesh() override = default;
 
-private:
-    struct TriangleMeshVertex
+public:
+    struct Vertex
     {
         Point3 m_Position;
         Normal3 m_Normal;
@@ -38,19 +39,16 @@ private:
         Vector2 m_TexCoord;
     };
 
-    struct TriangleMeshFace
-    {
-        uint32_t m_VertexIndex0;
-        uint32_t m_VertexIndex1;
-        uint32_t m_VertexIndex2;
-    };
+public:
+    inline const std::vector<Vertex>& GetVertices() const { return m_Vertices; }
+    inline const std::vector<TrianglePrimitive>& GetFaces() const { return m_Faces; }
 
-    using TriangleMeshVertexIndex = uint32_t;
+public:
+    void SetVertices(Vertex* vertices, uint32_t numVertices);
+    void SetFaces(TrianglePrimitive* faces, uint32_t numFaces);
 
 private:
-    friend class AssetImporter;
-    std::vector<TriangleMeshVertex> m_Vertices;
-    std::vector<TriangleMeshFace> m_Faces;
-
+    std::vector<Vertex> m_Vertices;
+    std::vector<TrianglePrimitive> m_Faces;
 };
 

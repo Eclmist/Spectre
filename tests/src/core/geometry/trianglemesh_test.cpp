@@ -43,3 +43,70 @@ TEST(TriangleMeshTest, CanGetBottomLevelAccelerator)
     EXPECT_NE(bottomLevelBvh, nullptr);
 }
 
+TEST(TriangleMeshTest, CanGetVertices)
+{
+    TriangleMesh triangleMesh;
+    EXPECT_TRUE(triangleMesh.GetVertices().empty());
+}
+
+TEST(TriangleMeshTest, CanGetFaces)
+{
+    TriangleMesh triangleMesh;
+    EXPECT_TRUE(triangleMesh.GetFaces().empty());
+}
+
+TEST(TriangleMeshTest, CanSetVertices)
+{
+    TriangleMesh triangleMesh;
+    TriangleMesh::Vertex vertices[3];
+    vertices[0] = { .m_Position = { 0, 0, 0 } };
+    vertices[1] = { .m_Position = { 1, 0, 0 } };
+    vertices[2] = { .m_Position = { 1, 1, 0 } };
+
+    triangleMesh.SetVertices(vertices, 3);
+
+    ASSERT_EQ(triangleMesh.GetVertices().size(), 3);
+    EXPECT_EQ(triangleMesh.GetVertices()[0].m_Position, Point3(0, 0, 0));
+    EXPECT_EQ(triangleMesh.GetVertices()[1].m_Position, Point3(1, 0, 0));
+    EXPECT_EQ(triangleMesh.GetVertices()[2].m_Position, Point3(1, 1, 0));
+}
+
+TEST(TriangleMeshTest, VerticesAreCopied)
+{
+    TriangleMesh triangleMesh;
+
+    {
+        TriangleMesh::Vertex vertices[3];
+        vertices[0] = { .m_Position = { 0, 0, 0 } };
+        vertices[1] = { .m_Position = { 1, 0, 0 } };
+        vertices[2] = { .m_Position = { 1, 1, 0 } };
+
+        triangleMesh.SetVertices(vertices, 3);
+
+        vertices[0] = { .m_Position = { 9, 9, 9 } };
+        vertices[1] = { .m_Position = { 9, 9, 9 } };
+        vertices[2] = { .m_Position = { 9, 9, 9 } };
+    }
+
+    ASSERT_EQ(triangleMesh.GetVertices().size(), 3);
+    EXPECT_EQ(triangleMesh.GetVertices()[0].m_Position, Point3(0, 0, 0));
+    EXPECT_EQ(triangleMesh.GetVertices()[1].m_Position, Point3(1, 0, 0));
+    EXPECT_EQ(triangleMesh.GetVertices()[2].m_Position, Point3(1, 1, 0));
+}
+
+TEST(TriangleMeshTest, CanSetFaces)
+{
+    TriangleMesh triangleMesh;
+    TriangleMesh::Vertex vertices[3];
+    vertices[0] = { .m_Position = { 0, 0, 0 } };
+    vertices[1] = { .m_Position = { 1, 0, 0 } };
+    vertices[2] = { .m_Position = { 1, 1, 0 } };
+    triangleMesh.SetVertices(vertices, 3);
+
+    TrianglePrimitive face(&triangleMesh, 0, 1, 2);
+    triangleMesh.SetFaces(&face, 1);
+
+    ASSERT_EQ(triangleMesh.GetFaces().size(), 1);
+    EXPECT_EQ(triangleMesh.GetFaces()[0].GetParent(), &triangleMesh);
+}
+

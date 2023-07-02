@@ -19,6 +19,7 @@
 */
 
 #include "triangleprimitive.h"
+#include "core/geometry/trianglemesh.h"
 
 TrianglePrimitive::TrianglePrimitive(TriangleMesh* parentMesh, uint32_t v0, uint32_t v1, uint32_t v2)
     : Primitive(parentMesh)

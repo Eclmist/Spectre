@@ -56,6 +56,13 @@ TEST(PrimitiveTest, TransformReflectsParent)
     EXPECT_EQ(primitive.GetTransform(), Matrix4x4(1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6));
 }
 
+TEST(PrimitiveTest, CanGetParent)
+{
+    Geometry geometry;
+    PrimitiveImplStub primitive(&geometry);
+    EXPECT_EQ(primitive.GetParent(), &geometry);
+}
+
 TEST(PrimitiveTest, CanGetExtents)
 {
     PrimitiveImplStub primitive(nullptr);

@@ -21,7 +21,8 @@
 #pragma once
 
 #include "primitive.h"
-#include "core/geometry/trianglemesh.h"
+
+class TriangleMesh;
 
 class TrianglePrimitive : public Primitive
 {

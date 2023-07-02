@@ -25,3 +25,15 @@ TriangleMesh::TriangleMesh()
 {
     m_BottomLevelAccelerator = std::make_unique<QBvhAccelerator>();
 }
+
+void TriangleMesh::SetVertices(Vertex* vertices, uint32_t numVertices)
+{
+    m_Vertices.clear();
+    m_Vertices.assign(vertices, vertices + numVertices);
+}
+
+void TriangleMesh::SetFaces(TrianglePrimitive* faces, uint32_t numFaces)
+{
+    m_Faces.clear();
+    m_Faces.assign(faces, faces + numFaces);
+}

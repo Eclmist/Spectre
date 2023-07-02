@@ -42,6 +42,7 @@ public:
     virtual ~Primitive() = 0;
 
 public:
+    inline Geometry* GetParent() const { return m_ParentGeometry; }
     inline BoundingBox GetExtents() const { return m_BoundingBox; }
 
 public:

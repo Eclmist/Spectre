@@ -18,6 +18,7 @@
 
 #include "gtest.h"
 #include "core/geometry/primitives/triangleprimitive.h"
+#include "core/geometry/trianglemesh.h"
 
 TEST(TrianglePrimitiveTest, CanBeCreated)
 {
