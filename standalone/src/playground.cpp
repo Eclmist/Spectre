@@ -31,12 +31,18 @@
 
 #include "core/film/tonemapper/uncharted2filmictonemapper.h"
 
+#include "core/geometry/trianglemesh.h"
+
 /* ====================================================================
     BANNER OF SHAME
     MESSY TEMP TEST CODE HERE
    ==================================================================== */
+class dielectric;
+std::shared_ptr<dielectric> g_mat = nullptr;
 
-
+static TriangleMesh triangleMesh;
+static TriangleMesh::Vertex vertices[24];
+std::vector<TrianglePrimitive> faces;
 
 float* hdri;
 int hdri_w;
@@ -101,36 +107,10 @@ double GetHdriWhitePoint()
 
 struct hit_record;
 
-class aabb {
-public:
-    aabb() {}
-    aabb(const Point3& a, const Point3& b) { minimum = a; maximum = b; }
-
-    Point3 min() const { return minimum; }
-    Point3 max() const { return maximum; }
-
-    bool hit(const Ray& r, double t_min, double t_max) const {
-        for (int a = 0; a < 3; a++) {
-            auto t0 = std::fmin((minimum[a] - r.m_Origin[a]) / r.m_Direction[a],
-                (maximum[a] - r.m_Origin[a]) / r.m_Direction[a]);
-            auto t1 = std::fmax((minimum[a] - r.m_Origin[a]) / r.m_Direction[a],
-                (maximum[a] - r.m_Origin[a]) / r.m_Direction[a]);
-            t_min = std::fmax(t0, t_min);
-            t_max = std::fmin(t1, t_max);
-            if (t_max <= t_min)
-                return false;
-        }
-        return true;
-    }
-
-    Point3 minimum;
-    Point3 maximum;
-};
-
 class material {
 public:
     virtual bool scatter(
-        const Ray& r_in, const hit_record& rec, Spectrum* attenuation, Ray& scattered
+        Ray& r_in, const hit_record& rec, Spectrum* attenuation, Ray& scattered
     ) const = 0;
 
     virtual Spectrum emitted() const {
@@ -167,7 +147,7 @@ public:
     lambertian(Spectrum* a) : albedo(a) {}
 
     virtual bool scatter(
-        const Ray& r_in, const hit_record& rec, Spectrum* attenuation, Ray& scattered
+        Ray& r_in, const hit_record& rec, Spectrum* attenuation, Ray& scattered
     ) const override {
         Vector3 scatter_direction = rec.normal + (Sampling::UniformSampleSphere() - Point3(0,0,0));
 
@@ -189,7 +169,7 @@ public:
     dielectric(Spectrum index_of_refraction) : ir(index_of_refraction) {}
 
     virtual bool scatter(
-        const Ray& r_in, const hit_record& rec, Spectrum* attenuation, Ray& scattered
+        Ray& r_in, const hit_record& rec, Spectrum* attenuation, Ray& scattered
     ) const override {
         *attenuation = ReflectantSpectrum({ 0.9, 1.0, 1.0 });
         Spectrum refraction_ratio = rec.front_face ? (Spectrum(1.0) / ir) : ir;
@@ -233,7 +213,7 @@ public:
     diffuse_light(Spectrum* a) : emit(a) {}
 
     virtual bool scatter(
-        const Ray& r_in, const hit_record& rec, Spectrum* attenuation, Ray& scattered
+        Ray& r_in, const hit_record& rec, Spectrum* attenuation, Ray& scattered
     ) const override {
         return false;
     }
@@ -249,8 +229,7 @@ public:
 
 class hittable {
 public:
-    virtual bool hit(const Ray& r, double t_min, double t_max, hit_record& rec) const = 0;
-    virtual bool bounding_box(double time0, double time1, aabb& output_box) const = 0;
+    virtual bool hit(Ray& r, double t_min, double t_max, hit_record& rec) const = 0;
 
 };
 
@@ -260,8 +239,7 @@ public:
     sphere(Point3 cen, double r, std::shared_ptr<material> m) : center(cen), radius(r), mat_ptr(m) {};
 
     virtual bool hit(
-        const Ray& r, double t_min, double t_max, hit_record& rec) const override;
-    virtual bool bounding_box(double time0, double time1, aabb& output_box) const override;
+        Ray& r, double t_min, double t_max, hit_record& rec) const override;
 
 public:
     Point3 center;
@@ -270,7 +248,7 @@ public:
 
 };
 
-bool sphere::hit(const Ray& r, double t_min, double t_max, hit_record& rec) const {
+bool sphere::hit(Ray& r, double t_min, double t_max, hit_record& rec) const {
     Vector3 oc = (r.m_Origin - center);
     auto a = r.m_Direction.SquareMagnitude();
     auto half_b = Vector3::Dot(oc, r.m_Direction);
@@ -297,14 +275,6 @@ bool sphere::hit(const Ray& r, double t_min, double t_max, hit_record& rec) cons
     return true;
 }
 
-bool sphere::bounding_box(double time0, double time1, aabb& output_box) const {
-    output_box = aabb(
-        center - Vector3(radius, radius, radius),
-        center + Vector3(radius, radius, radius));
-    return true;
-}
-
-
 class hittable_list : public hittable {
 public:
     hittable_list() {}
@@ -314,59 +284,43 @@ public:
     void add(std::shared_ptr<hittable> object) { objects.push_back(object); }
 
     virtual bool hit(
-        const Ray& r, double t_min, double t_max, hit_record& rec) const override;
-    virtual bool bounding_box(
-        double time0, double time1, aabb& output_box) const override;
+        Ray& r, double t_min, double t_max, hit_record& rec) const override;
 
 public:
     std::vector<std::shared_ptr<hittable>> objects;
 };
 
-bool hittable_list::hit(const Ray& r, double t_min, double t_max, hit_record& rec) const {
+bool hittable_list::hit(Ray& r, double t_min, double t_max, hit_record& rec) const {
     hit_record temp_rec;
     bool hit_anything = false;
     auto closest_so_far = t_max;
 
-    for (const auto& object : objects) {
-        if (object->hit(r, t_min, closest_so_far, temp_rec)) {
+    r.m_TMin = t_min;
+    r.m_TMax = t_max;
+
+    double tHit;
+    SurfaceInteraction surf;
+
+    for (const auto& face : triangleMesh.GetFaces()) {
+        if (face.Intersect(r, &tHit, &surf)) {
             hit_anything = true;
-            closest_so_far = temp_rec.t;
-            rec = temp_rec;
+            closest_so_far = tHit;
+            r.m_TMax = tHit;
+
+            rec.front_face = true;
+            rec.t = tHit;
+            rec.p = surf.m_Point;
+            rec.set_face_normal(r, surf.m_Normal);
+            rec.mat_ptr = g_mat;
         }
     }
 
     return hit_anything;
 }
-aabb surrounding_box(aabb box0, aabb box1) {
-    Point3 small(std::fmin(box0.min().x, box1.min().x),
-        std::fmin(box0.min().y, box1.min().y),
-        std::fmin(box0.min().z, box1.min().z));
-
-    Point3 big(std::fmax(box0.max().x, box1.max().x),
-        fmax(box0.max().y, box1.max().y),
-        fmax(box0.max().z, box1.max().z));
-
-    return aabb(small, big);
-}
-
-bool hittable_list::bounding_box(double time0, double time1, aabb& output_box) const {
-    if (objects.empty()) return false;
-
-    aabb temp_box;
-    bool first_box = true;
-
-    for (const auto& object : objects) {
-        if (!object->bounding_box(time0, time1, temp_box)) return false;
-        output_box = first_box ? temp_box : surrounding_box(output_box, temp_box);
-        first_box = false;
-    }
-
-    return true;
-}
 
 hittable_list world;
 
-Spectrum raytraceScene(const Ray& ray, int lambdaIdx, int depth)
+Spectrum raytraceScene(Ray& ray, int lambdaIdx, int depth)
 {
     hit_record hit;
     if (world.hit(ray, 0.001, 99999999, hit) && depth > 0)
@@ -392,111 +346,6 @@ Spectrum raytraceScene(const Ray& ray, int lambdaIdx, int depth)
     return ReflectantSpectrum(hdri);
 }
 
-inline bool box_compare(const std::shared_ptr<hittable> a, const std::shared_ptr<hittable> b, int axis) {
-    aabb box_a;
-    aabb box_b;
-
-    if (!a->bounding_box(0, 0, box_a) || !b->bounding_box(0, 0, box_b))
-        std::cerr << "No bounding box in bvh_node constructor.\n";
-
-    return box_a.min()[axis] < box_b.min()[axis];
-}
-
-
-bool box_x_compare(const std::shared_ptr<hittable> a, const std::shared_ptr<hittable> b) {
-    return box_compare(a, b, 0);
-}
-
-bool box_y_compare(const std::shared_ptr<hittable> a, const std::shared_ptr<hittable> b) {
-    return box_compare(a, b, 1);
-}
-
-bool box_z_compare(const std::shared_ptr<hittable> a, const std::shared_ptr<hittable> b) {
-    return box_compare(a, b, 2);
-}
-
-
-class bvh_node : public hittable {
-public:
-    bvh_node();
-
-    bvh_node(const hittable_list& list, double time0, double time1)
-        : bvh_node(list.objects, 0, list.objects.size(), time0, time1)
-    {}
-
-    bvh_node(
-        const std::vector<std::shared_ptr<hittable>>& src_objects,
-        size_t start, size_t end, double time0, double time1)
-    {
-
-        auto objects = src_objects; // Create a modifiable array of the source scene objects
-
-        int axis = SMath::Random::UniformInt(0, 2);
-        auto comparator = (axis == 0) ? box_x_compare
-            : (axis == 1) ? box_y_compare
-            : box_z_compare;
-
-        size_t object_span = end - start;
-
-        if (object_span == 1) {
-            left = right = objects[start];
-        }
-        else if (object_span == 2) {
-            if (comparator(objects[start], objects[start + 1])) {
-                left = objects[start];
-                right = objects[start + 1];
-            }
-            else {
-                left = objects[start + 1];
-                right = objects[start];
-            }
-        }
-        else {
-            std::sort(objects.begin() + start, objects.begin() + end, comparator);
-
-            auto mid = start + object_span / 2;
-            left = std::make_shared<bvh_node>(objects, start, mid, time0, time1);
-            right = std::make_shared<bvh_node>(objects, mid, end, time0, time1);
-        }
-
-        aabb box_left, box_right;
-
-        if (!left->bounding_box(time0, time1, box_left)
-            || !right->bounding_box(time0, time1, box_right)
-            )
-            std::cerr << "No bounding box in bvh_node constructor.\n";
-
-        box = surrounding_box(box_left, box_right);
-
-    }
-
-    virtual bool hit(
-        const Ray& r, double t_min, double t_max, hit_record& rec) const override;
-
-    virtual bool bounding_box(double time0, double time1, aabb& output_box) const override;
-
-public:
-    std::shared_ptr<hittable> left;
-    std::shared_ptr<hittable> right;
-    aabb box;
-};
-
-bool bvh_node::bounding_box(double time0, double time1, aabb& output_box) const {
-    output_box = box;
-    return true;
-}
-
-bool bvh_node::hit(const Ray& r, double t_min, double t_max, hit_record& rec) const {
-    if (!box.hit(r, t_min, t_max))
-        return false;
-
-    bool hit_left = left->hit(r, t_min, t_max, rec);
-    bool hit_right = right->hit(r, t_min, hit_left ? rec.t : t_max, rec);
-
-    return hit_left || hit_right;
-}
-
-
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb/stb_image.h"
 
@@ -506,7 +355,7 @@ bool bvh_node::hit(const Ray& r, double t_min, double t_max, hit_record& rec) co
 #ifdef DEBUG_HDRI
 const int NumSamples = 1;
 #else
-const int NumSamples = 100;
+const int NumSamples = 320000;
 #endif
 
 const int NumThreads = 15;
@@ -532,7 +381,7 @@ void Playground::RenderThing()
 
     Film m_Film = camera.GetFilm();
     Matrix4x4& transform = camera.GetTransform();
-    transform = Transform::GetTranslationMatrix({ 0, 0.2, -3.5 }) * Transform::GetRotationMatrix({ SMath::DegToRad(0.0), SMath::DegToRad(0.0), 0 });
+    transform = Transform::GetTranslationMatrix({ 6, 0, -6}) * Transform::GetRotationMatrix({ SMath::DegToRad(0.0), SMath::DegToRad(-45.0), 0 });
 
     ReflectantSpectrum groundColor({ 0.8, 0.8, 0.8 });
     ReflectantSpectrum red({ 0.8, 0.2, 0.25 });
@@ -540,7 +389,7 @@ void Playground::RenderThing()
     ReflectantSpectrum black({ 0.1, 0.1, 0.1 });
     IlluminantSpectrum lightColor({ 50.8, 50.8, 50.8 });
 
-    SampleArray samples = { {MinWavelength, 1.3}, {MaxWavelength, 1.5} };
+    SampleArray samples = { {MinWavelength, 1.2}, {MaxWavelength, 1.205} };
     SampledSpectrum ir(samples);
 
     auto material_ground = std::make_shared<lambertian>(&groundColor);
@@ -549,6 +398,60 @@ void Playground::RenderThing()
     auto material_black = std::make_shared<lambertian>(&black);
     auto material_glass = std::make_shared<dielectric>(ir);
     auto material_light = std::make_shared<diffuse_light>(&lightColor);
+
+    g_mat = material_glass;
+
+    // Forward
+    vertices[0] = { .m_Position = { -1, -1, -1 }, .m_Normal = { 0, 0, -1 } };
+    vertices[1] = { .m_Position = { 1, -1, -1 }, .m_Normal = { 0, 0, -1 } };
+    vertices[2] = { .m_Position = { 1, 1, -1 }, .m_Normal = { 0, 0, -1 } };
+    vertices[3] = { .m_Position = { -1, 1, -1 }, .m_Normal = { 0, 0, -1 } };
+
+    // Backward
+    vertices[4] = { .m_Position = { -1, -1, 1 }, .m_Normal = { 0, 0, 1 } };
+    vertices[5] = { .m_Position = { 1, -1, 1 }, .m_Normal = { 0, 0, 1 } };
+    vertices[6] = { .m_Position = { 1, 1, 1 }, .m_Normal = { 0, 0, 1 } };
+    vertices[7] = { .m_Position = { -1, 1, 1 }, .m_Normal = { 0, 0, 1 } };
+
+    // Left
+    vertices[8] = { .m_Position = { -1, -1, -1 }, .m_Normal = { -1, 0, 0 } };
+    vertices[9] = { .m_Position = { -1, -1, 1 }, .m_Normal = { -1, 0, 0 } };
+    vertices[10] = { .m_Position = { -1, 1, 1 }, .m_Normal = { -1, 0, 0 } };
+    vertices[11] = { .m_Position = { -1, 1, -1 }, .m_Normal = { -1, 0, 0 } };
+
+    // Right
+    vertices[12] = { .m_Position = { 1, -1, -1 }, .m_Normal = { 1, 0, 0 } };
+    vertices[13] = { .m_Position = { 1, -1, 1 }, .m_Normal = { 1, 0, 0 } };
+    vertices[14] = { .m_Position = { 1, 1, 1 }, .m_Normal = { 1, 0, 0 } };
+    vertices[15] = { .m_Position = { 1, 1, -1 }, .m_Normal = { 1, 0, 0 } };
+
+    // Top
+    vertices[16] = { .m_Position = { -1, 1, -1 }, .m_Normal = { 0, 1, 0 } };
+    vertices[17] = { .m_Position = { 1, 1, -1 }, .m_Normal = { 0, 1, 0 } };
+    vertices[18] = { .m_Position = { 1, 1, 1 }, .m_Normal = { 0, 1, 0 } };
+    vertices[19] = { .m_Position = { -1, 1, 1 }, .m_Normal = { 0, 1, 0 } };
+
+    // Bottom
+    vertices[20] = { .m_Position = { -1, -1, -1 }, .m_Normal = { 0, -1, 0 } };
+    vertices[21] = { .m_Position = { 1, -1, -1 }, .m_Normal = { 0, -1, 0 } };
+    vertices[22] = { .m_Position = { 1, -1, 1 }, .m_Normal = { 0, -1, 0 } };
+    vertices[23] = { .m_Position = { -1, -1, 1 }, .m_Normal = { 0, -1, 0 } };
+
+    triangleMesh.SetVertices(vertices, 24);
+
+    faces.emplace_back(&triangleMesh, 0, 1, 2);
+    faces.emplace_back(&triangleMesh, 0, 2, 3);
+    faces.emplace_back(&triangleMesh, 4, 5, 6);
+    faces.emplace_back(&triangleMesh, 4, 6, 7);
+    faces.emplace_back(&triangleMesh, 8, 9, 10);
+    faces.emplace_back(&triangleMesh, 8, 10, 11);
+    faces.emplace_back(&triangleMesh, 12, 13, 14);
+    faces.emplace_back(&triangleMesh, 12, 14, 15);
+    faces.emplace_back(&triangleMesh, 16, 17, 18);
+    faces.emplace_back(&triangleMesh, 16, 18, 19);
+    faces.emplace_back(&triangleMesh, 20, 21, 22);
+    faces.emplace_back(&triangleMesh, 20, 22, 23);
+    triangleMesh.SetFaces(faces.data(), faces.size());
 
     world.add(std::make_shared<sphere>(Point3(0, 0.2, -1), 0.5, material_glass));
     //world.add(std::make_shared<sphere>(Point3(-0.5, 1, -0.5), 0.2, material_light));
@@ -610,7 +513,6 @@ void Playground::RenderThing()
                     {
                         for (int x = 0; x < currentTile->GetSize().x; ++x)
                         {
-
                             Point2i tileSpacePos = { x, y };
                             Point2i filmSpacePos = currentTile->TileToFilmSpace(tileSpacePos);
 
@@ -627,7 +529,6 @@ void Playground::RenderThing()
                                 SampleArray singleW = { SpectralSample(w - StepSize, 0), SpectralSample(w, 1 / pdf), SpectralSample(w + StepSize, 0) };
                                 SampledSpectrum singleColoredRay(singleW);
 
-
 #ifdef DEBUG_HDRI
                                 Point2 hdri(filmSpacePos.x / (double)resolution.GetWidth(), filmSpacePos.y / (double)resolution.GetHeight());
                                 ReflectantSpectrum L(SampleHdri(hdri));
@@ -641,7 +542,7 @@ void Playground::RenderThing()
                             auto timeNow = std::chrono::duration_cast<std::chrono::milliseconds>(
                                 std::chrono::system_clock::now().time_since_epoch()).count();
                             {
-                                if (timeNow - lastExportTime > 10000)
+                                if (timeNow - lastExportTime > 3000)
                                 {
                                     lastExportTime = timeNow;
                                     std::cout << "Exporting tile {" << std::to_string(currentTile->GetPosition().x) << ", " << std::to_string(currentTile->GetPosition().y) << "}, priority: " << std::to_string(priority) << std::endl;
