@@ -111,10 +111,10 @@ public:
 
     bool hit(const Ray& r, double t_min, double t_max) const {
         for (int a = 0; a < 3; a++) {
-            auto t0 = std::fmin((minimum[a] - r.GetOrigin()[a]) / r.GetDirection()[a],
-                (maximum[a] - r.GetOrigin()[a]) / r.GetDirection()[a]);
-            auto t1 = std::fmax((minimum[a] - r.GetOrigin()[a]) / r.GetDirection()[a],
-                (maximum[a] - r.GetOrigin()[a]) / r.GetDirection()[a]);
+            auto t0 = std::fmin((minimum[a] - r.m_Origin[a]) / r.m_Direction[a],
+                (maximum[a] - r.m_Origin[a]) / r.m_Direction[a]);
+            auto t1 = std::fmax((minimum[a] - r.m_Origin[a]) / r.m_Direction[a],
+                (maximum[a] - r.m_Origin[a]) / r.m_Direction[a]);
             t_min = std::fmax(t0, t_min);
             t_max = std::fmin(t1, t_max);
             if (t_max <= t_min)
@@ -158,7 +158,7 @@ struct hit_record {
     bool front_face;
 
     inline void set_face_normal(const Ray& r, const Normal3& outward_normal) {
-        front_face = Vector3::Dot(r.GetDirection(), outward_normal) < 0;
+        front_face = Vector3::Dot(r.m_Direction, outward_normal) < 0;
         normal = front_face ? outward_normal : Normal3(-outward_normal);
     }
 };
@@ -194,7 +194,7 @@ public:
         *attenuation = ReflectantSpectrum({ 0.9, 1.0, 1.0 });
         Spectrum refraction_ratio = rec.front_face ? (Spectrum(1.0) / ir) : ir;
 
-        Vector3 unit_direction = r_in.GetDirection().Normalized();
+        Vector3 unit_direction = r_in.m_Direction.Normalized();
         double cos_theta = fmin(Vector3::Dot(-unit_direction, rec.normal), 1.0);
         double sin_theta = sqrt(1.0 - cos_theta * cos_theta);
 
@@ -271,9 +271,9 @@ public:
 };
 
 bool sphere::hit(const Ray& r, double t_min, double t_max, hit_record& rec) const {
-    Vector3 oc = (r.GetOrigin() - center);
-    auto a = r.GetDirection().SquareMagnitude();
-    auto half_b = Vector3::Dot(oc, r.GetDirection());
+    Vector3 oc = (r.m_Origin - center);
+    auto a = r.m_Direction.SquareMagnitude();
+    auto half_b = Vector3::Dot(oc, r.m_Direction);
     auto c = oc.SquareMagnitude() - radius * radius;
     ;
     auto discriminant = half_b * half_b - a * c;
@@ -383,7 +383,7 @@ Spectrum raytraceScene(const Ray& ray, int lambdaIdx, int depth)
         return emitted + attenuation * raytraceScene(scattered, lambdaIdx, depth - 1);
     }
 
-    Vector3 unit_direction = ray.GetDirection().Normalized();
+    Vector3 unit_direction = ray.m_Direction.Normalized();
     RgbCoefficients hdri = SampleHdri(ToSphericalCoordinates(unit_direction));
 
     //auto t = 0.5 * (unit_direction.y + 1.0);
